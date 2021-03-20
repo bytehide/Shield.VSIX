@@ -1,0 +1,149 @@
+﻿<Window
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             d:DataContext="{d:DesignInstance UI_Extensions:ConfigurationViewModel, IsDesignTimeCreatable=True}"
+             xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+             xmlns:local="clr-namespace:ShieldVSExtension.ToolWindows" xmlns:PlatformUI="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0" xmlns:Imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging" xmlns:UI_Extensions="clr-namespace:ShieldVSExtension.UI_Extensions" x:Class="ShieldVSExtension.ToolWindows.ConfigurationWindowControl"
+             Background="#FF1E1E1E"
+             Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
+             mc:Ignorable="d"
+             x:Name="Shield_Configuration" Title="Dotnetsafer Shield Configuration" Width="800" Height="581" Icon="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/ShieldVSExtension;component/Simple Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate x:Key="DataTemplate1">
+                <Grid d:DesignWidth="408" d:DesignHeight="61">
+                    <Label Content="Label" HorizontalAlignment="Left" Margin="76,13,0,-13" VerticalAlignment="Top" Height="61" Width="321"/>
+                </Grid>
+            </DataTemplate>
+            <local:CountToBoolConverter x:Key="CountToBoolConverter" />
+            <local:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <UI_Extensions:ConfigurationViewModel x:Key="Object1"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="387*"/>
+            <ColumnDefinition Width="125*"/>
+            <ColumnDefinition Width="220*"/>
+            <ColumnDefinition Width="60*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" Grid.ColumnSpan="4">
+            <TabControl Height="569" Background="#FF1E1E1E" BorderBrush="#FF1E1E1E" Foreground="#FF1A1A1A">
+                <TabItem Header="Account Configuration" Background="#FF1E1E1E" BorderBrush="#FF0860C8" Foreground="#FF0860C8" FontSize="14">
+                    <Grid Background="#FF1E1E1E">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="85*"/>
+                            <ColumnDefinition Width="66*"/>
+                            <ColumnDefinition Width="31*"/>
+                            <ColumnDefinition Width="569*"/>
+                            <ColumnDefinition Width="35*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Connect and save" HorizontalAlignment="Left" Margin="378.333,202.08,0,0" VerticalAlignment="Top" Width="149" Height="28.293" Grid.Column="3" Background="#FF0860C8" Foreground="White" BorderBrush="White" FontSize="15" Click="Button_Click"/>
+                        <Label Content="Dotnetsafer API Key:" HorizontalAlignment="Left" Margin="53,169.08,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Width="161" Foreground="White" FontSize="15"/>
+                        <Label Content="Don't know where to find your api key?" HorizontalAlignment="Left" Margin="53,233.701,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Width="276" Foreground="White" FontSize="15"/>
+                        <Label Content="Generate an api key" HorizontalAlignment="Left" Margin="136.665,234.701,0,0" VerticalAlignment="Top" Width="236" Grid.Column="3" Foreground="#FF0860C8" FontSize="15"/>
+                        <Grid Grid.ColumnSpan="5" Margin="0,0,0,421.54" Background="#FF1E1E1E">
+                            <Image Margin="-7,-16.1,105,-2" Source="C:\Users\juana\Downloads\Sin título (2).png" UseLayoutRounding="False" ScrollViewer.CanContentScroll="True" Stretch="UniformToFill" Height="130"/>
+                            <Label Content="1.0.0 Beta&#xA;" HorizontalAlignment="Left" Margin="143,67.58,0,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
+                            <Label Content="https://dotnetsafer.com&#xA;" HorizontalAlignment="Left" Margin="621,91.55,0,-13.97" Width="164" Foreground="#FF026CEC" Height="36.6" VerticalAlignment="Top"/>
+                        </Grid>
+                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,68.5,-58,0" VerticalAlignment="Top" Width="907" Grid.ColumnSpan="5"/>
+                        <Label Content="Shield Configuration" HorizontalAlignment="Left" Margin="6.833,326.5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="164.167" Foreground="White" FontSize="16" BorderBrush="#FF0860C8" Background="{x:Null}" Height="32.613"/>
+                        <Image HorizontalAlignment="Left" Height="68" Margin="27,404.5,0,0" VerticalAlignment="Top" Width="58" OpacityMask="#FFF90000" Source="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png"/>
+                        <Label Content="Nombre de usuario" HorizontalAlignment="Left" Margin="18,400.5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="161" Foreground="White" FontSize="16" Grid.Column="1"/>
+                        <Label Content="Community&#xA;" HorizontalAlignment="Left" Margin="17,434.78,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="161" Foreground="#72FFFFFF" FontSize="16" Grid.Column="1"/>
+                        <TextBox HorizontalAlignment="Left" Height="27.96" Margin="120,432.78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Grid.Column="3" Foreground="#CCFFFFFF" Text="Ejemplo"/>
+                        <Label Content="Current project name:" HorizontalAlignment="Left" Margin="117,400.5,0,0" VerticalAlignment="Top" Width="170" Foreground="White" FontSize="16" Grid.Column="3"/>
+                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,313.5,-58,0" VerticalAlignment="Top" Width="907" Grid.ColumnSpan="5" Background="#FF0860C8"/>
+                        <Separator HorizontalAlignment="Left" Height="100" Margin="65.434,292.994,0,0" VerticalAlignment="Top" Width="40.012" Background="#FF0860C8" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="3" Grid.Column="1">
+                            <Separator.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-89.906"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Separator.RenderTransform>
+                        </Separator>
+                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,273.5,0,0" VerticalAlignment="Top" Width="234" Grid.ColumnSpan="3" Background="#FF0860C8"/>
+                        <CheckBox Content="Create if not exists" Grid.Column="3" HorizontalAlignment="Left" Margin="120,471.407,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="27.96" Width="152.334"/>
+                        <Label Content="Save output logs:" HorizontalAlignment="Left" Margin="381,400.5,0,0" VerticalAlignment="Top" Width="170" Foreground="White" FontSize="16" Grid.Column="3"/>
+                        <TextBox HorizontalAlignment="Left" Height="27.96" Margin="386.583,432.78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="132.25" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Grid.Column="3" Foreground="#CCFFFFFF"/>
+                        <Button Content="..." Grid.Column="3" HorizontalAlignment="Left" Margin="517.584,432.78,0,0" VerticalAlignment="Top" Width="28" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#FF0078D7" Height="27.96"/>
+                        <CheckBox Content="Store logs" Grid.Column="3" HorizontalAlignment="Left" Margin="386.583,473.233,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="27.96" Width="152.334"/>
+                        <PasswordBox HorizontalAlignment="Left" Margin="56.998,202.08,0,0" VerticalAlignment="Top" Password="ss" Width="482.746" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="White" Grid.ColumnSpan="4" Height="28.293"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Solution Configuration" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Background="#FF1E1E1E" FontSize="16" HorizontalAlignment="Right" Width="176">
+                    <Grid Background="#FF1E1E1E">
+                        <ListBox ItemsSource="{Binding Path=Projects}" HorizontalContentAlignment="Stretch" Margin="5,5,490,5"
+                                 SelectedItem="{Binding Path=SelectedProject, Mode=TwoWay}" SelectionMode="Extended"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListBox_SelectionChanged" Loaded="ListBox_Loaded" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid x:Name="TemplateRoot">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <Border x:Name="LeftLine" Grid.RowSpan="2" Margin="0, 2, 2, 2" Width="4"
+                                    Background="Transparent" />
+
+                                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Path=Name}" Margin="4, 2" />
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=FolderName}" Margin="4, 2"
+                                    Foreground="DarkGray" TextTrimming="CharacterEllipsis" />
+
+                                        <TextBlock x:Name="CountText" Grid.Row="0" Grid.RowSpan="2" Grid.Column="3"
+                                    Text="{Binding Path=Files.Count}" VerticalAlignment="Center" FontSize="20"
+                                    Margin="3, 0, 3, 1" Visibility="Hidden" />
+                                    </Grid>
+
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger
+                                    Binding="{Binding Path=Files.Count, Converter={StaticResource CountToBoolConverter}}"
+                                    Value="True">
+                                            <Setter TargetName="LeftLine" Property="Background" Value="SkyBlue" />
+                                            <Setter TargetName="CountText" Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition
+                                            Binding="{Binding Path=Files.Count, Converter={StaticResource CountToBoolConverter}}"
+                                            Value="True" />
+                                                <Condition
+                                            Binding="{Binding Path=TargetDirectory, Converter={StaticResource StringToBoolConverter}}"
+                                            Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter TargetName="LeftLine" Property="Background" Value="SlateBlue" />
+                                            <Setter TargetName="CountText" Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+
+                                        <DataTrigger Binding="{Binding Path=IsEnabled}" Value="False">
+                                            <Setter TargetName="LeftLine" Property="Background" Value="LightGray" />
+                                            <Setter TargetName="TemplateRoot" Property="TextElement.Foreground" Value="Gray" />
+                                        </DataTrigger>
+
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </Grid>
+</Window>

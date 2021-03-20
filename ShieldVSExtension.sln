@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShieldVSExtension", "ShieldVSExtension.csproj", "{D7AB4724-AB57-43E3-A95D-84EBBEE21820}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureLocalStorage", "..\SecureLocalStorage\SecureLocalStorage.csproj", "{F23A19D6-E38B-4541-8409-01FD6C82F57C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F23A19D6-E38B-4541-8409-01FD6C82F57C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F23A19D6-E38B-4541-8409-01FD6C82F57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F23A19D6-E38B-4541-8409-01FD6C82F57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F23A19D6-E38B-4541-8409-01FD6C82F57C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4BA3B3F2-587E-43E1-BEC6-C50EE5D37BD3}
+	EndGlobalSection
+EndGlobal
