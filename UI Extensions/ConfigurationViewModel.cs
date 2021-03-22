@@ -69,7 +69,6 @@ namespace ShieldVSExtension.UI_Extensions
 #endif
         #endregion
 
-
         #region TargetDirectory Property
 
         private string _targetDirectory;
@@ -83,6 +82,44 @@ namespace ShieldVSExtension.UI_Extensions
                     return;
 
                 _targetDirectory = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region CreateShieldProjectIfNotExists Property
+
+        private bool _createShieldProjectIfNotExists;
+
+        public bool CreateShieldProjectIfNotExists
+        {
+            get { return _createShieldProjectIfNotExists; }
+            set
+            {
+                if (_createShieldProjectIfNotExists == value)
+                    return;
+
+                _createShieldProjectIfNotExists = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region IsValidClient Property
+
+        private bool _isValidClient;
+
+        public bool IsValidClient
+        {
+            get { return _isValidClient; }
+            set
+            {
+                if (_isValidClient == value)
+                    return;
+
+                _isValidClient = value;
                 OnPropertyChanged();
             }
         }
@@ -120,6 +157,25 @@ namespace ShieldVSExtension.UI_Extensions
 
         #endregion
 
+        #region ShieldProjectName Property
+
+        private string _shieldProjectName;
+
+        public string ShieldProjectName
+        {
+            get { return _shieldProjectName; }
+            set
+            {
+                if (_shieldProjectName == value)
+                    return;
+
+                _shieldProjectName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         private readonly Configuration.SolutionConfiguration _solutionConfiguration;
 
         public ConfigurationViewModel(DTE2 dte, Configuration.SolutionConfiguration solutionConfiguration)
@@ -154,7 +210,10 @@ namespace ShieldVSExtension.UI_Extensions
 
             Projects = projects;
             TargetDirectory = solutionConfiguration.TargetDirectory;
+            CreateShieldProjectIfNotExists = solutionConfiguration.CreateShieldProjectIfNotExists;
+            ShieldProjectName = solutionConfiguration.ShieldProjectName;
             SelectedProjects = new ObservableCollection<ProjectViewModel>();
+            IsValidClient = false;
 
             if (dte.Solution.SolutionBuild.StartupProjects is object[] startupProjects)
             {

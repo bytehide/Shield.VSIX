@@ -9,7 +9,7 @@
              Background="#FF1E1E1E"
              Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
              mc:Ignorable="d"
-             x:Name="Shield_Configuration" Title="Dotnetsafer Shield Configuration" Width="800" Height="581" Icon="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png" ResizeMode="NoResize">
+             x:Name="ShieldConfiguration" Title="Dotnetsafer Shield Configuration" Width="800" Height="581" Icon="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -21,7 +21,15 @@
                 </Grid>
             </DataTemplate>
             <local:CountToBoolConverter x:Key="CountToBoolConverter" />
-            <local:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <local:StringToBoolConverter x:Key="StringToBoolConverter"/>
+
+            <local:ValueConverterGroup x:Key="InvertBoolToVisibility">
+                <local:InvertBoolConverter />
+                <BooleanToVisibilityConverter/>
+            </local:ValueConverterGroup>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
             <UI_Extensions:ConfigurationViewModel x:Key="Object1"/>
         </ResourceDictionary>
     </Window.Resources>
@@ -43,23 +51,26 @@
                             <ColumnDefinition Width="569*"/>
                             <ColumnDefinition Width="35*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Content="Connect and save" HorizontalAlignment="Left" Margin="378.333,202.08,0,0" VerticalAlignment="Top" Width="149" Height="28.293" Grid.Column="3" Background="#FF0860C8" Foreground="White" BorderBrush="White" FontSize="15" Click="Button_Click"/>
-                        <Label Content="Dotnetsafer API Key:" HorizontalAlignment="Left" Margin="53,169.08,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Width="161" Foreground="White" FontSize="15"/>
-                        <Label Content="Don't know where to find your api key?" HorizontalAlignment="Left" Margin="53,233.701,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Width="276" Foreground="White" FontSize="15"/>
-                        <Label Content="Generate an api key" HorizontalAlignment="Left" Margin="136.665,234.701,0,0" VerticalAlignment="Top" Width="236" Grid.Column="3" Foreground="#FF0860C8" FontSize="15"/>
-                        <Grid Grid.ColumnSpan="5" Margin="0,0,0,421.54" Background="#FF1E1E1E">
+                        <Grid x:Name="ShieldHeader" Grid.ColumnSpan="5" Margin="0,0,0,421.54" Background="#FF1E1E1E">
                             <Image Margin="-7,-16.1,105,-2" Source="C:\Users\juana\Downloads\Sin título (2).png" UseLayoutRounding="False" ScrollViewer.CanContentScroll="True" Stretch="UniformToFill" Height="130"/>
                             <Label Content="1.0.0 Beta&#xA;" HorizontalAlignment="Left" Margin="143,67.58,0,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
                             <Label Content="https://dotnetsafer.com&#xA;" HorizontalAlignment="Left" Margin="621,91.55,0,-13.97" Width="164" Foreground="#FF026CEC" Height="36.6" VerticalAlignment="Top"/>
                         </Grid>
-                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,68.5,-58,0" VerticalAlignment="Top" Width="907" Grid.ColumnSpan="5"/>
-                        <Label Content="Shield Configuration" HorizontalAlignment="Left" Margin="6.833,326.5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="164.167" Foreground="White" FontSize="16" BorderBrush="#FF0860C8" Background="{x:Null}" Height="32.613"/>
-                        <Image HorizontalAlignment="Left" Height="68" Margin="27,404.5,0,0" VerticalAlignment="Top" Width="58" OpacityMask="#FFF90000" Source="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png"/>
-                        <Label Content="Nombre de usuario" HorizontalAlignment="Left" Margin="18,400.5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="161" Foreground="White" FontSize="16" Grid.Column="1"/>
-                        <Label Content="Community&#xA;" HorizontalAlignment="Left" Margin="17,434.78,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="161" Foreground="#72FFFFFF" FontSize="16" Grid.Column="1"/>
-                        <TextBox HorizontalAlignment="Left" Height="27.96" Margin="120,432.78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Grid.Column="3" Foreground="#CCFFFFFF" Text="Ejemplo"/>
-                        <Label Content="Current project name:" HorizontalAlignment="Left" Margin="117,400.5,0,0" VerticalAlignment="Top" Width="170" Foreground="White" FontSize="16" Grid.Column="3"/>
-                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,313.5,-58,0" VerticalAlignment="Top" Width="907" Grid.ColumnSpan="5" Background="#FF0860C8"/>
+                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,68.5,-58,0" VerticalAlignment="Top" Width="907" Grid.ColumnSpan="5"
+                                   Grid.Column="0" />
+                        <Grid x:Name="ApiSection" HorizontalAlignment="Left" Height="179" Margin="1,121,0,0" VerticalAlignment="Top" Width="786" Grid.ColumnSpan="5"
+                              Grid.Column="0">
+                            <Button x:Name="ConnectButton" Content="Connect and save" Margin="560,80,0,0" VerticalAlignment="Top" Width="149" Height="28" Background="#FF0860C8" Foreground="White" BorderBrush="White" FontSize="15" Click="Button_Click" HorizontalAlignment="Left"/>
+                            <Label Content="Dotnetsafer API Key:" Margin="53,48,0,0" VerticalAlignment="Top" Width="161" Foreground="White" FontSize="15" HorizontalAlignment="Left" Height="31"/>
+                            <Label Content="Don't know where to find your api key?" Margin="53,113,0,0" VerticalAlignment="Top" Width="276" Foreground="White" FontSize="15" HorizontalAlignment="Left" Height="30"/>
+                            <Label Content="Generate an api key" Margin="319,114,0,0" VerticalAlignment="Top" Width="236" Foreground="#FF0860C8" FontSize="15" HorizontalAlignment="Left" Height="31"/>
+                            <PasswordBox x:Name="ApiKeyBox" Margin="57,80,0,0" VerticalAlignment="Top" Width="483" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="White"
+                                     Grid.Column="0" Height="28" HorizontalAlignment="Left" KeyUp="ApiKeyBox_KeyUp"/>
+                        </Grid>
+                        <Label Content="Shield Configuration" HorizontalAlignment="Left" Margin="6.833,326.5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3"
+                               Grid.Column="0" Width="164.167" Foreground="White" FontSize="16" BorderBrush="#FF0860C8" Background="{x:Null}" Height="32.613"/>
+                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,313.5,-58,0" VerticalAlignment="Top" Width="907" Grid.ColumnSpan="5"
+                                   Grid.Column="0" Background="#FF0860C8"/>
                         <Separator HorizontalAlignment="Left" Height="100" Margin="65.434,292.994,0,0" VerticalAlignment="Top" Width="40.012" Background="#FF0860C8" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="3" Grid.Column="1">
                             <Separator.RenderTransform>
                                 <TransformGroup>
@@ -70,18 +81,32 @@
                                 </TransformGroup>
                             </Separator.RenderTransform>
                         </Separator>
-                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,273.5,0,0" VerticalAlignment="Top" Width="234" Grid.ColumnSpan="3" Background="#FF0860C8"/>
-                        <CheckBox Content="Create if not exists" Grid.Column="3" HorizontalAlignment="Left" Margin="120,471.407,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="27.96" Width="152.334"/>
-                        <Label Content="Save output logs:" HorizontalAlignment="Left" Margin="381,400.5,0,0" VerticalAlignment="Top" Width="170" Foreground="White" FontSize="16" Grid.Column="3"/>
-                        <TextBox HorizontalAlignment="Left" Height="27.96" Margin="386.583,432.78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="132.25" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Grid.Column="3" Foreground="#CCFFFFFF"/>
-                        <Button Content="..." Grid.Column="3" HorizontalAlignment="Left" Margin="517.584,432.78,0,0" VerticalAlignment="Top" Width="28" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#FF0078D7" Height="27.96"/>
-                        <CheckBox Content="Store logs" Grid.Column="3" HorizontalAlignment="Left" Margin="386.583,473.233,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="27.96" Width="152.334"/>
-                        <PasswordBox HorizontalAlignment="Left" Margin="56.998,202.08,0,0" VerticalAlignment="Top" Password="ss" Width="482.746" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="White" Grid.ColumnSpan="4" Height="28.293"/>
+                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,273,0,0" VerticalAlignment="Top" Width="234" Grid.ColumnSpan="3"
+                                   Grid.Column="0" Background="#FF0860C8"/>
+                        <Grid Visibility="{Binding Path=IsValidClient, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding IsValidClient}" x:Name="ConfigurationSection" HorizontalAlignment="Left" Height="152" Margin="2,367,0,0" VerticalAlignment="Top" Width="785" Grid.ColumnSpan="5"
+                              Grid.Column="0">
+                            <Image HorizontalAlignment="Left" Height="68" Margin="27,36,0,0" VerticalAlignment="Top" Width="58" OpacityMask="#FFF90000" Source="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png"/>
+                            <Label Content="Nombre de usuario" HorizontalAlignment="Left" Margin="103,32,0,0" VerticalAlignment="Top" Width="161" Foreground="White" FontSize="16" Height="31"/>
+                            <Label Content="Community&#xA;" HorizontalAlignment="Left" Margin="102,67,0,0" VerticalAlignment="Top" Width="161" Foreground="#72FFFFFF" FontSize="16" Height="53"/>
+                            <TextBox HorizontalAlignment="Left" Height="28" Margin="302,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#CCFFFFFF" Text="Ejemplo"/>
+                            <Label Content="Current project name:" HorizontalAlignment="Left" Margin="299,32,0,0" VerticalAlignment="Top" Width="170" Foreground="White" FontSize="16" Height="31"/>
+                            <CheckBox Content="Create if not exists" HorizontalAlignment="Left" Margin="302,103,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="28" Width="152"/>
+                            <Label Content="Save output logs:" HorizontalAlignment="Left" Margin="563,32,0,0" VerticalAlignment="Top" Width="170" Foreground="White" FontSize="16" Height="31"/>
+                            <TextBox HorizontalAlignment="Left" Height="28" Margin="569,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#CCFFFFFF"/>
+                            <Button Content="..." HorizontalAlignment="Left" Margin="700,65,0,0" VerticalAlignment="Top" Width="28" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#FF0078D7" Height="28"/>
+                            <CheckBox Content="Store logs" HorizontalAlignment="Left" Margin="569,105,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="28" Width="152"/>
+                        </Grid>
+                        <Grid 
+                             Visibility="{Binding Path=IsValidClient, Converter={StaticResource InvertBoolToVisibility}}"
+                            x:Name="AlertMessage" Grid.Column="3" HorizontalAlignment="Left" Height="43" Margin="9,424,0,0" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="2">
+                            <Image HorizontalAlignment="Left" Height="23" Margin="6,5,0,0" VerticalAlignment="Top" Width="21" Source="C:\Users\juana\source\repos\ShieldVSExtension\UI Extensions\StatusSecurityWarning.png"/>
+                            <Label Content="You have not configured your api key or it has expired." Margin="33,0,0,0" VerticalAlignment="Top" Width="373" Foreground="White" FontSize="15" HorizontalAlignment="Left" Height="30"/>
+                        </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Solution Configuration" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Background="#FF1E1E1E" FontSize="16" HorizontalAlignment="Right" Width="176">
+                <TabItem IsEnabled="{Binding IsValidClient}" Header="Solution Configuration" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Background="#FF1E1E1E" FontSize="16" HorizontalAlignment="Right" Width="176">
                     <Grid Background="#FF1E1E1E">
-                        <Grid HorizontalAlignment="Left" Height="519" Margin="1,-1,0,0" VerticalAlignment="Top" Width="327">
+                        <Grid x:Name="ProjectsList" HorizontalAlignment="Left" Height="482" Margin="1,-1,0,0" VerticalAlignment="Top" Width="327">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="129*"/>
                                 <ColumnDefinition Width="191*"/>
@@ -156,7 +181,7 @@
                             </ListBox>
                         </Grid>
                         <GridSplitter HorizontalAlignment="Left" Height="521" Margin="335,0,0,0" VerticalAlignment="Top" Width="2" Background="#FF373738"/>
-                        <Grid HorizontalAlignment="Left" Height="511" Margin="339,7,0,0" VerticalAlignment="Top" Width="447">
+                        <Grid x:Name="ProjectOptions" HorizontalAlignment="Left" Height="469" Margin="339,7,0,0" VerticalAlignment="Top" Width="447">
                             <DataGrid HorizontalAlignment="Left" Height="145" VerticalAlignment="Top" Width="442" Grid.Row="0" ItemsSource="{Binding Path=SelectedProject.Files}" AutoGenerateColumns="False"
                                       GridLinesVisibility="None" RowHeight="25" HeadersVisibility="Column"
                                       CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" Background="#FF1E1E1E" BorderBrush="{x:Null}" FontSize="12" Margin="3,-2,0,0">
@@ -195,6 +220,10 @@
                                 </TransformGroup>
                             </GridSplitter.RenderTransform>
                         </GridSplitter>
+                        <Grid Visibility="{Binding Path=IsValidClient, Converter={StaticResource InvertBoolToVisibility}}" x:Name="AlertMessageCopy" HorizontalAlignment="Left" Height="38" Margin="3,488,0,0" VerticalAlignment="Top" Width="605">
+                            <Image HorizontalAlignment="Left" Height="23" Margin="6,5,0,0" VerticalAlignment="Top" Width="21" Source="C:\Users\juana\source\repos\ShieldVSExtension\UI Extensions\StatusSecurityWarning.png"/>
+                            <Label Content="You have not configured your api key or it has expired." Margin="33,0,0,0" VerticalAlignment="Top" Width="373" Foreground="White" FontSize="15" HorizontalAlignment="Left" Height="30"/>
+                        </Grid>
                     </Grid>
                 </TabItem>
             </TabControl>

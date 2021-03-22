@@ -11,6 +11,11 @@ namespace ShieldVSExtension.Configuration
     public class SolutionConfiguration
     {
         public bool IsEnabled { get; set; } = true;
+
+        public string ShieldProjectName { get; set; }
+
+        public bool CreateShieldProjectIfNotExists { get; set; }
+
         public string TargetDirectory { get; set; }
         /*
          *  maximum

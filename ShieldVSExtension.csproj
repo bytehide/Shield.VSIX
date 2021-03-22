@@ -48,6 +48,7 @@
     <Compile Include="Commands\ConfigurationWindowCommand.cs" />
     <Compile Include="Commands\Enable.cs" />
     <Compile Include="Configuration\ProjectConfiguration.cs" />
+    <Compile Include="Configuration\ShieldExtensionConfiguration.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Helpers\DTE2Helper.cs" />
     <Compile Include="Ids.cs" />
@@ -61,6 +62,7 @@
     </Compile>
     <Compile Include="ToolWindows\CountToBoolConverter.cs" />
     <Compile Include="ToolWindows\StringToBoolConverter.cs" />
+    <Compile Include="ToolWindows\ValueConverterGroup.cs" />
     <Compile Include="UI Extensions\ConfigurationViewModel.cs" />
     <Compile Include="VSCommandTable.cs">
       <AutoGen>True</AutoGen>
@@ -110,11 +112,16 @@
     <Content Include="Sin título %281%29.png" />
     <Content Include="Sin título %282%29.png" />
     <Content Include="ToolWindows\1024x1024 Icon 1 Png.png" />
+    <Content Include="ToolWindows\StatusSecurityWarning.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SecureLocalStorage\SecureLocalStorage.csproj">
       <Project>{f23a19d6-e38b-4541-8409-01fd6c82f57c}</Project>
       <Name>SecureLocalStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shield.VSIX\src\Shield.Client\Shield.Client.csproj">
+      <Project>{df2d79d3-c0c8-4895-a35b-7fdd25827a57}</Project>
+      <Name>Shield.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
