@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using ShieldVSExtension.UI_Extensions;
@@ -44,6 +45,32 @@ namespace ShieldVSExtension.ToolWindows
         private void ListBox_Loaded(object sender, RoutedEventArgs e)
         {
             ((ListBox)sender).ScrollIntoView(_viewModel.SelectedProject);
+        }
+
+        private void OutputFilesComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            var comboBox = (ComboBox)sender;
+            comboBox.Focus();
+
+            var projectViewModel = _viewModel.SelectedProject;
+            if (projectViewModel == null)
+                return;
+
+            var path = projectViewModel.OutputFullPath;
+
+            if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
+            {
+                comboBox.ItemsSource = null;
+                return;
+            }
+
+            var files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly)
+                .Select(Path.GetFileName)
+                .OrderByDescending(p => p.StartsWith(projectViewModel.Name))
+                .ThenBy(Path.GetFileNameWithoutExtension)
+                .ToArray();
+
+            comboBox.ItemsSource = files;
         }
     }
 }

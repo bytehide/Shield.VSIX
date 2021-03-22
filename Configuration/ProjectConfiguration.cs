@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace ShieldVSExtension.Configuration
 {
@@ -11,6 +12,19 @@ namespace ShieldVSExtension.Configuration
         public string ProjectName { get; set; }
 
         public List<string> Files { get; private set; } = new List<string>();
+
+        [DefaultValue(true)]
+        public bool InheritFromProject { get; set; } = true;
+        /*
+        *  maximum
+        *  balance
+        *  optimized
+        *  custom
+        */
+        public string ProjectPreset { get; set; }
+        [JsonProperty]
+
+        public List<string> Protections { get; set; }
 
         public bool IncludeSubDirectories { get; set; }
 

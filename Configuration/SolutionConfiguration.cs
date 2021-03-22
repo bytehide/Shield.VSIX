@@ -12,6 +12,15 @@ namespace ShieldVSExtension.Configuration
     {
         public bool IsEnabled { get; set; } = true;
         public string TargetDirectory { get; set; }
+        /*
+         *  maximum
+         *  balance
+         *  optimized
+         *  custom
+         */
+        public string ProjectPreset { get; set; } = "balance";
+        [JsonProperty]
+        public List<string> Protections { get; set; }
         public List<ProjectConfiguration> Projects { get; private set; } = new List<ProjectConfiguration>();
         public static async Task SaveAsync(SolutionConfiguration configuration, Stream stream)
         {

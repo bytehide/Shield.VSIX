@@ -9,7 +9,7 @@
              Background="#FF1E1E1E"
              Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
              mc:Ignorable="d"
-             x:Name="Shield_Configuration" Title="Dotnetsafer Shield Configuration" Width="800" Height="581" Icon="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png">
+             x:Name="Shield_Configuration" Title="Dotnetsafer Shield Configuration" Width="800" Height="581" Icon="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -81,66 +81,120 @@
                 </TabItem>
                 <TabItem Header="Solution Configuration" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Background="#FF1E1E1E" FontSize="16" HorizontalAlignment="Right" Width="176">
                     <Grid Background="#FF1E1E1E">
-                        <ListBox ItemsSource="{Binding Path=Projects}" HorizontalContentAlignment="Stretch" Margin="5,5,490,5"
-                                 SelectedItem="{Binding Path=SelectedProject, Mode=TwoWay}" SelectionMode="Extended"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListBox_SelectionChanged" Loaded="ListBox_Loaded" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid x:Name="TemplateRoot">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
+                        <Grid HorizontalAlignment="Left" Height="519" Margin="1,-1,0,0" VerticalAlignment="Top" Width="327">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="129*"/>
+                                <ColumnDefinition Width="191*"/>
+                            </Grid.ColumnDefinitions>
+                            <ListBox ItemsSource="{Binding Projects}" HorizontalContentAlignment="Stretch" Margin="1,7,-4,-2"
+                                 SelectedItem="{Binding SelectedProject, Mode=TwoWay}" SelectionMode="Extended"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListBox_SelectionChanged" Loaded="ListBox_Loaded" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="2" RenderTransformOrigin="0.5,0.5" FontSize="12">
+                                <ListBox.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform AngleY="-0.258"/>
+                                        <RotateTransform/>
+                                        <TranslateTransform Y="-0.495"/>
+                                    </TransformGroup>
+                                </ListBox.RenderTransform>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid x:Name="TemplateRoot">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
 
-                                        <Border x:Name="LeftLine" Grid.RowSpan="2" Margin="0, 2, 2, 2" Width="4"
+                                            <Border x:Name="LeftLine" Grid.RowSpan="2" Margin="0, 2, 2, 2" Width="4"
                                     Background="Transparent" />
 
-                                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Path=Name}" Margin="4, 2" />
-                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=FolderName}" Margin="4, 2"
+                                            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Name}" Margin="4, 2" />
+                                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding FolderName}" Margin="4, 2"
                                     Foreground="DarkGray" TextTrimming="CharacterEllipsis" />
 
-                                        <TextBlock x:Name="CountText" Grid.Row="0" Grid.RowSpan="2" Grid.Column="3"
-                                    Text="{Binding Path=Files.Count}" VerticalAlignment="Center" FontSize="20"
+                                            <TextBlock x:Name="CountText" Grid.Row="0" Grid.RowSpan="2" Grid.Column="3"
+                                    Text="{Binding Files.Count}" VerticalAlignment="Center" FontSize="20"
                                     Margin="3, 0, 3, 1" Visibility="Hidden" />
-                                    </Grid>
+                                        </Grid>
 
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger
-                                    Binding="{Binding Path=Files.Count, Converter={StaticResource CountToBoolConverter}}"
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger
+                                    Binding="{Binding Files.Count, Converter={StaticResource CountToBoolConverter}}"
                                     Value="True">
-                                            <Setter TargetName="LeftLine" Property="Background" Value="SkyBlue" />
-                                            <Setter TargetName="CountText" Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
+                                                <Setter TargetName="LeftLine" Property="Background" Value="SkyBlue" />
+                                                <Setter TargetName="CountText" Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
 
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition
-                                            Binding="{Binding Path=Files.Count, Converter={StaticResource CountToBoolConverter}}"
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition
+                                            Binding="{Binding Files.Count, Converter={StaticResource CountToBoolConverter}}"
                                             Value="True" />
-                                                <Condition
-                                            Binding="{Binding Path=TargetDirectory, Converter={StaticResource StringToBoolConverter}}"
+                                                    <Condition
+                                            Binding="{Binding TargetDirectory, Converter={StaticResource StringToBoolConverter}}"
                                             Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter TargetName="LeftLine" Property="Background" Value="SlateBlue" />
-                                            <Setter TargetName="CountText" Property="Visibility" Value="Visible" />
-                                        </MultiDataTrigger>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter TargetName="LeftLine" Property="Background" Value="SlateBlue" />
+                                                <Setter TargetName="CountText" Property="Visibility" Value="Visible" />
+                                            </MultiDataTrigger>
 
-                                        <DataTrigger Binding="{Binding Path=IsEnabled}" Value="False">
-                                            <Setter TargetName="LeftLine" Property="Background" Value="LightGray" />
-                                            <Setter TargetName="TemplateRoot" Property="TextElement.Foreground" Value="Gray" />
-                                        </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                                <Setter TargetName="LeftLine" Property="Background" Value="LightGray" />
+                                                <Setter TargetName="TemplateRoot" Property="TextElement.Foreground" Value="Gray" />
+                                            </DataTrigger>
 
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                        <GridSplitter HorizontalAlignment="Left" Height="521" Margin="335,0,0,0" VerticalAlignment="Top" Width="2" Background="#FF373738"/>
+                        <Grid HorizontalAlignment="Left" Height="511" Margin="339,7,0,0" VerticalAlignment="Top" Width="447">
+                            <DataGrid HorizontalAlignment="Left" Height="145" VerticalAlignment="Top" Width="442" Grid.Row="0" ItemsSource="{Binding Path=SelectedProject.Files}" AutoGenerateColumns="False"
+                                      GridLinesVisibility="None" RowHeight="25" HeadersVisibility="Column"
+                                      CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" Background="#FF1E1E1E" BorderBrush="{x:Null}" FontSize="12" Margin="3,-2,0,0">
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </Style>
+                                </DataGrid.CellStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Width="*" Header="Files" CanUserResize="False">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=FileName, FallbackValue='click to add new item'}"
+                                                           Margin="4, 2" VerticalAlignment="Center">
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <ComboBox BorderThickness="0, 1" Padding="2, 4" IsEditable="True"
+                                                          StaysOpenOnEdit="True" Text="{Binding Path=FileName, Mode=TwoWay}"
+                                                          Tag="{Binding}" Loaded="OutputFilesComboBox_Loaded" Background="{x:Null}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                        <GridSplitter HorizontalAlignment="Left" Height="520" Margin="594,-261,0,0" VerticalAlignment="Top" Width="2" Background="#FF373738" RenderTransformOrigin="0.5,0.5">
+                            <GridSplitter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </GridSplitter.RenderTransform>
+                        </GridSplitter>
                     </Grid>
                 </TabItem>
             </TabControl>
