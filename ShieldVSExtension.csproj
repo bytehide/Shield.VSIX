@@ -48,6 +48,7 @@
     <Compile Include="Commands\ConfigurationWindowCommand.cs" />
     <Compile Include="Commands\Enable.cs" />
     <Compile Include="Configuration\ProjectConfiguration.cs" />
+    <Compile Include="Configuration\ProjectPreset.cs" />
     <Compile Include="Configuration\ShieldExtensionConfiguration.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Helpers\DTE2Helper.cs" />

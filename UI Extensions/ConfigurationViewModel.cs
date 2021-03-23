@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Linq;
 using EnvDTE80;
+using ShieldVSExtension.Configuration;
 using ShieldVSExtension.Helpers;
 
 namespace ShieldVSExtension.UI_Extensions
@@ -88,6 +89,27 @@ namespace ShieldVSExtension.UI_Extensions
 
         #endregion
 
+        #region ProjectPreset Property
+
+        private ProjectPreset _projectPreset;
+
+        public ProjectPreset ProjectPreset
+        {
+            get { return _projectPreset; }
+            set
+            {
+                if (_projectPreset == value)
+                    return;
+
+                _projectPreset = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        
+
         #region CreateShieldProjectIfNotExists Property
 
         private bool _createShieldProjectIfNotExists;
@@ -101,6 +123,25 @@ namespace ShieldVSExtension.UI_Extensions
                     return;
 
                 _createShieldProjectIfNotExists = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region FindCustomConfigurationFile Property
+
+        private bool _findCustomConfigurationFile;
+
+        public bool FindCustomConfigurationFile
+        {
+            get { return _findCustomConfigurationFile; }
+            set
+            {
+                if (_findCustomConfigurationFile == value)
+                    return;
+
+                _findCustomConfigurationFile = value;
                 OnPropertyChanged();
             }
         }
@@ -176,6 +217,15 @@ namespace ShieldVSExtension.UI_Extensions
 
         #endregion
 
+        private ObservableCollection<ProjectPreset> _projectPresets;
+
+        public ObservableCollection<ProjectPreset> ProjectPresets
+        {
+            get { return _projectPresets; }
+            set { _projectPresets = value; }
+        }
+
+
         private readonly Configuration.SolutionConfiguration _solutionConfiguration;
 
         public ConfigurationViewModel(DTE2 dte, Configuration.SolutionConfiguration solutionConfiguration)
@@ -193,13 +243,14 @@ namespace ShieldVSExtension.UI_Extensions
                 try
                 {
                     var projectConfiguration = solutionConfiguration.Projects.FirstOrDefault(p => p.ProjectName == dteProject.UniqueName) ??
-                                               new Configuration.ProjectConfiguration();
+                                               new ProjectConfiguration();
 
                     var projectViewModel = new ProjectViewModel(dteProject, projectConfiguration.Files)
                     {
                         IsEnabled = projectConfiguration.IsEnabled,
                         IncludeSubDirectories = projectConfiguration.IncludeSubDirectories,
-                        TargetDirectory = projectConfiguration.TargetDirectory
+                        TargetDirectory = projectConfiguration.TargetDirectory,
+                        InheritFromProject = projectConfiguration.InheritFromProject,
                     };
                     projects.Add(projectViewModel);
                 }
@@ -209,8 +260,16 @@ namespace ShieldVSExtension.UI_Extensions
             }
 
             Projects = projects;
+            ProjectPresets = new ObservableCollection<ProjectPreset>
+            {
+                new ProjectPreset {Id=1, Name="Maximum"}
+                , new ProjectPreset {Id=2,Name="Balance"}
+                , new ProjectPreset {Id=3, Name="Optimization"}
+            };
             TargetDirectory = solutionConfiguration.TargetDirectory;
             CreateShieldProjectIfNotExists = solutionConfiguration.CreateShieldProjectIfNotExists;
+            FindCustomConfigurationFile = solutionConfiguration.FindCustomConfigurationFile;
+            ProjectPreset = solutionConfiguration.ProjectPreset;
             ShieldProjectName = solutionConfiguration.ShieldProjectName;
             SelectedProjects = new ObservableCollection<ProjectViewModel>();
             IsValidClient = false;
@@ -282,16 +341,21 @@ namespace ShieldVSExtension.UI_Extensions
         public void Save()
         {
             _solutionConfiguration.TargetDirectory = TargetDirectory;
+            _solutionConfiguration.ShieldProjectName = ShieldProjectName;
+            _solutionConfiguration.CreateShieldProjectIfNotExists = CreateShieldProjectIfNotExists;
+            _solutionConfiguration.FindCustomConfigurationFile = FindCustomConfigurationFile;
+            _solutionConfiguration.ProjectPreset = ProjectPreset;
             _solutionConfiguration.Projects.Clear();
 
             foreach (var projectViewModel in Projects)
             {
-                var projectConfiguration = new Configuration.ProjectConfiguration
+                var projectConfiguration = new ProjectConfiguration
                 {
                     IsEnabled = projectViewModel.IsEnabled,
                     ProjectName = projectViewModel.Project.UniqueName,
                     IncludeSubDirectories = projectViewModel.IncludeSubDirectories,
-                    TargetDirectory = projectViewModel.TargetDirectory
+                    TargetDirectory = projectViewModel.TargetDirectory,
+                    InheritFromProject = projectViewModel.InheritFromProject,
                 };
 
                 foreach (var projectFileViewModel in projectViewModel.Files)
@@ -351,6 +415,26 @@ namespace ShieldVSExtension.UI_Extensions
             }
 
             #endregion
+
+            #region InheritFromProject Property
+
+            private bool _inheritFromProject;
+
+            public bool InheritFromProject
+            {
+                get { return _inheritFromProject; }
+                set
+                {
+                    if (_inheritFromProject == value)
+                        return;
+
+                    _inheritFromProject = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            #endregion
+
 
             #region TargetDirectory Property
 

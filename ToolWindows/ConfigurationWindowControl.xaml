@@ -9,7 +9,7 @@
              Background="#FF1E1E1E"
              Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
              mc:Ignorable="d"
-             x:Name="ShieldConfiguration" Title="Dotnetsafer Shield Configuration" Width="800" Height="581" Icon="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png" ResizeMode="NoResize">
+             x:Name="ShieldConfiguration" Title="Dotnetsafer Shield Configuration" Width="800" Icon="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png" ResizeMode="NoResize" Height="590">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -28,35 +28,41 @@
                 <BooleanToVisibilityConverter/>
             </local:ValueConverterGroup>
 
+            <local:ValueConverterGroup x:Key="InvertCondition">
+                <local:InvertBoolConverter />
+            </local:ValueConverterGroup>
+
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
             <UI_Extensions:ConfigurationViewModel x:Key="Object1"/>
+
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="387*"/>
+            <ColumnDefinition Width="388*"/>
             <ColumnDefinition Width="125*"/>
-            <ColumnDefinition Width="220*"/>
-            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="105*"/>
+            <ColumnDefinition Width="116*"/>
+            <ColumnDefinition Width="48*"/>
+            <ColumnDefinition Width="13*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" Grid.ColumnSpan="4">
-            <TabControl Height="569" Background="#FF1E1E1E" BorderBrush="#FF1E1E1E" Foreground="#FF1A1A1A">
+        <StackPanel Orientation="Vertical" Grid.ColumnSpan="6" Margin="0,0,-0.488,0">
+            <TabControl Height="552" Background="#FF1E1E1E" BorderBrush="#FF1E1E1E" Foreground="#FF1A1A1A" HorizontalAlignment="Left" Width="793">
                 <TabItem Header="Account Configuration" Background="#FF1E1E1E" BorderBrush="#FF0860C8" Foreground="#FF0860C8" FontSize="14">
-                    <Grid Background="#FF1E1E1E">
+                    <Grid Background="#FF1E1E1E" Margin="0,0,0,-5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="85*"/>
                             <ColumnDefinition Width="66*"/>
                             <ColumnDefinition Width="31*"/>
-                            <ColumnDefinition Width="569*"/>
-                            <ColumnDefinition Width="35*"/>
+                            <ColumnDefinition Width="570*"/>
+                            <ColumnDefinition Width="36*"/>
                         </Grid.ColumnDefinitions>
-                        <Grid x:Name="ShieldHeader" Grid.ColumnSpan="5" Margin="0,0,0,421.54" Background="#FF1E1E1E">
+                        <Grid x:Name="ShieldHeader" Grid.ColumnSpan="5" Margin="0,0,0,399" Background="#FF1E1E1E">
                             <Image Margin="-7,-16.1,105,-2" Source="C:\Users\juana\Downloads\Sin título (2).png" UseLayoutRounding="False" ScrollViewer.CanContentScroll="True" Stretch="UniformToFill" Height="130"/>
                             <Label Content="1.0.0 Beta&#xA;" HorizontalAlignment="Left" Margin="143,67.58,0,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
-                            <Label Content="https://dotnetsafer.com&#xA;" HorizontalAlignment="Left" Margin="621,91.55,0,-13.97" Width="164" Foreground="#FF026CEC" Height="36.6" VerticalAlignment="Top"/>
                         </Grid>
-                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,68.5,-58,0" VerticalAlignment="Top" Width="907" Grid.ColumnSpan="5"
+                        <Separator HorizontalAlignment="Left" Height="111" Margin="-63,63,-57,0" VerticalAlignment="Top" Width="907" Grid.ColumnSpan="5"
                                    Grid.Column="0" />
                         <Grid x:Name="ApiSection" HorizontalAlignment="Left" Height="179" Margin="1,121,0,0" VerticalAlignment="Top" Width="786" Grid.ColumnSpan="5"
                               Grid.Column="0">
@@ -67,53 +73,70 @@
                             <PasswordBox x:Name="ApiKeyBox" Margin="57,80,0,0" VerticalAlignment="Top" Width="483" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="White"
                                      Grid.Column="0" Height="28" HorizontalAlignment="Left" KeyUp="ApiKeyBox_KeyUp"/>
                         </Grid>
-                        <Label Content="Shield Configuration" HorizontalAlignment="Left" Margin="6.833,326.5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3"
-                               Grid.Column="0" Width="164.167" Foreground="White" FontSize="16" BorderBrush="#FF0860C8" Background="{x:Null}" Height="32.613"/>
-                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,313.5,-58,0" VerticalAlignment="Top" Width="907" Grid.ColumnSpan="5"
-                                   Grid.Column="0" Background="#FF0860C8"/>
-                        <Separator HorizontalAlignment="Left" Height="100" Margin="65.434,292.994,0,0" VerticalAlignment="Top" Width="40.012" Background="#FF0860C8" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="3" Grid.Column="1">
-                            <Separator.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform Angle="-89.906"/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </Separator.RenderTransform>
-                        </Separator>
-                        <Separator HorizontalAlignment="Left" Height="100" Margin="-63,273,0,0" VerticalAlignment="Top" Width="234" Grid.ColumnSpan="3"
-                                   Grid.Column="0" Background="#FF0860C8"/>
-                        <Grid Visibility="{Binding Path=IsValidClient, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding IsValidClient}" x:Name="ConfigurationSection" HorizontalAlignment="Left" Height="152" Margin="2,367,0,0" VerticalAlignment="Top" Width="785" Grid.ColumnSpan="5"
+                        <Grid x:Name="ConfigurationSectionTitlee" Grid.ColumnSpan="5" Margin="-63,252,-56,143">
+                            <Label Content="Shield Configuration" HorizontalAlignment="Left" Margin="70,54,0,0" VerticalAlignment="Top"
+                                Grid.Column="0" Width="164" Foreground="White" FontSize="16" BorderBrush="#FF0860C8" Background="{x:Null}" Height="32"/>
+                            <Separator HorizontalAlignment="Left" Height="100" Margin="0,40,0,0" VerticalAlignment="Top" Width="907"
+                                Grid.Column="0" Background="#FF0860C8"/>
+                            <Separator HorizontalAlignment="Left" Height="100" Margin="213,20,0,0" VerticalAlignment="Top" Width="40" Background="#FF0860C8" RenderTransformOrigin="0.5,0.5">
+                                <Separator.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="-89.906"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Separator.RenderTransform>
+                            </Separator>
+                            <Separator HorizontalAlignment="Left" Height="100" Margin="0" VerticalAlignment="Top" Width="234"
+                                Grid.Column="0" Background="#FF0860C8"/>
+                        </Grid>
+                        <Grid Visibility="{Binding Path=IsValidClien, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding IsValidClient}" x:Name="ConfigurationSection" HorizontalAlignment="Left" Height="177" Margin="2,346,0,0" VerticalAlignment="Top" Width="785" Grid.ColumnSpan="5"
                               Grid.Column="0">
+                            <Grid.Resources>
+                                <Style x:Key="ComboBoxStyle1" TargetType="ComboBox" />
+                            </Grid.Resources>
                             <Image HorizontalAlignment="Left" Height="68" Margin="27,36,0,0" VerticalAlignment="Top" Width="58" OpacityMask="#FFF90000" Source="C:\Users\juana\Downloads\1024x1024 Icon 1 Png.png"/>
-                            <Label Content="Nombre de usuario" HorizontalAlignment="Left" Margin="103,32,0,0" VerticalAlignment="Top" Width="161" Foreground="White" FontSize="16" Height="31"/>
-                            <Label Content="Community&#xA;" HorizontalAlignment="Left" Margin="102,67,0,0" VerticalAlignment="Top" Width="161" Foreground="#72FFFFFF" FontSize="16" Height="53"/>
-                            <TextBox HorizontalAlignment="Left" Height="28" Margin="302,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#CCFFFFFF" Text="Ejemplo"/>
+                            <Label x:Name="ShieldUserName" Content="Nombre de usuario" HorizontalAlignment="Left" Margin="103,32,0,0" VerticalAlignment="Top" Width="161" Foreground="White" FontSize="16" Height="31"/>
+                            <Label x:Name="ShieldUserEdition" Content="Community&#xA;" HorizontalAlignment="Left" Margin="102,67,0,0" VerticalAlignment="Top" Width="161" Foreground="#72FFFFFF" FontSize="16" Height="53"/>
+                            <TextBox x:Name="ShieldProjectName"  HorizontalAlignment="Left" Height="28" Margin="302,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#CCFFFFFF"
+                                     Text="{Binding Path=ShieldProjectName, UpdateSourceTrigger=PropertyChanged}" SelectionBrush="#FF0860C8"/>
                             <Label Content="Current project name:" HorizontalAlignment="Left" Margin="299,32,0,0" VerticalAlignment="Top" Width="170" Foreground="White" FontSize="16" Height="31"/>
-                            <CheckBox Content="Create if not exists" HorizontalAlignment="Left" Margin="302,103,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="28" Width="152"/>
-                            <Label Content="Save output logs:" HorizontalAlignment="Left" Margin="563,32,0,0" VerticalAlignment="Top" Width="170" Foreground="White" FontSize="16" Height="31"/>
-                            <TextBox HorizontalAlignment="Left" Height="28" Margin="569,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#CCFFFFFF"/>
-                            <Button Content="..." HorizontalAlignment="Left" Margin="700,65,0,0" VerticalAlignment="Top" Width="28" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#FF0078D7" Height="28"/>
-                            <CheckBox Content="Store logs" HorizontalAlignment="Left" Margin="569,105,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="28" Width="152"/>
+                            <CheckBox x:Name="CreateProject" Content="Create if not exists" HorizontalAlignment="Left" Margin="302,103,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="28" Width="152"
+                                      IsChecked="{Binding Path=CreateShieldProjectIfNotExists, Mode=TwoWay}"/>
+                            <Label Content="Global protections config." HorizontalAlignment="Left" Margin="563,32,-18,0" VerticalAlignment="Top" Width="240" Foreground="White" FontSize="16" Height="36"/>
+                            <CheckBox x:Name="FindCustomSetting" Content="Find manual settings" HorizontalAlignment="Left" Margin="569,105,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="28" Width="152"
+                                      IsChecked="{Binding Path=FindCustomConfigurationFile, Mode=TwoWay}"/>
+                            <ComboBox x:Name="ProtectionsPreset" HorizontalAlignment="Left" Margin="569,65,0,84" Width="148" BorderBrush="#FF0860C8" Background="#FF1E1E1E"
+                                      SelectedValue="{Binding Path=ProjectPreset}"
+                                      ItemsSource="{Binding Path=ProjectPresets}"   
+                                      DisplayMemberPath="Name">
+                            </ComboBox>
                         </Grid>
                         <Grid 
                              Visibility="{Binding Path=IsValidClient, Converter={StaticResource InvertBoolToVisibility}}"
-                            x:Name="AlertMessage" Grid.Column="3" HorizontalAlignment="Left" Height="43" Margin="9,424,0,0" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="2">
+                            x:Name="AlertMessage" Grid.Column="3" HorizontalAlignment="Left" Height="27" Margin="8,406,0,0" VerticalAlignment="Top" Width="596" Grid.ColumnSpan="2">
                             <Image HorizontalAlignment="Left" Height="23" Margin="6,5,0,0" VerticalAlignment="Top" Width="21" Source="C:\Users\juana\source\repos\ShieldVSExtension\UI Extensions\StatusSecurityWarning.png"/>
                             <Label Content="You have not configured your api key or it has expired." Margin="33,0,0,0" VerticalAlignment="Top" Width="373" Foreground="White" FontSize="15" HorizontalAlignment="Left" Height="30"/>
                         </Grid>
+                        <Button x:Name="Save" Content="Save" Grid.Column="3" HorizontalAlignment="Left" Margin="493,489,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="23" Click="Save_Click"/>
+                        <Button x:Name="Cancel" Content="Cancel" Grid.Column="3" HorizontalAlignment="Left" Margin="411,489,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FFA0A0A0" BorderBrush="#FFA0A0A0" Height="23"/>
                     </Grid>
                 </TabItem>
                 <TabItem IsEnabled="{Binding IsValidClient}" Header="Solution Configuration" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Background="#FF1E1E1E" FontSize="16" HorizontalAlignment="Right" Width="176">
                     <Grid Background="#FF1E1E1E">
-                        <Grid x:Name="ProjectsList" HorizontalAlignment="Left" Height="482" Margin="1,-1,0,0" VerticalAlignment="Top" Width="327">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="97*"/>
+                            <ColumnDefinition Width="690*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid x:Name="ProjectsList" HorizontalAlignment="Left" Height="482" Margin="1,-1,0,0" VerticalAlignment="Top" Width="327" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="129*"/>
                                 <ColumnDefinition Width="191*"/>
                             </Grid.ColumnDefinitions>
-                            <ListBox ItemsSource="{Binding Projects}" HorizontalContentAlignment="Stretch" Margin="1,7,-4,-2"
+                            <ListBox ItemsSource="{Binding Projects}" HorizontalContentAlignment="Stretch" Margin="1,8,-4,0"
                                  SelectedItem="{Binding SelectedProject, Mode=TwoWay}" SelectionMode="Extended"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListBox_SelectionChanged" Loaded="ListBox_Loaded" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="2" RenderTransformOrigin="0.5,0.5" FontSize="12">
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListBox_SelectionChanged" Loaded="ListBox_Loaded" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="2" RenderTransformOrigin="0.5,0.5" FontSize="13">
                                 <ListBox.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -180,18 +203,18 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </Grid>
-                        <GridSplitter HorizontalAlignment="Left" Height="521" Margin="335,0,0,0" VerticalAlignment="Top" Width="2" Background="#FF373738"/>
-                        <Grid x:Name="ProjectOptions" HorizontalAlignment="Left" Height="469" Margin="339,7,0,0" VerticalAlignment="Top" Width="447">
-                            <DataGrid HorizontalAlignment="Left" Height="145" VerticalAlignment="Top" Width="442" Grid.Row="0" ItemsSource="{Binding Path=SelectedProject.Files}" AutoGenerateColumns="False"
+                        <GridSplitter HorizontalAlignment="Left" Height="521" Margin="238,0,0,-2" VerticalAlignment="Top" Width="2" Background="#FF373738" Grid.Column="1"/>
+                        <Grid x:Name="ProjectOptions" HorizontalAlignment="Left" Height="469" Margin="242,7,0,0" VerticalAlignment="Top" Width="447" Grid.Column="1">
+                            <DataGrid HorizontalAlignment="Left" Height="128" VerticalAlignment="Top" Width="442" Grid.Row="0" ItemsSource="{Binding Path=SelectedProject.Files}" AutoGenerateColumns="False"
                                       GridLinesVisibility="None" RowHeight="25" HeadersVisibility="Column"
-                                      CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" Background="#FF1E1E1E" BorderBrush="{x:Null}" FontSize="12" Margin="3,-2,0,0">
+                                      CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" BorderBrush="{x:Null}" FontSize="12" Margin="3,-3,0,0" ClipboardCopyMode="None" SelectionChanged="DataGrid_SelectionChanged" Background="{x:Null}">
                                 <DataGrid.CellStyle>
                                     <Style TargetType="DataGridCell">
                                         <Setter Property="BorderThickness" Value="0" />
                                     </Style>
                                 </DataGrid.CellStyle>
                                 <DataGrid.Columns>
-                                    <DataGridTemplateColumn Width="*" Header="Files" CanUserResize="False">
+                                    <DataGridTemplateColumn Width="*" Header="Files to protect" CanUserResize="False" CanUserReorder="False">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Path=FileName, FallbackValue='click to add new item'}"
@@ -209,8 +232,27 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
+                            <CheckBox x:Name="InheritConfigFromGlobal" Content="Inherit protection from global settings." HorizontalAlignment="Left" Margin="4,236,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="28" Width="250"
+                                IsChecked="{Binding SelectedProject.InheritFromProject, Mode=TwoWay}" FontSize="13"/>
+                            <Grid IsEnabled="{Binding Path=SelectedProject.InheritFromProject, Converter={StaticResource InvertCondition}}" x:Name="ProjectProtectionConfig" HorizontalAlignment="Left" Height="191" Margin="12,275,0,0" VerticalAlignment="Top" Width="431">
+                                <ComboBox x:Name="ProtectionsPresetProject" HorizontalAlignment="Left" Margin="42,38,0,125" Width="356" BorderBrush="#FF0860C8" Background="#FF1E1E1E"
+                                    SelectedValue="{Binding ProjectPreset}"
+                                    ItemsSource="{Binding ProjectPresets}"   
+                                    DisplayMemberPath="Name"/>
+                                <Label Content="Select custom preset:" HorizontalAlignment="Left" Margin="36,10,0,0" VerticalAlignment="Top" Foreground="White" FontSize="13"/>
+                            </Grid>
+                            <GridSplitter HorizontalAlignment="Left" Height="466" Margin="230,25,0,-22" VerticalAlignment="Top" Width="2" RenderTransformOrigin="0.5,0.5" Background="#FF373738">
+                                <GridSplitter.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="-90.172"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </GridSplitter.RenderTransform>
+                            </GridSplitter>
                         </Grid>
-                        <GridSplitter HorizontalAlignment="Left" Height="520" Margin="594,-261,0,0" VerticalAlignment="Top" Width="2" Background="#FF373738" RenderTransformOrigin="0.5,0.5">
+                        <GridSplitter HorizontalAlignment="Left" Height="520" Margin="497,-261,0,0" VerticalAlignment="Top" Width="2" Background="#FF373738" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
                             <GridSplitter.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -220,10 +262,6 @@
                                 </TransformGroup>
                             </GridSplitter.RenderTransform>
                         </GridSplitter>
-                        <Grid Visibility="{Binding Path=IsValidClient, Converter={StaticResource InvertBoolToVisibility}}" x:Name="AlertMessageCopy" HorizontalAlignment="Left" Height="38" Margin="3,488,0,0" VerticalAlignment="Top" Width="605">
-                            <Image HorizontalAlignment="Left" Height="23" Margin="6,5,0,0" VerticalAlignment="Top" Width="21" Source="C:\Users\juana\source\repos\ShieldVSExtension\UI Extensions\StatusSecurityWarning.png"/>
-                            <Label Content="You have not configured your api key or it has expired." Margin="33,0,0,0" VerticalAlignment="Top" Width="373" Foreground="White" FontSize="15" HorizontalAlignment="Left" Height="30"/>
-                        </Grid>
                     </Grid>
                 </TabItem>
             </TabControl>

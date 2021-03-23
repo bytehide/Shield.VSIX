@@ -115,5 +115,17 @@ namespace ShieldVSExtension.ToolWindows
         {
             ConnectButton.IsEnabled = ExtensionConfiguration.ApiToken != ApiKeyBox.Password;
         }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Save();
+            DialogResult = true;
+            Close();
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

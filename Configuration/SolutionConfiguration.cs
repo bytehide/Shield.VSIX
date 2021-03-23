@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -14,7 +15,10 @@ namespace ShieldVSExtension.Configuration
 
         public string ShieldProjectName { get; set; }
 
-        public bool CreateShieldProjectIfNotExists { get; set; }
+        [DefaultValue(true)] 
+        public bool CreateShieldProjectIfNotExists { get; set; } = true;
+        [DefaultValue(true)]
+        public bool FindCustomConfigurationFile { get; set; } = true;
 
         public string TargetDirectory { get; set; }
         /*
@@ -23,9 +27,8 @@ namespace ShieldVSExtension.Configuration
          *  optimized
          *  custom
          */
-        public string ProjectPreset { get; set; } = "balance";
-        [JsonProperty]
-        public List<string> Protections { get; set; }
+        public ProjectPreset ProjectPreset { get; set; } = new ProjectPreset {Id=2, Name = "Balance"};
+
         public List<ProjectConfiguration> Projects { get; private set; } = new List<ProjectConfiguration>();
         public static async Task SaveAsync(SolutionConfiguration configuration, Stream stream)
         {

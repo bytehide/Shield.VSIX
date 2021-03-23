@@ -21,7 +21,7 @@ namespace ShieldVSExtension.Configuration
         *  optimized
         *  custom
         */
-        public string ProjectPreset { get; set; }
+        public ProjectPreset ProjectPreset { get; set; }
         [JsonProperty]
 
         public List<string> Protections { get; set; }
