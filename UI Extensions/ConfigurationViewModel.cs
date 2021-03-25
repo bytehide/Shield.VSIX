@@ -316,7 +316,7 @@ namespace ShieldVSExtension.UI_Extensions
                 if (!File.Exists(Path.Combine(item.OutputFullPath, targetFileName)))
                     continue;
 
-                if (item.Files.Any(p => String.Equals(p.FileName, targetFileName, StringComparison.OrdinalIgnoreCase)))
+                if (item.Files.Any(p => string.Equals(p.FileName, targetFileName, StringComparison.OrdinalIgnoreCase)))
                     continue;
 
                 item.Files.Add(new ProjectFileViewModel(targetFileName));
@@ -327,7 +327,7 @@ namespace ShieldVSExtension.UI_Extensions
         {
             foreach (var item in SelectedProjects)
             {
-                if (item.Files.Any(p => String.Equals(p.FileName, searchPattern, StringComparison.OrdinalIgnoreCase)))
+                if (item.Files.Any(p => string.Equals(p.FileName, searchPattern, StringComparison.OrdinalIgnoreCase)))
                     continue;
 
                 item.Files.Add(new ProjectFileViewModel(searchPattern));
@@ -556,6 +556,11 @@ namespace ShieldVSExtension.UI_Extensions
                 ProjectType = project.GetOutputType();
                 ProjectLang = project.GetLanguageName();
 
+                Files = new ObservableCollection<ProjectFileViewModel>(files.Select(p => new ProjectFileViewModel(p)).ToList());
+
+                if (!string.IsNullOrEmpty(ProjectType))
+                    return;
+
                 //TODO: Refactor
                 var outPutPaths =
                         project.GetBuildOutputFilePaths(new BuildOutputFileTypes
@@ -588,9 +593,6 @@ namespace ShieldVSExtension.UI_Extensions
                     {
                         FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
                     }
-
-                
-                Files = new ObservableCollection<ProjectFileViewModel>(files.Select(p => new ProjectFileViewModel(p)).ToList());
             }
         }
 
