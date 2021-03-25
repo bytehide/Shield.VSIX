@@ -50,11 +50,19 @@
     <Compile Include="Configuration\ProjectConfiguration.cs" />
     <Compile Include="Configuration\ProjectPreset.cs" />
     <Compile Include="Configuration\ShieldExtensionConfiguration.cs" />
+    <Compile Include="Contracts\BuildOutputFileTypes.cs" />
     <Compile Include="Guids.cs" />
+    <Compile Include="Helpers\DevHelpers.cs" />
     <Compile Include="Helpers\DTE2Helper.cs" />
+    <Compile Include="Helpers\EnvDTECodeModelLanguageConstants2.cs" />
+    <Compile Include="Helpers\EnvDTEProjectKinds.cs" />
+    <Compile Include="Helpers\ProjectExtensions.cs" />
+    <Compile Include="Helpers\ProjectItemExtensions.cs" />
+    <Compile Include="Helpers\PropertyExtensions.cs" />
     <Compile Include="Ids.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\SolutionConfiguration.cs" />
+    <Compile Include="Services\Services.cs" />
     <Compile Include="ShieldVSExtensionPackage.cs" />
     <Compile Include="ToolWindows\ConfigurationWindow.cs" />
     <Compile Include="ToolWindows\ConfigurationWindowControl.xaml.cs">
@@ -90,6 +98,9 @@
     <PackageReference Include="System.Security.Cryptography.ProtectedData">
       <Version>5.0.0</Version>
     </PackageReference>
+    <PackageReference Include="VSLangProj">
+      <Version>7.0.3301</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <VSCTCompile Include="VSCommandTable.vsct">
@@ -110,8 +121,30 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sin título %281%29.png" />
-    <Content Include="Sin título %282%29.png" />
+    <Content Include="Resources\Console.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\docs.png" />
+    <Content Include="Resources\DotNETFrameworkDependency.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\dotnetsafer.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\github.png" />
+    <Content Include="Resources\LanguagePackage.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\ShieldExtension.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\ShieldIcon.png" />
+    <Content Include="Resources\StatusSecurityWarning.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\user.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="ToolWindows\1024x1024 Icon 1 Png.png" />
     <Content Include="ToolWindows\StatusSecurityWarning.png" />
   </ItemGroup>
@@ -125,6 +158,7 @@
       <Name>Shield.Client</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace ShieldVSExtension.Helpers
 {
-    public static class DTE2Helper
+    public static class Dte2Helper
     {
-        private const string vsProjectKindSolutionFolder = ProjectKinds.vsProjectKindSolutionFolder;
+        private const string VsProjectKindSolutionFolder = ProjectKinds.vsProjectKindSolutionFolder;
 
-        private const string vsProjectKindMiscFiles = "{66A2671D-8FB5-11D2-AA7E-00C04F688DDE}";
+        private const string VsProjectKindMiscFiles = "{66A2671D-8FB5-11D2-AA7E-00C04F688DDE}";
 
 
         public static IEnumerable<Project> GetProjects(this Solution solution)
@@ -22,10 +22,10 @@ namespace ShieldVSExtension.Helpers
 
             foreach (var project in solution.Projects.OfType<Project>())
             {
-                if (project.Kind == vsProjectKindMiscFiles)
+                if (project.Kind == VsProjectKindMiscFiles)
                     continue;
 
-                if (project.Kind == vsProjectKindSolutionFolder)
+                if (project.Kind == VsProjectKindSolutionFolder)
                 {
                     result.AddRange(GetSolutionFolderProjects(project));
                 }
@@ -49,7 +49,7 @@ namespace ShieldVSExtension.Helpers
                 if (subProject == null)
                     continue;
 
-                if (subProject.Kind == vsProjectKindMiscFiles)
+                if (subProject.Kind == VsProjectKindMiscFiles)
                     continue;
 
                 if (subProject.Kind == ProjectKinds.vsProjectKindSolutionFolder)
@@ -68,16 +68,22 @@ namespace ShieldVSExtension.Helpers
         public static string GetFullOutputPath(this Project project)
         {
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
-
-            if (Path.GetExtension(project.FullName).Equals(".csproj", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                return Path.Combine(Path.GetDirectoryName(project.FullName), (string)project.ConfigurationManager.ActiveConfiguration.Properties.Item("OutputPath").Value);
+                if (Path.GetExtension(project.FullName).Equals(".csproj", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Path.Combine(Path.GetDirectoryName(project.FullName) ?? throw new InvalidOperationException(), (string)project.ConfigurationManager.ActiveConfiguration.Properties.Item("OutputPath").Value);
+                }
+                else
+                {
+                    var outputUrlStr = ((object[])project.ConfigurationManager.ActiveConfiguration.OutputGroups.Item("Built").FileURLs).OfType<string>().First();
+                    var outputUrl = new Uri(outputUrlStr, UriKind.Absolute);
+                    return Path.GetDirectoryName(outputUrl.LocalPath);
+                }
             }
-            else
+            catch (Exception)
             {
-                var outputUrlStr = ((object[])project.ConfigurationManager.ActiveConfiguration.OutputGroups.Item("Built").FileURLs).OfType<string>().First();
-                var outputUrl = new Uri(outputUrlStr, UriKind.Absolute);
-                return Path.GetDirectoryName(outputUrl.LocalPath);
+                return string.Empty;
             }
         }
     }

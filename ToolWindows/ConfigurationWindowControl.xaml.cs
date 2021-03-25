@@ -46,6 +46,9 @@ namespace ShieldVSExtension.ToolWindows
                     _viewModel.IsValidClient = false;
                 }
             else _viewModel.IsValidClient = false;
+
+            if (!_viewModel.IsValidClient)
+                ShieldControl.SelectedIndex = 1;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -55,6 +58,7 @@ namespace ShieldVSExtension.ToolWindows
                 _ = ShieldClient.CreateInstance(ApiKeyBox.Password);
                 _viewModel.IsValidClient = true;
                 ExtensionConfiguration.ApiToken = ApiKeyBox.Password;
+                ShieldControl.SelectedIndex = 0;
                 SaveExtensionConfiguration();
             }
             catch (Exception)
@@ -83,6 +87,26 @@ namespace ShieldVSExtension.ToolWindows
         private void ListBox_Loaded(object sender, RoutedEventArgs e)
         {
             ((ListBox)sender).ScrollIntoView(_viewModel.SelectedProject);
+        }
+
+        private void EnableMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Enable(true);
+        }
+
+        private void DisableMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Enable(false);
+        }
+
+        private void AddCustomProtectionConfigMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var viewModelSelectedProject in _viewModel.SelectedProjects)
+            {
+                viewModelSelectedProject.InheritFromProject = false;
+                viewModelSelectedProject.ApplicationPreset = _viewModel.ProjectPresets.First(preset =>
+                    preset.Name.ToLower().Equals(((MenuItem) sender).Header.ToString().ToLower()));
+            }
         }
 
         private void OutputFilesComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -124,6 +148,16 @@ namespace ShieldVSExtension.ToolWindows
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void InheritConfigFromGlobal_Copy_Checked(object sender, RoutedEventArgs e)
         {
 
         }

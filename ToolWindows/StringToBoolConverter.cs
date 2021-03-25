@@ -8,7 +8,7 @@ namespace ShieldVSExtension.ToolWindows
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return !String.IsNullOrEmpty(value as string);
+            return !string.IsNullOrEmpty(value as string);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

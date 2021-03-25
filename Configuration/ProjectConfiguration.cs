@@ -21,7 +21,7 @@ namespace ShieldVSExtension.Configuration
         *  optimized
         *  custom
         */
-        public ProjectPreset ProjectPreset { get; set; }
+        public ProjectPreset ApplicationPreset { get; set; }
         [JsonProperty]
 
         public List<string> Protections { get; set; }
@@ -29,5 +29,12 @@ namespace ShieldVSExtension.Configuration
         public bool IncludeSubDirectories { get; set; }
 
         public string TargetDirectory { get; set; }
+
+        /*Shield Application*/
+
+        public string FileToProtect { get; set; }
+
+        [DefaultValue(true)]
+        public bool ReplaceOriginalFile { get; set; } = true;
     }
 }
