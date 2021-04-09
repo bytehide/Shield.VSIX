@@ -294,7 +294,6 @@ namespace ShieldVSExtension.UI_Extensions
                 SelectedProject = Projects.FirstOrDefault();
         }
 
-
         public void Enable(bool isEnabled)
         {
             foreach (var projectViewModel in SelectedProjects)

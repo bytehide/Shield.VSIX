@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -75,7 +76,7 @@ namespace ShieldVSExtension
 
         private const string ExtensionConfigurationFile = "ExtensionConfiguration";
 
-        private SecureLocalStorage.SecureLocalStorage LocalStorage { get; set; }
+        //private SecureLocalStorage.SecureLocalStorage LocalStorage { get; set; }
 
         private ShieldExtensionConfiguration ExtensionConfiguration { get; set; }
 
@@ -132,15 +133,18 @@ namespace ShieldVSExtension
 
         private bool TryReloadStorage()
         {
-            LocalStorage = new SecureLocalStorage.SecureLocalStorage(
-                new SecureLocalStorage.CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
-            );
+            //LocalStorage = new SecureLocalStorage.SecureLocalStorage(
+            //    new SecureLocalStorage.CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
+            //);
 
-            ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile)
-                ? LocalStorage.Get<ShieldExtensionConfiguration>(ExtensionConfigurationFile)
-                : null;
+            //ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile)
+            //    ? LocalStorage.Get<ShieldExtensionConfiguration>(ExtensionConfigurationFile)
+            //    : null;
 
-            return ExtensionConfiguration != null;
+            ExtensionConfiguration = new ShieldExtensionConfiguration() { ApiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE4ODgzMmEyLTUxODktNDMwZS05NGFmLTc3MTJkZTBiM2FmZCIsInVuaXF1ZV9uYW1lIjoiOTE4ZDgxNmYtZDI4Zi00YThjLWE3MWItMzZiM2VkYTdlNjY4IiwidmVyc2lvbiI6IjEuMC4wIiwic2VydmljZSI6ImRvdG5ldHNhZmVyIiwiZWRpdGlvbiI6ImNvbW11bml0eSIsImp0aSI6IjI4NjYyZTcyLTFlNDktNDExZC04NmM4LTYxMWNkNTdlMzY0MiIsImV4cCI6MTYxODAwNTkzOH0.umhkZdf5heivpp5mayneFvQbjhPg1tAcY9l_Bguwu_A" };
+
+            //return ExtensionConfiguration != null;
+            return true;
         }
 
         private bool TryConnectShield()
@@ -316,20 +320,22 @@ namespace ShieldVSExtension
 
                 statusBar.Animation(1, ref icon);
 
-                var shieldProject = ShieldApiClient.Project.FindOrCreateExternalProject(Configuration.ShieldProjectName);
+                var shieldProject = ShieldApiClient.Project.FindOrCreateExternalProject("ShieldProjectName7");
 
                 var dependencies = project.GetReferences();
 
                 var moduleCtx = ModuleDef.CreateModuleContext();
 
-                var module = ModuleDefMD.Load(file, moduleCtx);
+                var bytes =  File.ReadAllBytes(file);
+
+                var module = ModuleDefMD.Load(bytes, moduleCtx);
 
                 var referencies = module.GetAssemblyRefs();
 
                 var requiredReferencies = dependencies.Where(dp => referencies.Any(rf => string.Equals(rf.FullName, dp.reference, StringComparison.InvariantCultureIgnoreCase)));
 
                 var uploadApplicationDirectly = ShieldApiClient.Application.UploadApplicationDirectly(shieldProject.Key, file
-                    ,requiredReferencies.Select(dep => dep.path).ToList());
+                    , (!requiredReferencies.Any()) ? null : requiredReferencies.Select(dep => dep.path).ToList());
 
                 if (uploadApplicationDirectly.RequiresDependencies ||
                     string.IsNullOrEmpty(uploadApplicationDirectly.ApplicationBlob))
@@ -370,9 +376,9 @@ namespace ShieldVSExtension
                 protect.OnSuccess(taskConnection, dto =>
                     ShieldApiClient.Application.DownloadApplicationAsArray(dto)
                         .SaveOn(
-                            projectConfiguration.ReplaceOriginalFile ? 
-                                file : 
-                                file.Replace(Path.GetExtension(file),$"_shield{Path.GetExtension(file)}"), true)
+                            projectConfiguration.ReplaceOriginalFile ?
+                                file :
+                                file.Replace(Path.GetExtension(file), $"_shield{Path.GetExtension(file)}"), true)
                 );
 
                 var waitHandle = new AutoResetEvent(false);

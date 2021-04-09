@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShieldVSExtension", "ShieldVSExtension.csproj", "{D7AB4724-AB57-43E3-A95D-84EBBEE21820}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureLocalStorage", "..\SecureLocalStorage\SecureLocalStorage.csproj", "{F23A19D6-E38B-4541-8409-01FD6C82F57C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shield.Client", "..\Shield.VSIX\src\Shield.Client\Shield.Client.csproj", "{DF2D79D3-C0C8-4895-A35B-7FDD25827A57}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F23A19D6-E38B-4541-8409-01FD6C82F57C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F23A19D6-E38B-4541-8409-01FD6C82F57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F23A19D6-E38B-4541-8409-01FD6C82F57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F23A19D6-E38B-4541-8409-01FD6C82F57C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF2D79D3-C0C8-4895-A35B-7FDD25827A57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF2D79D3-C0C8-4895-A35B-7FDD25827A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF2D79D3-C0C8-4895-A35B-7FDD25827A57}.Release|Any CPU.ActiveCfg = Release|Any CPU

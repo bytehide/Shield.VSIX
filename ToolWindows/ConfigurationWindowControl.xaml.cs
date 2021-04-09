@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Shield.Client;
+//using Shield.Client;
 using ShieldVSExtension.Configuration;
 using ShieldVSExtension.UI_Extensions;
 
@@ -14,7 +14,7 @@ namespace ShieldVSExtension.ToolWindows
         private readonly ConfigurationViewModel _viewModel;
         private const string ExtensionConfigurationFile = "ExtensionConfiguration";
 
-        public SecureLocalStorage.SecureLocalStorage LocalStorage { get; set; }
+        //public SecureLocalStorage.SecureLocalStorage LocalStorage { get; set; }
 
         private ShieldExtensionConfiguration ExtensionConfiguration { get; }
 
@@ -25,18 +25,20 @@ namespace ShieldVSExtension.ToolWindows
             _viewModel = viewModel;
             DataContext = viewModel;
 
-            LocalStorage = new SecureLocalStorage.SecureLocalStorage(
-                new SecureLocalStorage.CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
-            );
+            //LocalStorage = new SecureLocalStorage.SecureLocalStorage(
+            //    new SecureLocalStorage.CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
+            //);
 
-            ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile) ?
-                LocalStorage.Get<ShieldExtensionConfiguration>(ExtensionConfigurationFile) :
-                new ShieldExtensionConfiguration();
+            //ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile) ?
+            //    LocalStorage.Get<ShieldExtensionConfiguration>(ExtensionConfigurationFile) :
+            //    new ShieldExtensionConfiguration();
+
+            ExtensionConfiguration = new ShieldExtensionConfiguration() {ApiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE4ODgzMmEyLTUxODktNDMwZS05NGFmLTc3MTJkZTBiM2FmZCIsInVuaXF1ZV9uYW1lIjoiOTE4ZDgxNmYtZDI4Zi00YThjLWE3MWItMzZiM2VkYTdlNjY4IiwidmVyc2lvbiI6IjEuMC4wIiwic2VydmljZSI6ImRvdG5ldHNhZmVyIiwiZWRpdGlvbiI6ImNvbW11bml0eSIsImp0aSI6IjY5YTlkNjdiLWM4ZTgtNGNhYS05MWM3LTk5NDIwZGE2ZDU5YyIsImV4cCI6MTYxNzQwMjg1Mn0.Ohr4WeJaU5w_2CP1QhzAepis_xKmDheLYxz4BN2rLEo" };
 
             if (!string.IsNullOrEmpty(ExtensionConfiguration.ApiToken))
                 try
                 {
-                    _ = ShieldClient.CreateInstance(ExtensionConfiguration.ApiToken);
+                    //_ = ShieldClient.CreateInstance(ExtensionConfiguration.ApiToken);
                     _viewModel.IsValidClient = true;
                     ApiKeyBox.Password = ExtensionConfiguration.ApiToken;
                     ConnectButton.IsEnabled = false;
@@ -55,7 +57,7 @@ namespace ShieldVSExtension.ToolWindows
         {
             try
             {
-                _ = ShieldClient.CreateInstance(ApiKeyBox.Password);
+                //_ = ShieldClient.CreateInstance(ApiKeyBox.Password);
                 _viewModel.IsValidClient = true;
                 ExtensionConfiguration.ApiToken = ApiKeyBox.Password;
                 ShieldControl.SelectedIndex = 0;
@@ -69,7 +71,7 @@ namespace ShieldVSExtension.ToolWindows
         }
 
         private void SaveExtensionConfiguration()
-            => LocalStorage.Set(ExtensionConfigurationFile, ExtensionConfiguration);
+        {}//=> LocalStorage.Set(ExtensionConfigurationFile, ExtensionConfiguration);
         
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

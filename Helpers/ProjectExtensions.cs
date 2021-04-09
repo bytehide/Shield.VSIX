@@ -376,7 +376,7 @@ namespace ShieldVSExtension.Helpers
                             return "Unknown";
                         case "typeApplication":
                             return "WinExe";
-                        case "typeDynamicLibrary":
+                        case "typeDynamicLibrary":  
                             return "Library (dynamic)";
                         case "typeStaticLibrary":
                             return "Library (static)";
