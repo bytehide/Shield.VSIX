@@ -159,8 +159,8 @@
     <Content Include="ToolWindows\StatusSecurityWarning.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shield.VSIX\src\Shield.Client\Shield.Client.csproj">
-      <Project>{df2d79d3-c0c8-4895-a35b-7fdd25827a57}</Project>
+    <ProjectReference Include="Shield.Client\Client\Shield.Client.csproj">
+      <Project>{f5970f8a-188c-4252-8a7a-3cbd9dccb10b}</Project>
       <Name>Shield.Client</Name>
     </ProjectReference>
   </ItemGroup>

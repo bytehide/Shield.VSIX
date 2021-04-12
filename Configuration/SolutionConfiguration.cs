@@ -117,6 +117,7 @@ namespace ShieldVSExtension.Configuration
                 zip.CopyTo(ms2);
 
                 var json = Encoding.UTF8.GetString(ms2.ToArray());
+
                 return JsonConvert.DeserializeObject<SolutionConfiguration>(json);
             }
         }
