@@ -557,8 +557,8 @@ namespace ShieldVSExtension.UI_Extensions
 
                 Files = new ObservableCollection<ProjectFileViewModel>(files.Select(p => new ProjectFileViewModel(p)).ToList());
 
-                if (!string.IsNullOrEmpty(ProjectType))
-                    return;
+                //if (!string.IsNullOrEmpty(ProjectType))
+                //    return;
 
                 //TODO: Refactor
                 var outPutPaths =
