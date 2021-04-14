@@ -94,6 +94,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Community.VisualStudio.Toolkit">
+      <Version>16.0.75.5</Version>
+    </PackageReference>
     <PackageReference Include="dnlib">
       <Version>3.3.2</Version>
     </PackageReference>
