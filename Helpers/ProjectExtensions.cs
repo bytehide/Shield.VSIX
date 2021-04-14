@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using EnvDTE;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using ShieldVSExtension.Contracts;
@@ -280,12 +281,45 @@ namespace ShieldVSExtension.Helpers
             }
         }
 
+        public static async Task<Dictionary<string,string>> GetEvaluatedPropertiesAsync(this Project project)
+        {
+            try
+            {
+                var context = (IVsBrowseObjectContext) project;
+                var unConfiguredProject = context.UnconfiguredProject;
+                var configuredProject = await unConfiguredProject.GetSuggestedConfiguredProjectAsync();
+                var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+
+                return new Dictionary<string, string>
+                { 
+                    { "ProjectPath",  await properties.GetEvaluatedPropertyValueAsync("ProjectPath").ConfigureAwait(false)},
+                    { "TargetPath",  await properties.GetEvaluatedPropertyValueAsync("TargetPath").ConfigureAwait(false)},
+                    { "TargetName",  await properties.GetEvaluatedPropertyValueAsync("TargetName").ConfigureAwait(false)},
+                    { "TargetExt",  await properties.GetEvaluatedPropertyValueAsync("TargetExt").ConfigureAwait(false)},
+                    { "TargetFileName", await properties.GetEvaluatedPropertyValueAsync("TargetFileName").ConfigureAwait(false)},
+                    { "TargetDir",  await properties.GetEvaluatedPropertyValueAsync("TargetDir").ConfigureAwait(false)},
+                    { "ProjectDir",  await properties.GetEvaluatedPropertyValueAsync("ProjectDir").ConfigureAwait(false)},
+                    { "ProjectName",  await properties.GetEvaluatedPropertyValueAsync("ProjectName").ConfigureAwait(false)},
+                    { "SolutionName",  await properties.GetEvaluatedPropertyValueAsync("ProjectDir").ConfigureAwait(false)},
+                    { "SolutionDir",  await properties.GetEvaluatedPropertyValueAsync("SolutionDir").ConfigureAwait(false)},
+                    { "PlatformName",  await properties.GetEvaluatedPropertyValueAsync("ProjectDir").ConfigureAwait(false)},
+                    { "ConfigurationName",  await properties.GetEvaluatedPropertyValueAsync("ConfigurationName").ConfigureAwait(false)},
+                };
+            }
+            catch
+            { 
+                return new Dictionary<string, string>();
+            }
+        }
+
         public static string GetProjectTypeGuids(this Project proj)
         {
-            string projectTypeGuids = string.Empty;
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+
+            var projectTypeGuids = string.Empty;
             var solution = Services.Services.GetSolution();
 
-            int result = solution.GetProjectOfUniqueName(proj.UniqueName, out var hierarchy);
+            var result = solution.GetProjectOfUniqueName(proj.UniqueName, out var hierarchy);
 
             if (!string.IsNullOrEmpty(proj.Kind))
             {

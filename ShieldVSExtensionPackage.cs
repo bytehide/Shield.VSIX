@@ -18,11 +18,14 @@ using ShieldVSExtension.ToolWindows;
 using Task = System.Threading.Tasks.Task;
 using ShieldSolutionConfiguration = ShieldVSExtension.Configuration.SolutionConfiguration;
 using Microsoft;
+using Microsoft.VisualStudio.Threading;
 using Shield.Client;
 using Shield.Client.Extensions;
 using Shield.Client.Models;
 using Shield.Client.Models.API.Application;
 using ShieldVSExtension.Configuration;
+using Thread = EnvDTE.Thread;
+using System.Threading;
 
 namespace ShieldVSExtension
 {
@@ -109,7 +112,7 @@ namespace ShieldVSExtension
             buildEvents = Dte.Events.BuildEvents;
             
             buildEvents.OnBuildBegin += BuildEvents_OnBuildBegin;
-            
+
             buildEvents.OnBuildProjConfigDone += BuildEvents_OnBuildProjConfigDone;
 
             var isSolutionLoaded = await IsSolutionLoadedAsync();
@@ -269,10 +272,12 @@ namespace ShieldVSExtension
             UpdateExtensionEnabled();
         }
 
-        private void BuildEvents_OnBuildProjConfigDone(string projectName, string projectConfig, string platform, string solutionConfig, bool success)
+        public void BuildEvents_OnBuildProjConfigDone(string projectName, string projectConfig, string platform, string solutionConfig, bool success)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
+            var i = 0;
+            System.Threading.Thread.Sleep(10000);
+            i = 1;
+            return;
             if (!TryConnectShield())
                 return;
 
@@ -285,15 +290,6 @@ namespace ShieldVSExtension
             var projectConfiguration = Configuration.Projects.FirstOrDefault(p => p.ProjectName == projectName && p.IsEnabled);
             if (projectConfiguration == null || string.IsNullOrEmpty(projectConfiguration.FileToProtect))
                 return;
-
-            //var targetDirectory = !string.IsNullOrEmpty(projectConfiguration.TargetDirectory)
-            //    ? projectConfiguration.TargetDirectory
-            //    : Configuration.TargetDirectory;
-
-            //if (String.IsNullOrEmpty(targetDirectory))
-            //    return;
-
-            //targetDirectory = Environment.ExpandEnvironmentVariables(targetDirectory);
 
             var project = Dte.Solution.GetProjects().FirstOrDefault(p => p.UniqueName == projectConfiguration.ProjectName);
 
@@ -312,18 +308,6 @@ namespace ShieldVSExtension
 
             try
             {
-                //var files = projectConfiguration.Files
-                //    .Where(p => !String.IsNullOrWhiteSpace(p))
-                //    .Select(Environment.ExpandEnvironmentVariables)
-                //    .SelectMany(p => Directory.GetFiles(sourceDirectory, p, projectConfiguration.IncludeSubDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
-                //    .Distinct()
-                //    .OrderBy(p => p)
-                //    .Where(File.Exists)
-                //    .ToArray();
-
-                //if (files.Length == 0)
-                //    return;
-
                 WriteLine($"====={projectName}=====");
 
                 statusBar.Animation(1, ref icon);
@@ -342,8 +326,10 @@ namespace ShieldVSExtension
 
                 var requiredReferencies = dependencies.Where(dp => referencies.Any(rf => string.Equals(rf.FullName, dp.reference, StringComparison.InvariantCultureIgnoreCase)));
 
+                var valueTuples = requiredReferencies.ToList();
+
                 var uploadApplicationDirectly = ShieldApiClient.Application.UploadApplicationDirectly(shieldProject.Key, file
-                    , (!requiredReferencies.Any()) ? null : requiredReferencies.Select(dep => dep.path).ToList());
+                    , (!valueTuples.Any()) ? null : valueTuples.Select(dep => dep.path).ToList());
 
                 if (uploadApplicationDirectly.RequiresDependencies ||
                     string.IsNullOrEmpty(uploadApplicationDirectly.ApplicationBlob))
@@ -360,7 +346,6 @@ namespace ShieldVSExtension
                 taskConnection.StartAsync().Wait();
 
                 ApplicationConfigurationDto config;
-
 
                 //TODO: Looking for custom configuration
 

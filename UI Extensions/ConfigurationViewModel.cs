@@ -7,6 +7,8 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Linq;
 using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 using ShieldVSExtension.Configuration;
 using ShieldVSExtension.Contracts;
 using ShieldVSExtension.Helpers;
@@ -34,7 +36,7 @@ namespace ShieldVSExtension.UI_Extensions
             TargetDirectory = "test";
 
             var p1 = new ProjectViewModel();
-            p1.Name = "proj1";
+            p1.Name = "shield.exe";
             p1.IsEnabled = true;
             p1.FolderName = "common";
             p1.Files.Add(new ProjectFileViewModel { FileName = "file1" });
@@ -44,7 +46,7 @@ namespace ShieldVSExtension.UI_Extensions
             p1.TargetDirectory = "C:\\Temp";
 
             var p2 = new ProjectViewModel();
-            p2.Name = "proj2";
+            p2.Name = "shield2.exe";
             p2.IsEnabled = false;
             p1.FolderName = "common/lib";
             p2.Files.Add(new ProjectFileViewModel { FileName = "file4" });
@@ -52,7 +54,7 @@ namespace ShieldVSExtension.UI_Extensions
             p2.Files.Add(new ProjectFileViewModel { FileName = "file6" });
 
             var p3 = new ProjectViewModel();
-            p2.Name = "proj3";
+            p2.Name = "shield3.exe";
             p2.IsEnabled = true;
             p1.FolderName = "common";
             p3.OutputFullPath = "C:\\Windows";
@@ -229,6 +231,8 @@ namespace ShieldVSExtension.UI_Extensions
 
         public ConfigurationViewModel(DTE2 dte, Configuration.SolutionConfiguration solutionConfiguration)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _solutionConfiguration = solutionConfiguration;
 
             var projects = new List<ProjectViewModel>();
@@ -543,13 +547,20 @@ namespace ShieldVSExtension.UI_Extensions
 
             public ProjectViewModel(Project project, IEnumerable<string> files)
             {
-                Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+                ThreadHelper.ThrowIfNotOnUIThread();
 
                 Project = project;
+
                 Name = Path.GetFileNameWithoutExtension(project.UniqueName);
+
                 FolderName = Path.GetDirectoryName(project.UniqueName);
 
-                OutputFullPath = project.GetFullOutputPath();
+                var properties = ThreadHelper.JoinableTaskFactory.Run(async () => 
+                    await Project.GetEvaluatedPropertiesAsync());
+
+                properties.TryGetValue("TargetPath", out var targetPath);
+
+                OutputFullPath = targetPath ?? project.GetFullOutputPath();
 
                 ProjectFramework = project.GetFrameworkString();
                 ProjectType = project.GetOutputType();
@@ -557,10 +568,27 @@ namespace ShieldVSExtension.UI_Extensions
 
                 Files = new ObservableCollection<ProjectFileViewModel>(files.Select(p => new ProjectFileViewModel(p)).ToList());
 
-                //if (!string.IsNullOrEmpty(ProjectType))
-                //    return;
+                properties.TryGetValue("TargetFileName", out var targetFileName);
 
-                //TODO: Refactor
+                if (!string.IsNullOrEmpty(targetFileName))
+                {
+                    FileToProtect = targetFileName;
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(targetPath))
+                {
+                    var fileName = Path.GetFileName(targetPath);
+                    if (string.IsNullOrEmpty(fileName))
+                    {
+                        FileToProtect = targetFileName;
+                        return;
+                    }
+                }
+
+                throw new Exception("Can't find output file name.");
+
+                //TODO: Remove:
                 var outPutPaths =
                         project.GetBuildOutputFilePaths(new BuildOutputFileTypes
                         {
