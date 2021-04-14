@@ -7,6 +7,10 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Linq;
 using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
+using ShieldVSExtension.Configuration;
+using ShieldVSExtension.Contracts;
 using ShieldVSExtension.Helpers;
 
 namespace ShieldVSExtension.UI_Extensions
@@ -32,7 +36,7 @@ namespace ShieldVSExtension.UI_Extensions
             TargetDirectory = "test";
 
             var p1 = new ProjectViewModel();
-            p1.Name = "proj1";
+            p1.Name = "shield.exe";
             p1.IsEnabled = true;
             p1.FolderName = "common";
             p1.Files.Add(new ProjectFileViewModel { FileName = "file1" });
@@ -42,7 +46,7 @@ namespace ShieldVSExtension.UI_Extensions
             p1.TargetDirectory = "C:\\Temp";
 
             var p2 = new ProjectViewModel();
-            p2.Name = "proj2";
+            p2.Name = "shield2.exe";
             p2.IsEnabled = false;
             p1.FolderName = "common/lib";
             p2.Files.Add(new ProjectFileViewModel { FileName = "file4" });
@@ -50,7 +54,7 @@ namespace ShieldVSExtension.UI_Extensions
             p2.Files.Add(new ProjectFileViewModel { FileName = "file6" });
 
             var p3 = new ProjectViewModel();
-            p2.Name = "proj3";
+            p2.Name = "shield3.exe";
             p2.IsEnabled = true;
             p1.FolderName = "common";
             p3.OutputFullPath = "C:\\Windows";
@@ -69,7 +73,6 @@ namespace ShieldVSExtension.UI_Extensions
 #endif
         #endregion
 
-
         #region TargetDirectory Property
 
         private string _targetDirectory;
@@ -83,6 +86,82 @@ namespace ShieldVSExtension.UI_Extensions
                     return;
 
                 _targetDirectory = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ProjectPreset Property
+
+        private ProjectPreset _projectPreset;
+
+        public ProjectPreset ProjectPreset
+        {
+            get { return _projectPreset; }
+            set
+            {
+                if (_projectPreset == value)
+                    return;
+
+                _projectPreset = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region CreateShieldProjectIfNotExists Property
+
+        private bool _createShieldProjectIfNotExists;
+
+        public bool CreateShieldProjectIfNotExists
+        {
+            get { return _createShieldProjectIfNotExists; }
+            set
+            {
+                if (_createShieldProjectIfNotExists == value)
+                    return;
+
+                _createShieldProjectIfNotExists = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region FindCustomConfigurationFile Property
+
+        private bool _findCustomConfigurationFile;
+
+        public bool FindCustomConfigurationFile
+        {
+            get { return _findCustomConfigurationFile; }
+            set
+            {
+                if (_findCustomConfigurationFile == value)
+                    return;
+
+                _findCustomConfigurationFile = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region IsValidClient Property
+
+        private bool _isValidClient;
+
+        public bool IsValidClient
+        {
+            get { return _isValidClient; }
+            set
+            {
+                if (_isValidClient == value)
+                    return;
+
+                _isValidClient = value;
                 OnPropertyChanged();
             }
         }
@@ -120,10 +199,40 @@ namespace ShieldVSExtension.UI_Extensions
 
         #endregion
 
+        #region ShieldProjectName Property
+
+        private string _shieldProjectName;
+
+        public string ShieldProjectName
+        {
+            get { return _shieldProjectName; }
+            set
+            {
+                if (_shieldProjectName == value)
+                    return;
+
+                _shieldProjectName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        private ObservableCollection<ProjectPreset> _projectPresets;
+
+        public ObservableCollection<ProjectPreset> ProjectPresets
+        {
+            get { return _projectPresets; }
+            set { _projectPresets = value; }
+        }
+
+
         private readonly Configuration.SolutionConfiguration _solutionConfiguration;
 
         public ConfigurationViewModel(DTE2 dte, Configuration.SolutionConfiguration solutionConfiguration)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _solutionConfiguration = solutionConfiguration;
 
             var projects = new List<ProjectViewModel>();
@@ -137,24 +246,46 @@ namespace ShieldVSExtension.UI_Extensions
                 try
                 {
                     var projectConfiguration = solutionConfiguration.Projects.FirstOrDefault(p => p.ProjectName == dteProject.UniqueName) ??
-                                               new Configuration.ProjectConfiguration();
+                                               new ProjectConfiguration();
 
                     var projectViewModel = new ProjectViewModel(dteProject, projectConfiguration.Files)
                     {
                         IsEnabled = projectConfiguration.IsEnabled,
                         IncludeSubDirectories = projectConfiguration.IncludeSubDirectories,
-                        TargetDirectory = projectConfiguration.TargetDirectory
+                        TargetDirectory = projectConfiguration.TargetDirectory,
+                        InheritFromProject = projectConfiguration.InheritFromProject,
+                        ApplicationPreset = projectConfiguration.ApplicationPreset,
+                        ReplaceOriginalFile = projectConfiguration.ReplaceOriginalFile,
                     };
+
+                    if (!string.IsNullOrEmpty(projectConfiguration.FileToProtect))
+                        projectViewModel.FileToProtect = projectConfiguration.FileToProtect;
+
                     projects.Add(projectViewModel);
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 
             Projects = projects;
+            ProjectPresets = new ObservableCollection<ProjectPreset>
+            {
+                new ProjectPreset {Id=1, Name="Maximum"}
+                , new ProjectPreset {Id=2,Name="Balance"}
+                , new ProjectPreset {Id=3, Name="Optimization"}
+            };
             TargetDirectory = solutionConfiguration.TargetDirectory;
+            CreateShieldProjectIfNotExists = solutionConfiguration.CreateShieldProjectIfNotExists;
+            FindCustomConfigurationFile = solutionConfiguration.FindCustomConfigurationFile;
+            ProjectPreset = solutionConfiguration.ProjectPreset;
+            ShieldProjectName = solutionConfiguration.ShieldProjectName;
             SelectedProjects = new ObservableCollection<ProjectViewModel>();
+            IsValidClient = false;
+
+            if (string.IsNullOrEmpty(ShieldProjectName))
+                ShieldProjectName = Path.GetFileNameWithoutExtension(dte.Solution.FileName);
 
             if (dte.Solution.SolutionBuild.StartupProjects is object[] startupProjects)
             {
@@ -166,7 +297,6 @@ namespace ShieldVSExtension.UI_Extensions
             if (SelectedProject == null)
                 SelectedProject = Projects.FirstOrDefault();
         }
-
 
         public void Enable(bool isEnabled)
         {
@@ -189,7 +319,7 @@ namespace ShieldVSExtension.UI_Extensions
                 if (!File.Exists(Path.Combine(item.OutputFullPath, targetFileName)))
                     continue;
 
-                if (item.Files.Any(p => String.Equals(p.FileName, targetFileName, StringComparison.OrdinalIgnoreCase)))
+                if (item.Files.Any(p => string.Equals(p.FileName, targetFileName, StringComparison.OrdinalIgnoreCase)))
                     continue;
 
                 item.Files.Add(new ProjectFileViewModel(targetFileName));
@@ -200,7 +330,7 @@ namespace ShieldVSExtension.UI_Extensions
         {
             foreach (var item in SelectedProjects)
             {
-                if (item.Files.Any(p => String.Equals(p.FileName, searchPattern, StringComparison.OrdinalIgnoreCase)))
+                if (item.Files.Any(p => string.Equals(p.FileName, searchPattern, StringComparison.OrdinalIgnoreCase)))
                     continue;
 
                 item.Files.Add(new ProjectFileViewModel(searchPattern));
@@ -223,16 +353,24 @@ namespace ShieldVSExtension.UI_Extensions
         public void Save()
         {
             _solutionConfiguration.TargetDirectory = TargetDirectory;
+            _solutionConfiguration.ShieldProjectName = ShieldProjectName;
+            _solutionConfiguration.CreateShieldProjectIfNotExists = CreateShieldProjectIfNotExists;
+            _solutionConfiguration.FindCustomConfigurationFile = FindCustomConfigurationFile;
+            _solutionConfiguration.ProjectPreset = ProjectPreset;
             _solutionConfiguration.Projects.Clear();
 
             foreach (var projectViewModel in Projects)
             {
-                var projectConfiguration = new Configuration.ProjectConfiguration
+                var projectConfiguration = new ProjectConfiguration
                 {
                     IsEnabled = projectViewModel.IsEnabled,
                     ProjectName = projectViewModel.Project.UniqueName,
                     IncludeSubDirectories = projectViewModel.IncludeSubDirectories,
-                    TargetDirectory = projectViewModel.TargetDirectory
+                    TargetDirectory = projectViewModel.TargetDirectory,
+                    InheritFromProject = projectViewModel.InheritFromProject,
+                    ApplicationPreset = projectViewModel.ApplicationPreset,
+                    FileToProtect = projectViewModel.FileToProtect,
+                    ReplaceOriginalFile = projectViewModel.ReplaceOriginalFile,
                 };
 
                 foreach (var projectFileViewModel in projectViewModel.Files)
@@ -293,6 +431,63 @@ namespace ShieldVSExtension.UI_Extensions
 
             #endregion
 
+            #region InheritFromProject Property
+
+            private bool _inheritFromProject;
+
+            public bool InheritFromProject
+            {
+                get { return _inheritFromProject; }
+                set
+                {
+                    if (_inheritFromProject == value)
+                        return;
+
+                    _inheritFromProject = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            #endregion
+
+            #region ReplaceOriginalFile Property
+
+            private bool _replaceOriginalFile;
+
+            public bool ReplaceOriginalFile
+            {
+                get { return _replaceOriginalFile; }
+                set
+                {
+                    if (_replaceOriginalFile == value)
+                        return;
+
+                    _replaceOriginalFile = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            #endregion
+
+            #region ApplicationPreset Property
+
+            private ProjectPreset _applicationPreset;
+
+            public ProjectPreset ApplicationPreset
+            {
+                get { return _applicationPreset; }
+                set
+                {
+                    if (_applicationPreset == value)
+                        return;
+
+                    _applicationPreset = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            #endregion
+
             #region TargetDirectory Property
 
             private string _targetDirectory;
@@ -312,12 +507,34 @@ namespace ShieldVSExtension.UI_Extensions
 
             #endregion
 
+            #region FileToProtect Property
+
+            private string _fileToProtect;
+
+            public string FileToProtect
+            {
+                get { return _fileToProtect; }
+                set
+                {
+                    if (_fileToProtect == value)
+                        return;
+
+                    _fileToProtect = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            #endregion
 
             public string Name { get; internal set; }
 
             public string FolderName { get; internal set; }
 
             public string OutputFullPath { get; internal set; }
+
+            public string ProjectFramework { get; internal set; }
+            public string ProjectType { get; internal set; }
+            public string ProjectLang { get; internal set; }
 
             public ObservableCollection<ProjectFileViewModel> Files { get; }
 
@@ -330,13 +547,79 @@ namespace ShieldVSExtension.UI_Extensions
 
             public ProjectViewModel(Project project, IEnumerable<string> files)
             {
-                Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+                ThreadHelper.ThrowIfNotOnUIThread();
 
                 Project = project;
+
                 Name = Path.GetFileNameWithoutExtension(project.UniqueName);
+
                 FolderName = Path.GetDirectoryName(project.UniqueName);
-                OutputFullPath = project.GetFullOutputPath();
+
+                var properties = ThreadHelper.JoinableTaskFactory.Run(async () => 
+                    await Project.GetEvaluatedPropertiesAsync());
+
+                properties.TryGetValue("TargetPath", out var targetPath);
+
+                OutputFullPath = targetPath ?? project.GetFullOutputPath();
+
+                ProjectFramework = project.GetFrameworkString();
+                ProjectType = project.GetOutputType();
+                ProjectLang = project.GetLanguageName();
+
                 Files = new ObservableCollection<ProjectFileViewModel>(files.Select(p => new ProjectFileViewModel(p)).ToList());
+
+                properties.TryGetValue("TargetFileName", out var targetFileName);
+
+                if (!string.IsNullOrEmpty(targetFileName))
+                {
+                    FileToProtect = targetFileName;
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(targetPath))
+                {
+                    var fileName = Path.GetFileName(targetPath);
+                    if (string.IsNullOrEmpty(fileName))
+                    {
+                        FileToProtect = targetFileName;
+                        return;
+                    }
+                }
+
+                throw new Exception("Can't find output file name.");
+
+                //TODO: Remove:
+                var outPutPaths =
+                        project.GetBuildOutputFilePaths(new BuildOutputFileTypes
+                        {
+                                Built = true,
+                                ContentFiles = false,
+                                Documentation = false,
+                                LocalizedResourceDlls = false,
+                                SourceFiles = false,
+                                Symbols = false,
+                                XmlSerializer = false
+                        });
+                    var outPutFiles = outPutPaths.Select(Path.GetFileName);
+                    if (string.IsNullOrEmpty(ProjectType))
+                    {
+                        FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
+                    }
+                    else if(ProjectType.ToLower().Contains("winexe"))
+                    {
+                        FileToProtect = 
+                            ProjectFramework.ToLower().Equals("framework") ? 
+                                outPutFiles.FirstOrDefault(x => x.EndsWith(".exe")) : 
+                                outPutFiles.FirstOrDefault(x => x.EndsWith(".dll"));
+                    }
+                    else if (ProjectType.ToLower().Contains("library"))
+                    {
+                        FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll"));
+                    }
+                    else
+                    {
+                        FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
+                    }
             }
         }
 

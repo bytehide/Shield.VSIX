@@ -48,11 +48,21 @@
     <Compile Include="Commands\ConfigurationWindowCommand.cs" />
     <Compile Include="Commands\Enable.cs" />
     <Compile Include="Configuration\ProjectConfiguration.cs" />
+    <Compile Include="Configuration\ProjectPreset.cs" />
+    <Compile Include="Configuration\ShieldExtensionConfiguration.cs" />
+    <Compile Include="Contracts\BuildOutputFileTypes.cs" />
     <Compile Include="Guids.cs" />
+    <Compile Include="Helpers\DevHelpers.cs" />
     <Compile Include="Helpers\DTE2Helper.cs" />
+    <Compile Include="Helpers\EnvDTECodeModelLanguageConstants2.cs" />
+    <Compile Include="Helpers\EnvDTEProjectKinds.cs" />
+    <Compile Include="Helpers\ProjectExtensions.cs" />
+    <Compile Include="Helpers\ProjectItemExtensions.cs" />
+    <Compile Include="Helpers\PropertyExtensions.cs" />
     <Compile Include="Ids.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\SolutionConfiguration.cs" />
+    <Compile Include="Services\Services.cs" />
     <Compile Include="ShieldVSExtensionPackage.cs" />
     <Compile Include="ToolWindows\ConfigurationWindow.cs" />
     <Compile Include="ToolWindows\ConfigurationWindowControl.xaml.cs">
@@ -61,6 +71,7 @@
     </Compile>
     <Compile Include="ToolWindows\CountToBoolConverter.cs" />
     <Compile Include="ToolWindows\StringToBoolConverter.cs" />
+    <Compile Include="ToolWindows\ValueConverterGroup.cs" />
     <Compile Include="UI Extensions\ConfigurationViewModel.cs" />
     <Compile Include="VSCommandTable.cs">
       <AutoGen>True</AutoGen>
@@ -74,6 +85,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -82,10 +94,34 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Community.VisualStudio.Toolkit">
+      <Version>16.0.75.5</Version>
+    </PackageReference>
+    <PackageReference Include="dnlib">
+      <Version>3.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CSharp">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Composition">
+      <Version>16.9.20</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem">
+      <Version>16.2.133-pre</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.206" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.8.3038" />
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="SecureLocalStorage">
+      <Version>1.0.0</Version>
+    </PackageReference>
     <PackageReference Include="System.Security.Cryptography.ProtectedData">
       <Version>5.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="VSLangProj">
+      <Version>7.0.3301</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -107,14 +143,37 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sin título %281%29.png" />
-    <Content Include="Sin título %282%29.png" />
+    <Content Include="Resources\Console.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\docs.png" />
+    <Content Include="Resources\DotNETFrameworkDependency.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\dotnetsafer.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\github.png" />
+    <Content Include="Resources\LanguagePackage.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\ShieldExtension.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\ShieldIcon.png" />
+    <Content Include="Resources\StatusSecurityWarning.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\user.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="ToolWindows\1024x1024 Icon 1 Png.png" />
+    <Content Include="ToolWindows\StatusSecurityWarning.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SecureLocalStorage\SecureLocalStorage.csproj">
-      <Project>{f23a19d6-e38b-4541-8409-01fd6c82f57c}</Project>
-      <Name>SecureLocalStorage</Name>
+    <ProjectReference Include="Shield.Client\Client\Shield.Client.csproj">
+      <Project>{f5970f8a-188c-4252-8a7a-3cbd9dccb10b}</Project>
+      <Name>Shield.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
