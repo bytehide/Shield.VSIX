@@ -13,6 +13,9 @@ namespace ShieldVSExtension.Configuration
     {
         public bool IsEnabled { get; set; } = true;
 
+        [DefaultValue("Release")]
+        public string BuildConfiguration { get; set; } = "Release";
+
         public string ShieldProjectName { get; set; }
 
         [DefaultValue(true)] 

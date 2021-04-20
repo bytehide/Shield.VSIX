@@ -268,8 +268,13 @@
                                 IsReadOnly="True" Text="{Binding ProjectPreset.Name}"
                                 DisplayMemberPath="Name" FontSize="12"/>
                         </Grid>
-                        <Button x:Name="Save" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="578,482,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="25" Click="Save_Click"/>
-                        <Button x:Name="Cancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="496,482,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FFA0A0A0" BorderBrush="#FFA0A0A0" Height="25"/>
+                        <Button x:Name="Save" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="578,480,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="25" Click="Save_Click"/>
+                        <Button x:Name="Cancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="496,480,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FFA0A0A0" BorderBrush="#FFA0A0A0" Height="25"/>
+                        <TextBox x:Name="ShieldBuildOn"  HorizontalAlignment="Left" Height="23" Margin="95,480,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="101" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#CCFFFFFF"
+                                 Text="{Binding BuildConfiguration, UpdateSourceTrigger=PropertyChanged}" SelectionBrush="#FF0860C8" FontSize="13" Grid.ColumnSpan="2"
+                                 Grid.Column="0" />
+                        <Label Content="Protect on:" HorizontalAlignment="Left" Margin="12,476,0,0" VerticalAlignment="Top" Width="81" Foreground="#FF8B8B8B" FontSize="14" Height="31"
+                               Grid.Column="0" />
                         <GridSplitter HorizontalAlignment="Left" Height="795" Margin="297,66,0,-332" VerticalAlignment="Top" Width="2" Background="#FF373738" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
                             <GridSplitter.RenderTransform>
                                 <TransformGroup>
@@ -290,6 +295,7 @@
                                 </TransformGroup>
                             </GridSplitter.RenderTransform>
                         </GridSplitter>
+                        <Label Content="Release, Debug, Custom, * for any" HorizontalAlignment="Left" Margin="91,501,0,-3" VerticalAlignment="Top" Width="154" Foreground="#FF8B8B8B" FontSize="8" Height="31" Grid.ColumnSpan="2" />
                     </Grid>
                 </TabItem>
                 <TabItem Header="Account Configuration" Background="#FF1E1E1E" BorderBrush="#FF0860C8" Foreground="#FF0860C8" FontSize="14">
