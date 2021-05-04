@@ -35,16 +35,16 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
             <UI_Extensions:ConfigurationViewModel x:Key="Object1"/>
-            <BitmapImage x:Key="FrameworkIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\DotNETFrameworkDependency.png"/>
-            <BitmapImage x:Key="LangIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\LanguagePackage.png"/>
-            <BitmapImage x:Key="ConsoleIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\Console.png"/>
-            <BitmapImage x:Key="ShieldExtensionImage" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\ShieldExtension.png"/>
-            <BitmapImage x:Key="WarningIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\StatusSecurityWarning.png"/>
-            <BitmapImage x:Key="UserIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\user.png"/>
-            <BitmapImage x:Key="GithubIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\github.png"/>
-            <BitmapImage x:Key="DotnetsaferIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\dotnetsafer.png"/>
-            <BitmapImage x:Key="ShieldIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\ShieldIcon.png"/>
-            <BitmapImage x:Key="Docs" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\docs.png"/>
+            <BitmapImage x:Key="FrameworkIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="..\Resources\DotNETFrameworkDependency.png"/>
+            <BitmapImage x:Key="LangIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="..\Resources\LanguagePackage.png"/>
+            <BitmapImage x:Key="ConsoleIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="..\Resources\Console.png"/>
+            <BitmapImage x:Key="ShieldExtensionImage" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="..\Resources\ShieldExtension.png"/>
+            <BitmapImage x:Key="WarningIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="..\Resources\StatusSecurityWarning.png"/>
+            <BitmapImage x:Key="UserIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="..\Resources\user.png"/>
+            <BitmapImage x:Key="GithubIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="..\Resources\github.png"/>
+            <BitmapImage x:Key="DotnetsaferIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="..\Resources\dotnetsafer.png"/>
+            <BitmapImage x:Key="ShieldIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="..\Resources\ShieldIcon.png"/>
+            <BitmapImage x:Key="Docs" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="..\Resources\docs.png"/>
 
         </ResourceDictionary>
     </Window.Resources>
