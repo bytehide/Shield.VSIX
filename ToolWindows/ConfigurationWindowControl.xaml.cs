@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Shield.Client;
 using ShieldVSExtension.Configuration;
+using ShieldVSExtension.InternalSecureStorage;
 using ShieldVSExtension.UI_Extensions;
 
 namespace ShieldVSExtension.ToolWindows
@@ -14,7 +15,7 @@ namespace ShieldVSExtension.ToolWindows
         private readonly ConfigurationViewModel _viewModel;
         private const string ExtensionConfigurationFile = "ExtensionConfiguration";
 
-        public SecureLocalStorage.SecureLocalStorage LocalStorage { get; set; }
+        public InternalSecureStorage.SecureLocalStorage LocalStorage { get; set; }
 
         private ShieldExtensionConfiguration ExtensionConfiguration { get; }
 
@@ -25,8 +26,8 @@ namespace ShieldVSExtension.ToolWindows
             _viewModel = viewModel;
             DataContext = viewModel;
 
-            LocalStorage = new SecureLocalStorage.SecureLocalStorage(
-                new SecureLocalStorage.CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
+            LocalStorage = new SecureLocalStorage(
+                new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
             );
 
             ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile) ?

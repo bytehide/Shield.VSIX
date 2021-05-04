@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace ShieldVSExtension.Configuration
 {
@@ -42,7 +42,9 @@ namespace ShieldVSExtension.Configuration
                 throw new ArgumentNullException(nameof(stream));
 
             // ReSharper disable once MethodHasAsyncOverload
-            var json = JsonConvert.SerializeObject(configuration, Formatting.None);
+            // var json = JsonConvert.SerializeObject(configuration, Formatting.None);
+            var json = JsonSerializer.Serialize(configuration);
+
             var data = Encoding.UTF8.GetBytes(json);
 
             using (var ms = new MemoryStream())
@@ -65,7 +67,9 @@ namespace ShieldVSExtension.Configuration
                 throw new ArgumentNullException(nameof(stream));
 
             // ReSharper disable once MethodHasAsyncOverload
-            var json = JsonConvert.SerializeObject(configuration, Formatting.None);
+            //var json = JsonConvert.SerializeObject(configuration, Formatting.None);
+            var json = JsonSerializer.Serialize(configuration);
+
             var data = Encoding.UTF8.GetBytes(json);
 
             using (var ms = new MemoryStream())
@@ -98,7 +102,9 @@ namespace ShieldVSExtension.Configuration
                 await zip.CopyToAsync(ms2);
 
                 var json = Encoding.UTF8.GetString(ms2.ToArray());
-                return JsonConvert.DeserializeObject<SolutionConfiguration>(json);
+
+                return string.IsNullOrEmpty(json) ? new SolutionConfiguration() : JsonSerializer.Deserialize<SolutionConfiguration>(json);
+                //return JsonConvert.DeserializeObject<SolutionConfiguration>(json);
             }
         }
         public static SolutionConfiguration Load(Stream stream)
@@ -121,7 +127,8 @@ namespace ShieldVSExtension.Configuration
 
                 var json = Encoding.UTF8.GetString(ms2.ToArray());
 
-                return JsonConvert.DeserializeObject<SolutionConfiguration>(json);
+                return string.IsNullOrEmpty(json) ? new SolutionConfiguration() : JsonSerializer.Deserialize<SolutionConfiguration>(json);
+                //return JsonConvert.DeserializeObject<SolutionConfiguration>(json);
             }
         }
     }

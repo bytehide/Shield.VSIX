@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using Newtonsoft.Json;
 
 namespace ShieldVSExtension.Configuration
 {
@@ -22,8 +21,7 @@ namespace ShieldVSExtension.Configuration
         *  custom
         */
         public ProjectPreset ApplicationPreset { get; set; }
-        [JsonProperty]
-
+        
         public List<string> Protections { get; set; }
 
         public bool IncludeSubDirectories { get; set; }

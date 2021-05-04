@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Linq;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
 using ShieldVSExtension.Configuration;
 using ShieldVSExtension.Contracts;
 using ShieldVSExtension.Helpers;

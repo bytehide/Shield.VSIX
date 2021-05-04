@@ -24,6 +24,7 @@ using Shield.Client.Models;
 using Shield.Client.Models.API.Application;
 using ShieldVSExtension.Configuration;
 using Community.VisualStudio.Toolkit;
+using ShieldVSExtension.InternalSecureStorage;
 
 namespace ShieldVSExtension
 {
@@ -77,7 +78,7 @@ namespace ShieldVSExtension
 
         private const string ExtensionConfigurationFile = "ExtensionConfiguration";
 
-        private SecureLocalStorage.SecureLocalStorage LocalStorage { get; set; }
+        private InternalSecureStorage.SecureLocalStorage LocalStorage { get; set; }
 
         private ShieldExtensionConfiguration ExtensionConfiguration { get; set; }
 
@@ -140,8 +141,8 @@ namespace ShieldVSExtension
 
             try
             {
-                LocalStorage = new SecureLocalStorage.SecureLocalStorage(
-                    new SecureLocalStorage.CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
+                LocalStorage = new InternalSecureStorage.SecureLocalStorage(
+                    new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
                 );
 
                 ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile)
