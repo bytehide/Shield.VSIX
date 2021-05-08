@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ShieldVSExtension.Configuration
@@ -32,7 +33,8 @@ namespace ShieldVSExtension.Configuration
          */
         public ProjectPreset ProjectPreset { get; set; } = new ProjectPreset {Id=2, Name = "Balance"};
 
-        public List<ProjectConfiguration> Projects { get; private set; } = new List<ProjectConfiguration>();
+        [JsonPropertyName("Projects")]
+        public List<ProjectConfiguration> Projects { get; set; } = new List<ProjectConfiguration>();
         public static async Task SaveAsync(SolutionConfiguration configuration, Stream stream)
         {
             if (configuration == null)

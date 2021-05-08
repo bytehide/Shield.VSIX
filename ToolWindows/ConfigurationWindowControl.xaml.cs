@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Shield.Client;
+using Shield.Client.Fr;
 using ShieldVSExtension.Configuration;
 using ShieldVSExtension.InternalSecureStorage;
 using ShieldVSExtension.UI_Extensions;
