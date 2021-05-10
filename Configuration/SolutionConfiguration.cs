@@ -4,14 +4,18 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace ShieldVSExtension.Configuration
 {
     public class SolutionConfiguration
     {
         public bool IsEnabled { get; set; } = true;
+
+        [DefaultValue("Release")]
+        public string BuildConfiguration { get; set; } = "Release";
 
         public string ShieldProjectName { get; set; }
 
@@ -29,7 +33,8 @@ namespace ShieldVSExtension.Configuration
          */
         public ProjectPreset ProjectPreset { get; set; } = new ProjectPreset {Id=2, Name = "Balance"};
 
-        public List<ProjectConfiguration> Projects { get; private set; } = new List<ProjectConfiguration>();
+        [JsonPropertyName("Projects")]
+        public List<ProjectConfiguration> Projects { get; set; } = new List<ProjectConfiguration>();
         public static async Task SaveAsync(SolutionConfiguration configuration, Stream stream)
         {
             if (configuration == null)
@@ -39,7 +44,9 @@ namespace ShieldVSExtension.Configuration
                 throw new ArgumentNullException(nameof(stream));
 
             // ReSharper disable once MethodHasAsyncOverload
-            var json = JsonConvert.SerializeObject(configuration, Formatting.None);
+            // var json = JsonConvert.SerializeObject(configuration, Formatting.None);
+            var json = JsonSerializer.Serialize(configuration);
+
             var data = Encoding.UTF8.GetBytes(json);
 
             using (var ms = new MemoryStream())
@@ -62,7 +69,9 @@ namespace ShieldVSExtension.Configuration
                 throw new ArgumentNullException(nameof(stream));
 
             // ReSharper disable once MethodHasAsyncOverload
-            var json = JsonConvert.SerializeObject(configuration, Formatting.None);
+            //var json = JsonConvert.SerializeObject(configuration, Formatting.None);
+            var json = JsonSerializer.Serialize(configuration);
+
             var data = Encoding.UTF8.GetBytes(json);
 
             using (var ms = new MemoryStream())
@@ -95,7 +104,9 @@ namespace ShieldVSExtension.Configuration
                 await zip.CopyToAsync(ms2);
 
                 var json = Encoding.UTF8.GetString(ms2.ToArray());
-                return JsonConvert.DeserializeObject<SolutionConfiguration>(json);
+
+                return string.IsNullOrEmpty(json) ? new SolutionConfiguration() : JsonSerializer.Deserialize<SolutionConfiguration>(json);
+                //return JsonConvert.DeserializeObject<SolutionConfiguration>(json);
             }
         }
         public static SolutionConfiguration Load(Stream stream)
@@ -118,7 +129,8 @@ namespace ShieldVSExtension.Configuration
 
                 var json = Encoding.UTF8.GetString(ms2.ToArray());
 
-                return JsonConvert.DeserializeObject<SolutionConfiguration>(json);
+                return string.IsNullOrEmpty(json) ? new SolutionConfiguration() : JsonSerializer.Deserialize<SolutionConfiguration>(json);
+                //return JsonConvert.DeserializeObject<SolutionConfiguration>(json);
             }
         }
     }

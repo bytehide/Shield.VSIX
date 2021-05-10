@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Linq;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
 using ShieldVSExtension.Configuration;
 using ShieldVSExtension.Contracts;
 using ShieldVSExtension.Helpers;
@@ -218,6 +217,25 @@ namespace ShieldVSExtension.UI_Extensions
 
         #endregion
 
+        #region BuildConfiguration Property
+
+        private string _buildConfiguration;
+
+        public string BuildConfiguration
+        {
+            get { return _buildConfiguration; }
+            set
+            {
+                if (_buildConfiguration == value)
+                    return;
+
+                _buildConfiguration = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         private ObservableCollection<ProjectPreset> _projectPresets;
 
         public ObservableCollection<ProjectPreset> ProjectPresets
@@ -274,13 +292,14 @@ namespace ShieldVSExtension.UI_Extensions
             {
                 new ProjectPreset {Id=1, Name="Maximum"}
                 , new ProjectPreset {Id=2,Name="Balance"}
-                , new ProjectPreset {Id=3, Name="Optimization"}
+                , new ProjectPreset {Id=3, Name="Optimized"}
             };
             TargetDirectory = solutionConfiguration.TargetDirectory;
             CreateShieldProjectIfNotExists = solutionConfiguration.CreateShieldProjectIfNotExists;
             FindCustomConfigurationFile = solutionConfiguration.FindCustomConfigurationFile;
             ProjectPreset = solutionConfiguration.ProjectPreset;
             ShieldProjectName = solutionConfiguration.ShieldProjectName;
+            BuildConfiguration = solutionConfiguration.BuildConfiguration;
             SelectedProjects = new ObservableCollection<ProjectViewModel>();
             IsValidClient = false;
 
@@ -354,6 +373,7 @@ namespace ShieldVSExtension.UI_Extensions
         {
             _solutionConfiguration.TargetDirectory = TargetDirectory;
             _solutionConfiguration.ShieldProjectName = ShieldProjectName;
+            _solutionConfiguration.BuildConfiguration = BuildConfiguration;
             _solutionConfiguration.CreateShieldProjectIfNotExists = CreateShieldProjectIfNotExists;
             _solutionConfiguration.FindCustomConfigurationFile = FindCustomConfigurationFile;
             _solutionConfiguration.ProjectPreset = ProjectPreset;
@@ -520,6 +540,25 @@ namespace ShieldVSExtension.UI_Extensions
                         return;
 
                     _fileToProtect = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            #endregion
+
+            #region BuildConfiguration Property
+
+            private string _buildConfiguration;
+
+            public string BuildConfiguration
+            {
+                get { return _buildConfiguration; }
+                set
+                {
+                    if (_buildConfiguration == value)
+                        return;
+
+                    _buildConfiguration = value;
                     OnPropertyChanged();
                 }
             }

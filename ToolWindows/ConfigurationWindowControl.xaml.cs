@@ -3,8 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Shield.Client;
+using Shield.Client.Fr;
 using ShieldVSExtension.Configuration;
+using ShieldVSExtension.InternalSecureStorage;
 using ShieldVSExtension.UI_Extensions;
 
 namespace ShieldVSExtension.ToolWindows
@@ -14,7 +15,7 @@ namespace ShieldVSExtension.ToolWindows
         private readonly ConfigurationViewModel _viewModel;
         private const string ExtensionConfigurationFile = "ExtensionConfiguration";
 
-        public SecureLocalStorage.SecureLocalStorage LocalStorage { get; set; }
+        public InternalSecureStorage.SecureLocalStorage LocalStorage { get; set; }
 
         private ShieldExtensionConfiguration ExtensionConfiguration { get; }
 
@@ -25,8 +26,8 @@ namespace ShieldVSExtension.ToolWindows
             _viewModel = viewModel;
             DataContext = viewModel;
 
-            LocalStorage = new SecureLocalStorage.SecureLocalStorage(
-                new SecureLocalStorage.CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
+            LocalStorage = new SecureLocalStorage(
+                new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
             );
 
             ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile) ?
@@ -49,6 +50,7 @@ namespace ShieldVSExtension.ToolWindows
 
             if (!_viewModel.IsValidClient)
                 ShieldControl.SelectedIndex = 1;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -141,7 +143,7 @@ namespace ShieldVSExtension.ToolWindows
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             _viewModel.Save();
             DialogResult = true;
             Close();
@@ -160,6 +162,38 @@ namespace ShieldVSExtension.ToolWindows
         private void InheritConfigFromGlobal_Copy_Checked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ProtectionsPresetProject_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            Close();
+        }
+
+        private void GitHubButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/dotnetsafer/Shield.VSIX");
+        }
+
+        private void WebSiteButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://dotnetsafer.com");
+        }
+
+        private void DocumentationButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://dotnetsafer.com/docs/product/shield-vs/1.0");
+        }
+
+        private void Generate_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://dotnetsafer.com/docs/product/shield-vs/1.0/authentication");
+      
         }
     }
 }
