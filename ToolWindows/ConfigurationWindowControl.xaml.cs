@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Shield.Client;
 using Shield.Client.Fr;
 using ShieldVSExtension.Configuration;
 using ShieldVSExtension.InternalSecureStorage;
@@ -51,6 +50,7 @@ namespace ShieldVSExtension.ToolWindows
 
             if (!_viewModel.IsValidClient)
                 ShieldControl.SelectedIndex = 1;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -143,7 +143,7 @@ namespace ShieldVSExtension.ToolWindows
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             _viewModel.Save();
             DialogResult = true;
             Close();
@@ -173,6 +173,27 @@ namespace ShieldVSExtension.ToolWindows
         {
             DialogResult = true;
             Close();
+        }
+
+        private void GitHubButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/dotnetsafer/Shield.VSIX");
+        }
+
+        private void WebSiteButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://dotnetsafer.com");
+        }
+
+        private void DocumentationButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://dotnetsafer.com/docs/product/shield-vs/1.0");
+        }
+
+        private void Generate_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://dotnetsafer.com/docs/product/shield-vs/1.0/authentication");
+      
         }
     }
 }

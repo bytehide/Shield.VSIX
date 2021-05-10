@@ -318,15 +318,19 @@
                             <Button x:Name="ConnectButton" Content="Connect and save" Margin="560,80,0,0" VerticalAlignment="Top" Width="149" Height="28" Background="{x:Null}" Foreground="White" BorderBrush="White" FontSize="15" Click="Button_Click" HorizontalAlignment="Left"/>
                             <Label Content="Dotnetsafer API Key:" Margin="53,48,0,0" VerticalAlignment="Top" Width="161" Foreground="White" FontSize="15" HorizontalAlignment="Left" Height="31"/>
                             <Label Content="Don't know where to find your api key?" Margin="53,113,0,0" VerticalAlignment="Top" Width="276" Foreground="White" FontSize="15" HorizontalAlignment="Left" Height="30"/>
-                            <Label Content="Generate an api key" Margin="319,114,0,0" VerticalAlignment="Top" Width="236" Foreground="#FF0860C8" FontSize="15" HorizontalAlignment="Left" Height="31"/>
+                            <Label x:Name="Generate" Content="Generate an api key" Margin="319,114,0,0" VerticalAlignment="Top" Width="236" Foreground="#FF0860C8" FontSize="15" HorizontalAlignment="Left" Height="31" MouseDown="Generate_MouseDown"/>
                             <PasswordBox x:Name="ApiKeyBox" Margin="57,80,0,0" VerticalAlignment="Top" Width="483" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="White"
                                      Grid.Column="0" Height="28" HorizontalAlignment="Left" KeyUp="ApiKeyBox_KeyUp"/>
                         </Grid>
                         <Grid x:Name="ConfigurationSectionTitlee" Grid.ColumnSpan="5" Margin="-63,252,-56,143">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="202*"/>
+                                <ColumnDefinition Width="251*"/>
+                            </Grid.ColumnDefinitions>
                             <Label Content="Shield Configuration" HorizontalAlignment="Left" Margin="70,54,0,0" VerticalAlignment="Top"
                                 Grid.Column="0" Width="164" Foreground="White" FontSize="16" BorderBrush="#FF0860C8" Background="{x:Null}" Height="32"/>
-                            <Separator HorizontalAlignment="Left" Height="100" Margin="0,40,0,0" VerticalAlignment="Top" Width="907"
-                                Grid.Column="0" Background="#FF0860C8"/>
+                            <Separator HorizontalAlignment="Left" Height="100" Margin="0,40,-1,-13" VerticalAlignment="Top" Width="907"
+                                Grid.Column="0" Background="#FF0860C8" Grid.ColumnSpan="2"/>
                             <Separator HorizontalAlignment="Left" Height="100" Margin="213,20,0,0" VerticalAlignment="Top" Width="40" Background="#FF0860C8" RenderTransformOrigin="0.5,0.5">
                                 <Separator.RenderTransform>
                                     <TransformGroup>
@@ -364,9 +368,9 @@
                             <Image HorizontalAlignment="Left" Height="61" Margin="563,54,0,0" VerticalAlignment="Top" Width="67" Source="{DynamicResource DotnetsaferIcon}"/>
                             <Image HorizontalAlignment="Left" Height="38" Margin="572,122,0,0" VerticalAlignment="Top" Width="45" Source="{DynamicResource Docs}"/>
                         </Grid>
-                        <Button x:Name="GitHubButton" Content="Contribute" Grid.Column="3" HorizontalAlignment="Left" Margin="454,368,0,0" VerticalAlignment="Top" Width="116" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="25" Click="Save_Click" Grid.ColumnSpan="2"/>
-                        <Button x:Name="WebSiteButton" Content="Website" Grid.Column="3" HorizontalAlignment="Left" Margin="454,419,0,0" VerticalAlignment="Top" Width="116" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="25" Click="Save_Click" Grid.ColumnSpan="2"/>
-                        <Button x:Name="DocumentationButton" Content="Documentation" Grid.Column="3" HorizontalAlignment="Left" Margin="454,473,0,0" VerticalAlignment="Top" Width="116" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="25" Click="Save_Click" Grid.ColumnSpan="2"/>
+                        <Button x:Name="GitHubButton" Content="Contribute" Grid.Column="3" HorizontalAlignment="Left" Margin="454,368,0,0" VerticalAlignment="Top" Width="116" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="25" Grid.ColumnSpan="2" Click="GitHubButton_Click"/>
+                        <Button x:Name="WebSiteButton" Content="Website" Grid.Column="3" HorizontalAlignment="Left" Margin="454,419,0,0" VerticalAlignment="Top" Width="116" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="25" Grid.ColumnSpan="2" Click="WebSiteButton_Click"/>
+                        <Button x:Name="DocumentationButton" Content="Documentation" Grid.Column="3" HorizontalAlignment="Left" Margin="454,473,0,0" VerticalAlignment="Top" Width="116" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="25" Click="DocumentationButton_Click" Grid.ColumnSpan="2"/>
                     </Grid>
                 </TabItem>
             </TabControl>
