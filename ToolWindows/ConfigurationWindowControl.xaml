@@ -200,7 +200,7 @@
                                     SelectedValue="{Binding SelectedProject.ApplicationPreset}"
                                     ItemsSource="{Binding ProjectPresets}"
                                     IsReadOnly="True" Text="{Binding SelectedProject.ApplicationPreset.Name}"
-                                    DisplayMemberPath="Name" FontSize="12"/>
+                                    DisplayMemberPath="Name" FontSize="12" SelectionChanged="ProtectionsPresetProject_SelectionChanged"/>
                                 <Label Content="Individual configuration" HorizontalAlignment="Left" Margin="36,10,0,0" VerticalAlignment="Top" Foreground="White" FontSize="13"/>
                                 <Label Content="Configure the protections of this application individually" HorizontalAlignment="Left" Margin="36,29,0,0" VerticalAlignment="Top" Foreground="#FFC3C3C3" FontSize="11"/>
                                 <Grid HorizontalAlignment="Left" Height="50" Margin="1,130,0,0" VerticalAlignment="Top" Width="429"/>
@@ -269,7 +269,7 @@
                                 DisplayMemberPath="Name" FontSize="12"/>
                         </Grid>
                         <Button x:Name="Save" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="578,480,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="25" Click="Save_Click"/>
-                        <Button x:Name="Cancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="496,480,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FFA0A0A0" BorderBrush="#FFA0A0A0" Height="25"/>
+                        <Button x:Name="Cancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="496,480,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FFA0A0A0" BorderBrush="#FFA0A0A0" Height="25" Click="Cancel_Click"/>
                         <TextBox x:Name="ShieldBuildOn"  HorizontalAlignment="Left" Height="23" Margin="95,480,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="101" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#CCFFFFFF"
                                  Text="{Binding BuildConfiguration, UpdateSourceTrigger=PropertyChanged}" SelectionBrush="#FF0860C8" FontSize="13" Grid.ColumnSpan="2"
                                  Grid.Column="0" />

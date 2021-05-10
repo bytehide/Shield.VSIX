@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Community.VisualStudio.Toolkit;
 using dnlib.DotNet;
 using EnvDTE;
 using EnvDTE80;
@@ -17,13 +18,10 @@ using ShieldVSExtension.Helpers;
 using ShieldVSExtension.ToolWindows;
 using Task = System.Threading.Tasks.Task;
 using ShieldSolutionConfiguration = ShieldVSExtension.Configuration.SolutionConfiguration;
-using Microsoft;
-using Shield.Client;
 using Shield.Client.Fr.Extensions;
 using Shield.Client.Fr.Models;
 using Shield.Client.Fr.Models.API.Application;
 using ShieldVSExtension.Configuration;
-using Community.VisualStudio.Toolkit;
 using Shield.Client.Fr;
 using ShieldVSExtension.InternalSecureStorage;
 
@@ -65,6 +63,8 @@ namespace ShieldVSExtension
 
         private OutputWindowPane Pane { get; set; }
 
+        private OutputWindowPane OutputPane { get; set; }
+
         private vsBuildAction CurrentBuildAction { get; set; }
 
         private DTE2 Dte { get; set; }
@@ -104,6 +104,8 @@ namespace ShieldVSExtension
             if (Dte == null) throw new ArgumentNullException(nameof(Dte));
 
             Pane = Dte.ToolWindows.OutputWindow.OutputWindowPanes.Add("Dotnetsafer Shield");
+
+            OutputPane = Dte.ToolWindows.OutputWindow.OutputWindowPanes.Add("Dotnetsafer Shield Output");
 
             ErrorListProvider = new ErrorListProvider(this);
 
@@ -240,6 +242,13 @@ namespace ShieldVSExtension
             Pane.OutputString(message + Environment.NewLine);
         }
 
+        private async Task WriteLineToOutputAsync(string message)
+        {
+            await JoinableTaskFactory.SwitchToMainThreadAsync(DisposalToken);
+
+            OutputPane.OutputString(message + Environment.NewLine);
+        }
+
         private void Write(string message)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -251,6 +260,12 @@ namespace ShieldVSExtension
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             Pane.Activate();
+        }
+
+        private void ActiveOutputPane()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            OutputPane.Activate();
         }
 
         private void SolutionEvents_AfterClosing()
@@ -340,28 +355,22 @@ namespace ShieldVSExtension
                     await WriteLineAsync("[WARNING] The original project file has been obtained, which did not correspond to the configuration file.");
                 }
 
-                //var statusBar = (IVsStatusbar)await GetServiceAsync(typeof(SVsStatusbar)).ConfigureAwait(false);
-
-                //Assumes.Present(statusBar);
-
-                object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Deploy;
-
                 try
                 {
                     await WriteLineAsync($"========== {projectName} ==========");
 
                     await WriteLineAsync($"> The {Path.GetFileName(file)} file will be protected...");
 
-                    //statusBar.Animation(1, ref icon);
+                    await VS.Notifications.StartStatusbarAnimationAsync(StatusAnimation.Build);
 
-                    
-                    var rgx = new Regex("[^a-zA-Z0-9 -]");
-                    var regexName = rgx.Replace(projectName, "");
+                    await VS.Notifications.SetStatusbarTextAsync($"Protecting {Path.GetFileName(file)}...");
 
-                    var shieldProject = await ShieldApiClient.Project.FindOrCreateExternalProjectAsync($"vs_{regexName}");
+                    //var regexName = RefactorProjectName(projectName);
+
+                    var shieldProject = await ShieldApiClient.Project.FindOrCreateExternalProjectAsync(Configuration.ShieldProjectName);
 
                     await WriteLineAsync(
-                        $"> The project has been linked to your Dotnetsafer account with the name '{regexName}'.");
+                        $"> The project has been linked to your Dotnetsafer account with the name '{Configuration.ShieldProjectName}'.");
 
                     var dependencies = project.GetReferences();
 
@@ -371,15 +380,20 @@ namespace ShieldVSExtension
 
                     var module = ModuleDefMD.Load(bytes, moduleCtx);
 
-                    var referencies = module.GetAssemblyRefs();
+                    var referencies = module.GetAssemblyRefs().ToList();
 
                     var requiredReferencies = dependencies.Where(dp => referencies.Any(rf =>
-                        string.Equals(rf.FullName, dp.reference, StringComparison.InvariantCultureIgnoreCase)));
+                        string.Equals(rf.FullName, dp.reference, StringComparison.InvariantCultureIgnoreCase)) || referencies.Any(rf=>
+                        !string.IsNullOrEmpty(dp.strongInfo) &&
+                        dp.strongInfo.ToLowerInvariant().Contains(".csproj") && dp.strongInfo.ToLowerInvariant().Contains(rf.Version.ToString()) &&
+                        dp.strongInfo.ToLowerInvariant().Contains(rf.Name.ToLowerInvariant())));
 
                     var discoverDependencies = requiredReferencies.ToList();
 
                     await WriteLineAsync(
                         $"> {discoverDependencies.Count} dependencies have been found, they will be used to process the application.");
+
+                    await WriteLineAsync("Analyzing the application...");
 
                     var uploadApplicationDirectly = await ShieldApiClient.Application.UploadApplicationDirectlyAsync(
                         shieldProject.Key, file
@@ -419,7 +433,7 @@ namespace ShieldVSExtension
 
                         var foundProjectConfig =
                             ShieldApiClient.Configuration.FindProjectConfiguration(rootDirectory,
-                                projectName.Replace(".csproj", null)) ??
+                                Configuration.ShieldProjectName) ??
                             ShieldApiClient.Configuration.FindProjectConfiguration(rootDirectory);
 
                         if (foundAppConfig != null && foundAppConfig.InheritFromProject && foundProjectConfig != null)
@@ -463,8 +477,6 @@ namespace ShieldVSExtension
                     else
                         await WriteLineAsync($"> The settings were customized manually. The application will use the following protections: {string.Join(",", config.Protections)}");
 
-                    await WriteLineAsync("Analyzing the application...");
-
                     var protect = await ShieldApiClient.Tasks.ProtectSingleFileAsync(
                         shieldProject.Key,
                         appBlob,
@@ -476,7 +488,13 @@ namespace ShieldVSExtension
 
                     ActivePane();
 
-                    protect.OnError(taskConnection, (error) => throw new Exception(error));
+                    var mutex = new Semaphore(0, 1);
+
+                    protect.OnError(taskConnection, (error) =>
+                    {
+                        mutex.Release();
+                        throw new Exception(error);
+                    });
 
 #pragma warning disable VSTHRD101 // Evite delegados asincrónicos no compatibles
                     protect.OnSuccess(taskConnection, async delegate (ProtectedApplicationDto appDto) {
@@ -493,33 +511,62 @@ namespace ShieldVSExtension
                         app.SaveOn(path, true);
 
                         await WriteLineAsync($"[SAVED] The application has been saved in: {path}");
+
+                        await WriteLineToOutputAsync($"[{DateTime.Now.ToLongTimeString()}]: [{projectName}] => Saved in: {path}");
+
+                        mutex.Release();
                     });
 #pragma warning restore VSTHRD101 // Evite delegados asincrónicos no compatibles
 
 
-                    //var mutex = new Semaphore(0, 1);
-
-                    protect.OnClose(taskConnection, delegate
+                    protect.OnClose(taskConnection,delegate
                     {
+                        mutex.WaitOne();
+
+                        ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+                        {
+                            await VS.Notifications.EndStatusbarAnimationAsync(StatusAnimation.Build).ConfigureAwait(false);
+                            await WriteLineAsync($"========== {projectName} ==========");
+                        });
+
+                        ActiveOutputPane();
+
                         //mutex.Release();
-                        ThreadHelper.JoinableTaskFactory.Run(async () => await WriteLineAsync($"========== {projectName} =========="));
-                        ActivePane();
                     });
 
-                    // mutex.WaitOne();
+                    //mutex.WaitOne();
                 }
                 catch (Exception ex)
                 {
                     await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                    await ex.LogAsync();
+                    ActivePane();
+                    await WriteLineAsync($"[EXCEPTION] An error occurred while protecting the {projectName} project.");
+                    await WriteLineAsync("The process has been terminated due to an exception, check the 'extensions' output window for exception information.");
+                    await WriteLineAsync($"========== {projectName} ==========");
                 }
             });
         }
 
+        private string RefactorProjectName(string projectName)
+        {
+            if (projectName.Contains("\\"))
+            {
+                var split = projectName.Split('\\');
+                projectName = split[split.Length - 1];
+            }
+
+            var rgx = new Regex("[^a-zA-Z0-9 -]");
+            var regexName = rgx.Replace(projectName, "");
+            
+
+            return regexName.Replace("csproj", null);
+        }
 
         private void BuildEvents_OnBuildBegin(vsBuildScope scope, vsBuildAction action)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-
+           
             CurrentBuildAction = action;
             Pane.Clear();
             ErrorListProvider.Tasks.Clear();

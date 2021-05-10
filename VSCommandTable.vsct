@@ -28,7 +28,7 @@
 
       <Button guid="guidShieldVSExtensionPackageCmdSet" id="EnableId" priority="0x0200" type="Button">
         <Parent guid="guidShieldVSExtensionPackageCmdSet" id="MyMenuGroup" />
-        <Icon guid="ImageCatalogGuid" id="StatusInformation" />
+        <Icon guid="ImageCatalogGuid" id="StatusSecurityOK" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>

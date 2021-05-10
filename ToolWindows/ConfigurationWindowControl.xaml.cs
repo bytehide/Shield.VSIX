@@ -163,5 +163,16 @@ namespace ShieldVSExtension.ToolWindows
         {
 
         }
+
+        private void ProtectionsPresetProject_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            Close();
+        }
     }
 }

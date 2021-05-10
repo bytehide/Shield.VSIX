@@ -292,7 +292,7 @@ namespace ShieldVSExtension.UI_Extensions
             {
                 new ProjectPreset {Id=1, Name="Maximum"}
                 , new ProjectPreset {Id=2,Name="Balance"}
-                , new ProjectPreset {Id=3, Name="Optimization"}
+                , new ProjectPreset {Id=3, Name="Optimized"}
             };
             TargetDirectory = solutionConfiguration.TargetDirectory;
             CreateShieldProjectIfNotExists = solutionConfiguration.CreateShieldProjectIfNotExists;
