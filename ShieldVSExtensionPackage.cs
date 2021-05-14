@@ -132,8 +132,8 @@ namespace ShieldVSExtension
 
             if (isSolutionLoaded)
                 SolutionEventsOnOpened();
-            else
-                solutionEvents.Opened += SolutionEventsOnOpened;
+            
+            solutionEvents.Opened += SolutionEventsOnOpened;
 
             TryReloadStorage();
         }

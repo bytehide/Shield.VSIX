@@ -35,16 +35,16 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
             <UI_Extensions:ConfigurationViewModel x:Key="Object1"/>
-            <BitmapImage x:Key="FrameworkIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\DotNETFrameworkDependency.png"/>
-            <BitmapImage x:Key="LangIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\LanguagePackage.png"/>
-            <BitmapImage x:Key="ConsoleIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\Console.png"/>
-            <BitmapImage x:Key="ShieldExtensionImage" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\ShieldExtension.png"/>
-            <BitmapImage x:Key="WarningIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\StatusSecurityWarning.png"/>
-            <BitmapImage x:Key="UserIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\user.png"/>
-            <BitmapImage x:Key="GithubIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\github.png"/>
-            <BitmapImage x:Key="DotnetsaferIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\dotnetsafer.png"/>
-            <BitmapImage x:Key="ShieldIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\ShieldIcon.png"/>
-            <BitmapImage x:Key="Docs" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\juana\source\repos\ShieldVSExtension\Resources\docs.png"/>
+            <BitmapImage x:Key="FrameworkIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="../Resources\DotNETFrameworkDependency.png"/>
+            <BitmapImage x:Key="LangIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="/ShieldVSExtension;component/Resources/LanguagePackage.png"/>
+            <BitmapImage x:Key="ConsoleIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="/ShieldVSExtension;component/Resources/Console.png"/>
+            <BitmapImage x:Key="ShieldExtensionImage" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="/ShieldVSExtension;component/Resources/ShieldExtension.png"/>
+            <BitmapImage x:Key="WarningIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="/ShieldVSExtension;component/Resources/StatusSecurityWarning.png"/>
+            <BitmapImage x:Key="UserIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="/ShieldVSExtension;component/Resources/user.png"/>
+            <BitmapImage x:Key="GithubIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="/ShieldVSExtension;component/Resources/github.png"/>
+            <BitmapImage x:Key="DotnetsaferIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="/ShieldVSExtension;component/Resources/dotnetsafer.png"/>
+            <BitmapImage x:Key="ShieldIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="/ShieldVSExtension;component/Resources/ShieldIcon.png"/>
+            <BitmapImage x:Key="Docs" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="/ShieldVSExtension;component/Resources/docs.png"/>
 
         </ResourceDictionary>
     </Window.Resources>
@@ -357,8 +357,8 @@
                             </Grid>
                             <Grid  IsEnabled="{Binding IsValidClient}"  x:Name="ShieldAccount" HorizontalAlignment="Left" Height="155" Margin="10,13,0,0" VerticalAlignment="Top" Width="546">
                                 <Image HorizontalAlignment="Left" Height="68" Margin="49,43,0,0" VerticalAlignment="Top" Width="58" Source="{DynamicResource UserIcon}"/>
-                                <Label x:Name="ShieldUserName" Content="Username&#xD;&#xA;" HorizontalAlignment="Left" Margin="125,39,0,0" VerticalAlignment="Top" Width="161" Foreground="White" FontSize="16" Height="31"/>
-                                <Label x:Name="ShieldUserEdition" Content="Community&#xA;" HorizontalAlignment="Left" Margin="124,74,0,0" VerticalAlignment="Top" Width="96" Foreground="#72FFFFFF" FontSize="16" Height="34"/>
+                                <Label x:Name="ShieldUserName" Content="User loaded by private api key." HorizontalAlignment="Left" Margin="125,39,0,0" VerticalAlignment="Top" Width="161" Foreground="White" FontSize="16" Height="31"/>
+                                <Label x:Name="ShieldUserEdition" Content="" HorizontalAlignment="Left" Margin="124,74,0,0" VerticalAlignment="Top" Width="96" Foreground="#72FFFFFF" FontSize="16" Height="34"/>
                                 <Grid.Visibility>
                                     <Binding Converter="{StaticResource BooleanToVisibilityConverter}" Path="IsValidClient"/>
                                 </Grid.Visibility>
