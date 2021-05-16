@@ -15,7 +15,7 @@ namespace ShieldVSExtension.ToolWindows
         private readonly ConfigurationViewModel _viewModel;
         private const string ExtensionConfigurationFile = "ExtensionConfiguration";
 
-        public InternalSecureStorage.SecureLocalStorage LocalStorage { get; set; }
+        public SecureLocalStorage LocalStorage { get; set; }
 
         private ShieldExtensionConfiguration ExtensionConfiguration { get; }
 
@@ -40,7 +40,7 @@ namespace ShieldVSExtension.ToolWindows
                     _ = ShieldClient.CreateInstance(ExtensionConfiguration.ApiToken);
                     _viewModel.IsValidClient = true;
                     ApiKeyBox.Password = ExtensionConfiguration.ApiToken;
-                    ConnectButton.IsEnabled = false;
+                    ConnectButton.Content = ExtensionConfiguration.ApiToken != ApiKeyBox.Password ? "Connect and save" : "Retry connection";
                 }
                 catch (Exception)
                 {
@@ -139,7 +139,7 @@ namespace ShieldVSExtension.ToolWindows
 
         private void ApiKeyBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            ConnectButton.IsEnabled = ExtensionConfiguration.ApiToken != ApiKeyBox.Password;
+            ConnectButton.Content = ExtensionConfiguration.ApiToken != ApiKeyBox.Password ? "Connect and save"  : "Retry connection";
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

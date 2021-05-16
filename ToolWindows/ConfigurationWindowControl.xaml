@@ -257,11 +257,9 @@
                             <TextBox x:Name="ShieldProjectName"  HorizontalAlignment="Left" Height="23" Margin="167,7,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#CCFFFFFF"
                                 Text="{Binding ShieldProjectName, UpdateSourceTrigger=PropertyChanged}" SelectionBrush="#FF0860C8" FontSize="13"/>
                             <Label Content="Current project name:" HorizontalAlignment="Left" Margin="16,3,0,0" VerticalAlignment="Top" Width="170" Foreground="White" FontSize="14" Height="31"/>
-                            <CheckBox x:Name="CreateProject" Content="Create if not exists" HorizontalAlignment="Left" Margin="166,33,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="22" Width="120"
-                                IsChecked="{Binding CreateShieldProjectIfNotExists, Mode=TwoWay}" FontSize="12"/>
                             <Label Content="Protection Settings:" HorizontalAlignment="Left" Margin="418,4,0,0" VerticalAlignment="Top" Width="159" Foreground="White" FontSize="13" Height="29"/>
-                            <CheckBox x:Name="FindCustomSetting" Content="Find manual settings" HorizontalAlignment="Left" Margin="544,34,0,-2" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="23" Width="152"
-                                IsChecked="{Binding FindCustomConfigurationFile, Mode=TwoWay}" FontSize="12"/>
+                            <CheckBox ToolTip="It will look for configuration files (shield.json) in the project directory." x:Name="FindCustomSetting" Content="Find manual settings" HorizontalAlignment="Left" Margin="544,34,0,-2" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="23" Width="152"
+                                      IsChecked="{Binding FindCustomConfigurationFile, Mode=TwoWay}" FontSize="12"/>
                             <ComboBox x:Name="ProtectionsPreset" HorizontalAlignment="Left" Margin="545,8,0,26" Width="192" BorderBrush="#FF0860C8" Background="#FF1E1E1E"
                                 SelectedValue="{Binding ProjectPreset}"
                                 ItemsSource="{Binding ProjectPresets}"
@@ -357,7 +355,7 @@
                             </Grid>
                             <Grid  IsEnabled="{Binding IsValidClient}"  x:Name="ShieldAccount" HorizontalAlignment="Left" Height="155" Margin="10,13,0,0" VerticalAlignment="Top" Width="546">
                                 <Image HorizontalAlignment="Left" Height="68" Margin="49,43,0,0" VerticalAlignment="Top" Width="58" Source="{DynamicResource UserIcon}"/>
-                                <Label x:Name="ShieldUserName" Content="User loaded by private api key." HorizontalAlignment="Left" Margin="125,39,0,0" VerticalAlignment="Top" Width="161" Foreground="White" FontSize="16" Height="31"/>
+                                <Label x:Name="ShieldUserName" Content="User loaded by private api key." HorizontalAlignment="Left" Margin="122,58,0,0" VerticalAlignment="Top" Width="228" Foreground="White" FontSize="16" Height="31"/>
                                 <Label x:Name="ShieldUserEdition" Content="" HorizontalAlignment="Left" Margin="124,74,0,0" VerticalAlignment="Top" Width="96" Foreground="#72FFFFFF" FontSize="16" Height="34"/>
                                 <Grid.Visibility>
                                     <Binding Converter="{StaticResource BooleanToVisibilityConverter}" Path="IsValidClient"/>

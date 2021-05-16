@@ -625,7 +625,7 @@ namespace ShieldVSExtension.UI_Extensions
                     }
                 }
 
-                throw new Exception("Can't find output file name.");
+                //throw new Exception("Can't find output file name.");
 
                 //TODO: Remove:
                 var outPutPaths =
@@ -647,7 +647,7 @@ namespace ShieldVSExtension.UI_Extensions
                     else if(ProjectType.ToLower().Contains("winexe"))
                     {
                         FileToProtect = 
-                            ProjectFramework.ToLower().Equals("framework") ? 
+                            ProjectFramework.ToLower().Contains("framework") ? 
                                 outPutFiles.FirstOrDefault(x => x.EndsWith(".exe")) : 
                                 outPutFiles.FirstOrDefault(x => x.EndsWith(".dll"));
                     }
