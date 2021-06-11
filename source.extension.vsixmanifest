@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="Shield.62df6510-15e7-4df5-8fbb-fc5f39b8545f" Version="1.0.0.1" Language="en-US" Publisher="Dotnetsafer" />
+        <Identity Id="Shield.62df6510-15e7-4df5-8fbb-fc5f39b8545f" Version="1.0.0.2" Language="en-US" Publisher="Dotnetsafer" />
         <DisplayName>Shield</DisplayName>
         <Description xml:space="preserve">Dotnetsafer Shield is an advanced obfuscator that allows you to protect your .NET applications easily. Protect your brand, guarantee the integrity of your code, avoid manipulation and theft of sensitive data. Shield is compatible with .NET, Xamarin, UWP, .NET Core, .NET Standard, .NET MAUI, .NET 5 and .NET 6. Shield allows you to integrate different protections in your application and is naturally integrated into the compilation process of visual studio.</Description>
         <MoreInfo>https://dotnetsafer.com</MoreInfo>

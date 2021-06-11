@@ -117,7 +117,7 @@ namespace ShieldVSExtension
 
             buildEvents.OnBuildProjConfigDone += BuildEvents_OnBuildProjConfigDone;
 
-            buildEvents.OnBuildDone += (scope, action) => ActivePane();
+            //buildEvents.OnBuildDone += (scope, action) => ActivePane();
 
             var isSolutionLoaded = await IsSolutionLoadedAsync();
 
