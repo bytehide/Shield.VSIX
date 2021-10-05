@@ -33,6 +33,8 @@ namespace ShieldVSExtension.Configuration
          */
         public ProjectPreset ProjectPreset { get; set; } = new ProjectPreset {Id=2, Name = "Balance"};
 
+        public string ShieldProjectEdition { get; set; } = "Keep my plan";
+
         [JsonPropertyName("Projects")]
         public List<ProjectConfiguration> Projects { get; set; } = new List<ProjectConfiguration>();
         public static async Task SaveAsync(SolutionConfiguration configuration, Stream stream)

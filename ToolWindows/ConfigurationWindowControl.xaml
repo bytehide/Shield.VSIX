@@ -3,13 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             d:DataContext="{d:DesignInstance UI_Extensions:ConfigurationViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance UI_Extensions:ProjectViewModel, IsDesignTimeCreatable=True}"
              xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
              xmlns:local="clr-namespace:ShieldVSExtension.ToolWindows" xmlns:PlatformUI="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0" xmlns:Imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging" xmlns:UI_Extensions="clr-namespace:ShieldVSExtension.UI_Extensions" x:Class="ShieldVSExtension.ToolWindows.ConfigurationWindowControl"
              Background="#FF1E1E1E"
              Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
              mc:Ignorable="d"
-             x:Name="ShieldConfiguration" Title="Dotnetsafer Shield Configuration" Width="800" Icon="{DynamicResource ShieldIcon}" ResizeMode="NoResize" Height="590">
+             x:Name="ShieldConfiguration" Title="Dotnetsafer Shield Configuration" Width="800" Icon="{DynamicResource ShieldIcon}" ResizeMode="NoResize" Height="606">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -58,9 +58,9 @@
             <ColumnDefinition Width="13*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical" Grid.ColumnSpan="6" Margin="0,0,-0.488,0">
-            <TabControl x:Name="ShieldControl" Height="552" Background="#FF1E1E1E" BorderBrush="#FF1E1E1E" Foreground="#FF1A1A1A" HorizontalAlignment="Left" Width="793">
+            <TabControl x:Name="ShieldControl" Height="575" Background="#FF1E1E1E" BorderBrush="#FF1E1E1E" Foreground="#FF1A1A1A" HorizontalAlignment="Left" Width="793">
                 <TabItem IsEnabled="{Binding IsValidClient}" Header="Project Configuration" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Background="#FF1E1E1E" FontSize="16" HorizontalAlignment="Right" Width="176" Height="27" Margin="0,-2,-2,0" VerticalAlignment="Top">
-                    <Grid Background="#FF1E1E1E" Margin="0,0,0,-12">
+                    <Grid Background="#FF1E1E1E" Height="537">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="97*"/>
                             <ColumnDefinition Width="690*"/>
@@ -254,17 +254,21 @@
                             </GridSplitter.RenderTransform>
                         </GridSplitter>
                         <Grid HorizontalAlignment="Left" Height="55" Margin="5,7,0,0" VerticalAlignment="Top" Width="780" Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="721*"/>
+                                <ColumnDefinition Width="59*"/>
+                            </Grid.ColumnDefinitions>
                             <TextBox x:Name="ShieldProjectName"  HorizontalAlignment="Left" Height="23" Margin="167,7,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" Background="#FF1E1E1E" BorderBrush="#FF0078D7" Foreground="#CCFFFFFF"
                                 Text="{Binding ShieldProjectName, UpdateSourceTrigger=PropertyChanged}" SelectionBrush="#FF0860C8" FontSize="13"/>
                             <Label Content="Current project name:" HorizontalAlignment="Left" Margin="16,3,0,0" VerticalAlignment="Top" Width="170" Foreground="White" FontSize="14" Height="31"/>
                             <Label Content="Protection Settings:" HorizontalAlignment="Left" Margin="418,4,0,0" VerticalAlignment="Top" Width="159" Foreground="White" FontSize="13" Height="29"/>
-                            <CheckBox ToolTip="It will look for configuration files (shield.json) in the project directory." x:Name="FindCustomSetting" Content="Find manual settings" HorizontalAlignment="Left" Margin="544,34,0,-2" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="23" Width="152"
+                            <CheckBox ToolTip="It will look for configuration files (shield.json) in the project directory." x:Name="FindCustomSetting" Content="Find manual settings" HorizontalAlignment="Left" Margin="544,34,0,0" VerticalAlignment="Top" Background="White" BorderBrush="#FF0078D7" Foreground="White" Height="23" Width="152"
                                       IsChecked="{Binding FindCustomConfigurationFile, Mode=TwoWay}" FontSize="12"/>
                             <ComboBox x:Name="ProtectionsPreset" HorizontalAlignment="Left" Margin="545,8,0,26" Width="192" BorderBrush="#FF0860C8" Background="#FF1E1E1E"
                                 SelectedValue="{Binding ProjectPreset}"
                                 ItemsSource="{Binding ProjectPresets}"
                                 IsReadOnly="True" Text="{Binding ProjectPreset.Name}"
-                                DisplayMemberPath="Name" FontSize="12"/>
+                                DisplayMemberPath="Name" FontSize="12" Grid.ColumnSpan="2"/>
                         </Grid>
                         <Button x:Name="Save" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="578,480,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FF0860C8" BorderBrush="#FF0860C8" Height="25" Click="Save_Click"/>
                         <Button x:Name="Cancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="496,480,0,0" VerticalAlignment="Top" Width="75" Background="#FF1E1E1E" Foreground="#FFA0A0A0" BorderBrush="#FFA0A0A0" Height="25" Click="Cancel_Click"/>
@@ -293,7 +297,17 @@
                                 </TransformGroup>
                             </GridSplitter.RenderTransform>
                         </GridSplitter>
-                        <Label Content="Release, Debug, Custom, * for any" HorizontalAlignment="Left" Margin="91,501,0,-3" VerticalAlignment="Top" Width="154" Foreground="#FF8B8B8B" FontSize="8" Height="31" Grid.ColumnSpan="2" />
+                        <Label Content="Release, Debug, Custom, * for any" HorizontalAlignment="Left" Margin="91,501,0,-3" VerticalAlignment="Top" Width="154" Foreground="#FF8B8B8B" FontSize="9" Height="31" Grid.ColumnSpan="2" />
+                        <Label Content="Edition:" HorizontalAlignment="Left" Margin="156,476,0,0" VerticalAlignment="Top" Width="81" Foreground="#FF8B8B8B" FontSize="14" Height="31"
+                            Grid.Column="1" />
+                        <ComboBox x:Name="ProjectEdition" HorizontalAlignment="Left" Margin="217,480,0,34" Width="170" BorderBrush="#FF0860C8" Background="#FF1E1E1E"
+                                SelectedValue="{Binding ProjectEdition}"
+                                ItemsSource="{Binding ProjectEditions}"
+                                IsReadOnly="True" Text="{Binding ShieldProjectEdition}"
+                                FontSize="12" SelectionChanged="ProtectionsPreset_SelectionChanged" Grid.Column="1"/>
+                        <Label Content="Now, you can use a higher edition by redeeming your account credits." HorizontalAlignment="Left" Margin="156,502,0,0" VerticalAlignment="Top" Width="294" Foreground="#FF8B8B8B" FontSize="9" Height="31" Grid.Column="1" />
+                        <Label x:Name="ReadMore" Content="Read more" Margin="436,502,0,0" VerticalAlignment="Top" Width="58" Foreground="#FF0860C8" FontSize="9" HorizontalAlignment="Left" Height="26" Grid.Column="1" MouseDown="ReadMore_MouseDown"/>
+
                     </Grid>
                 </TabItem>
                 <TabItem Header="Account Configuration" Background="#FF1E1E1E" BorderBrush="#FF0860C8" Foreground="#FF0860C8" FontSize="14">
@@ -307,7 +321,6 @@
                         </Grid.ColumnDefinitions>
                         <Grid x:Name="ShieldHeader" Grid.ColumnSpan="5" Margin="0,0,0,399" Background="#FF1E1E1E">
                             <Image Margin="-7,-16.1,105,-2" Source="{DynamicResource ShieldExtensionImage}" UseLayoutRounding="False" ScrollViewer.CanContentScroll="True" Stretch="UniformToFill" Height="130"/>
-                            <Label Content="1.0.0 Beta&#xA;" HorizontalAlignment="Left" Margin="143,67.58,0,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
                         </Grid>
                         <Separator HorizontalAlignment="Left" Height="111" Margin="-63,63,-57,0" VerticalAlignment="Top" Width="907" Grid.ColumnSpan="5"
                                    Grid.Column="0" />
