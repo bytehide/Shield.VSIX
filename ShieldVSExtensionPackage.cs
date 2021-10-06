@@ -290,7 +290,6 @@ namespace ShieldVSExtension
                 Enable.Command.Checked = isEnabled.Value;
             else
                 Enable.Command.Checked = Configuration != null && Configuration.IsEnabled;
-
         }
 
         private void SolutionEventsOnOpened()
@@ -494,11 +493,16 @@ namespace ShieldVSExtension
                       else
                           await WriteLineAsync($"> The settings were customized manually. The application will use the following protections: {string.Join(",", config.Protections)}");
 
-                      if (!string.IsNullOrEmpty(overrideEdition))
-                        config.OverwriteEdition = overrideEdition;
+                      if (!string.IsNullOrEmpty(overrideEdition)){
 
-                      taskConnection.WhereError((error) =>
-                      throw new Exception(error));
+                          config.OverwriteEdition = overrideEdition;
+
+                          await WriteLineAsync($"> This process will be executed under the Shield {overrideEdition} edition, because you configured it in the extension.");
+                          await WriteLineAsync($"> *Remember if you do not have enough credits it will give an error.");
+
+                      }
+
+                      taskConnection.WhereError((error) => throw new Exception(error));
 
 #pragma warning disable VSTHRD101 // Evite delegados asincrónicos no compatibles
                       taskConnection.WhereSuccess(async (ProtectedApplicationDto appDto) =>
@@ -554,12 +558,19 @@ namespace ShieldVSExtension
                   }
                   catch (Exception ex)
                   {
-                      await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                      await ex.LogAsync();
-                      ActivePane();
-                      await WriteLineAsync($"[EXCEPTION] An error occurred while protecting the {projectName} project.");
-                      await WriteLineAsync("The process has been terminated due to an exception, check the 'extensions' output window for exception information.");
-                      await WriteLineAsync($"========== {projectName} ==========");
+                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                        await ex.LogAsync();
+                        ActivePane();
+                        await WriteLineAsync($"#");
+                        await WriteLineAsync($"========= [EXCEPTION] =========");
+                        await WriteLineAsync($"#");
+                        await WriteLineAsync($"#  An error occurred while protecting the {projectName} project.");
+                        await WriteLineAsync($"#");
+                        await WriteLineAsync($"#  -> {ex.Message}");
+                        await WriteLineAsync($"#");
+                        await WriteLineAsync("#  The process has been terminated due to an exception, check the 'extensions' output window for exception information.");
+                        await WriteLineAsync($"#");
+                        await WriteLineAsync($"========== {projectName} ==========");
                   }
               });
         }

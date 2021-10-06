@@ -300,7 +300,7 @@
                         <Label Content="Release, Debug, Custom, * for any" HorizontalAlignment="Left" Margin="91,501,0,-3" VerticalAlignment="Top" Width="154" Foreground="#FF8B8B8B" FontSize="9" Height="31" Grid.ColumnSpan="2" />
                         <Label Content="Edition:" HorizontalAlignment="Left" Margin="156,476,0,0" VerticalAlignment="Top" Width="81" Foreground="#FF8B8B8B" FontSize="14" Height="31"
                             Grid.Column="1" />
-                        <ComboBox x:Name="ProjectEdition" HorizontalAlignment="Left" Margin="217,480,0,34" Width="170" BorderBrush="#FF0860C8" Background="#FF1E1E1E"
+                        <ComboBox ToolTip="If you decide not to subscribe to an advanced edition, you can redeem credits to use superior protections in a specific process, enter your panel to redeem credits or read more about this." x:Name="ProjectEdition" HorizontalAlignment="Left" Margin="217,480,0,34" Width="170" BorderBrush="#FF0860C8" Background="#FF1E1E1E"
                                 SelectedValue="{Binding ProjectEdition}"
                                 ItemsSource="{Binding ProjectEditions}"
                                 IsReadOnly="True" Text="{Binding ShieldProjectEdition}"
