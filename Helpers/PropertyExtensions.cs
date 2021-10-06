@@ -9,7 +9,7 @@ namespace ShieldVSExtension.Helpers
 {
     public static class PropertiesExtensions
     {
-        public static Property GetPropertyOrDefault(this Properties properties, string propertyName)
+        public static Property GetPropertyOrDefault(this EnvDTE.Properties properties, string propertyName)
         {
             try
             {
@@ -21,7 +21,7 @@ namespace ShieldVSExtension.Helpers
             }
         }
 
-        public static T GetPropertyOrDefault<T>(this Properties properties, string propertyName)
+        public static T GetPropertyOrDefault<T>(this EnvDTE.Properties properties, string propertyName)
             where T : class
         {
             var property = GetPropertyOrDefault(properties, propertyName);
@@ -29,7 +29,7 @@ namespace ShieldVSExtension.Helpers
             return (T)property?.Value;
         }
 
-        public static object TryGetPropertyValueOrDefault(this Properties properties, string propertyName)
+        public static object TryGetPropertyValueOrDefault(this EnvDTE.Properties properties, string propertyName)
         {
             try
             {

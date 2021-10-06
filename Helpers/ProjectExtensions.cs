@@ -5,9 +5,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using EnvDTE;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
@@ -281,11 +283,80 @@ namespace ShieldVSExtension.Helpers
             }
         }
 
+        public static bool IsWixProject(this Project project)
+        {
+            return project.Kind != null && project.Kind.Equals("{930C7802-8A8C-48F9-8165-68863BCCD9DD}", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string GetUniqueName(this Project project)
+        {
+            if (project.IsWixProject())
+            {
+                // Wix project doesn't offer UniqueName property
+                return project.FullName;
+            }
+
+            try
+            {
+                return project.UniqueName;
+            }
+            catch (COMException)
+            {
+                return project.FullName;
+            }
+        }
+
+        public static IVsHierarchy ToVsHierarchy(this Project project, IVsSolution solution)
+        {
+            // Get the vs solution
+            int hr = solution.GetProjectOfUniqueName(project.GetUniqueName(), out var hierarchy);
+
+            if (hr != VSConstants.S_OK)
+            {
+                Marshal.ThrowExceptionForHR(hr);
+            }
+
+            return hierarchy;
+        }
+
         public static async Task<Dictionary<string,string>> GetEvaluatedPropertiesAsync(this Project project)
         {
             try
             {
-                var context = (IVsBrowseObjectContext) project;
+                var solution = Services.Services.GetSolution();
+
+                var context = project as IVsBrowseObjectContext;
+                if (context == null)
+                {
+                    var hierarchy = project as IVsHierarchy ?? project.ToVsHierarchy(solution);
+                    int v = hierarchy.GetProperty((uint)VSConstants.VSITEMID.Root, (int)__VSHPROPID.VSHPROPID_ExtObject, out var extObject); 
+                    Project dteProject = extObject as Project;
+                    context = dteProject.Object as IVsBrowseObjectContext ?? hierarchy as IVsBrowseObjectContext;
+                }
+
+                if (context is null)
+                {
+                    context = project.Object as IVsBrowseObjectContext;
+                    if (context == null)
+                    {
+                        IVsHierarchy hierarchy = project.ToVsHierarchy(solution);
+                        context = hierarchy as IVsBrowseObjectContext;
+
+                        if (context is null && hierarchy != null)
+                        {
+                            object extObject;
+                            if (ErrorHandler.Succeeded(hierarchy.GetProperty((uint)VSConstants.VSITEMID.Root, (int)__VSHPROPID.VSHPROPID_ExtObject, out extObject)))
+                            {
+                                Project dteProject = extObject as Project;
+                                if (dteProject != null)
+                                {
+                                    context = dteProject.Object as IVsBrowseObjectContext;
+                                }
+                            }
+                        }
+                    }
+                    
+                }
                 var unConfiguredProject = context.UnconfiguredProject;
                 var configuredProject = await unConfiguredProject.GetSuggestedConfiguredProjectAsync();
                 var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();

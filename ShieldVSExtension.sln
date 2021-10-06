@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShieldVSExtension", "ShieldVSExtension.csproj", "{D7AB4724-AB57-43E3-A95D-84EBBEE21820}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "submodules", "submodules", "{7AB31BBA-F237-4028-842D-A0131AE3F0CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shield.Client.Fr", "Shield.Client\Shield.Client.Fr\Shield.Client.Fr.csproj", "{9C8C99C5-7E90-4E7E-95AE-6654EDFB3EB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shield.Client", "Shield.Client\Client\Shield.Client.csproj", "{4A3B982F-00FE-4425-945F-9AD9D2ADB2AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,16 +19,16 @@ Global
 		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C8C99C5-7E90-4E7E-95AE-6654EDFB3EB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C8C99C5-7E90-4E7E-95AE-6654EDFB3EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C8C99C5-7E90-4E7E-95AE-6654EDFB3EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C8C99C5-7E90-4E7E-95AE-6654EDFB3EB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A3B982F-00FE-4425-945F-9AD9D2ADB2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A3B982F-00FE-4425-945F-9AD9D2ADB2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A3B982F-00FE-4425-945F-9AD9D2ADB2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A3B982F-00FE-4425-945F-9AD9D2ADB2AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9C8C99C5-7E90-4E7E-95AE-6654EDFB3EB0} = {7AB31BBA-F237-4028-842D-A0131AE3F0CC}
+		{4A3B982F-00FE-4425-945F-9AD9D2ADB2AA} = {7AB31BBA-F237-4028-842D-A0131AE3F0CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BA3B3F2-587E-43E1-BEC6-C50EE5D37BD3}

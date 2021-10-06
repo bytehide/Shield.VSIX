@@ -217,6 +217,25 @@ namespace ShieldVSExtension.UI_Extensions
 
         #endregion
 
+        #region ShieldProjectEdition Property
+
+        private string _shieldProjectEdition;
+
+        public string ShieldProjectEdition
+        {
+            get { return _shieldProjectEdition; }
+            set
+            {
+                if (_shieldProjectEdition == value)
+                    return;
+
+                _shieldProjectEdition = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #region BuildConfiguration Property
 
         private string _buildConfiguration;
@@ -242,6 +261,14 @@ namespace ShieldVSExtension.UI_Extensions
         {
             get { return _projectPresets; }
             set { _projectPresets = value; }
+        }
+
+        private ObservableCollection<string> _projectEditions;
+
+        public ObservableCollection<string> ProjectEditions
+        {
+            get { return _projectEditions; }
+            set { _projectEditions = value; }
         }
 
 
@@ -290,14 +317,22 @@ namespace ShieldVSExtension.UI_Extensions
             Projects = projects;
             ProjectPresets = new ObservableCollection<ProjectPreset>
             {
-                new ProjectPreset {Id=1, Name="Maximum"}
+                  new ProjectPreset {Id=1, Name="Maximum"}
                 , new ProjectPreset {Id=2,Name="Balance"}
                 , new ProjectPreset {Id=3, Name="Optimized"}
+            };
+            ProjectEditions = new ObservableCollection<string>
+            {
+               "Keep my plan",
+               "Essentials",
+               "Professional",
+               "Enterprise"
             };
             TargetDirectory = solutionConfiguration.TargetDirectory;
             CreateShieldProjectIfNotExists = solutionConfiguration.CreateShieldProjectIfNotExists;
             FindCustomConfigurationFile = solutionConfiguration.FindCustomConfigurationFile;
             ProjectPreset = solutionConfiguration.ProjectPreset;
+            ShieldProjectEdition = solutionConfiguration.ShieldProjectEdition;
             ShieldProjectName = solutionConfiguration.ShieldProjectName;
             BuildConfiguration = solutionConfiguration.BuildConfiguration;
             SelectedProjects = new ObservableCollection<ProjectViewModel>();
@@ -377,6 +412,7 @@ namespace ShieldVSExtension.UI_Extensions
             _solutionConfiguration.CreateShieldProjectIfNotExists = CreateShieldProjectIfNotExists;
             _solutionConfiguration.FindCustomConfigurationFile = FindCustomConfigurationFile;
             _solutionConfiguration.ProjectPreset = ProjectPreset;
+            _solutionConfiguration.ShieldProjectEdition = ShieldProjectEdition;
             _solutionConfiguration.Projects.Clear();
 
             foreach (var projectViewModel in Projects)
@@ -625,7 +661,7 @@ namespace ShieldVSExtension.UI_Extensions
                     }
                 }
 
-                throw new Exception("Can't find output file name.");
+                //throw new Exception("Can't find output file name.");
 
                 //TODO: Remove:
                 var outPutPaths =
@@ -647,7 +683,7 @@ namespace ShieldVSExtension.UI_Extensions
                     else if(ProjectType.ToLower().Contains("winexe"))
                     {
                         FileToProtect = 
-                            ProjectFramework.ToLower().Equals("framework") ? 
+                            ProjectFramework.ToLower().Contains("framework") ? 
                                 outPutFiles.FirstOrDefault(x => x.EndsWith(".exe")) : 
                                 outPutFiles.FirstOrDefault(x => x.EndsWith(".dll"));
                     }

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Shield.Client.Fr;
+using Shield.Client;
 using ShieldVSExtension.Configuration;
 using ShieldVSExtension.InternalSecureStorage;
 using ShieldVSExtension.UI_Extensions;
@@ -15,7 +15,7 @@ namespace ShieldVSExtension.ToolWindows
         private readonly ConfigurationViewModel _viewModel;
         private const string ExtensionConfigurationFile = "ExtensionConfiguration";
 
-        public InternalSecureStorage.SecureLocalStorage LocalStorage { get; set; }
+        public SecureLocalStorage LocalStorage { get; set; }
 
         private ShieldExtensionConfiguration ExtensionConfiguration { get; }
 
@@ -40,7 +40,7 @@ namespace ShieldVSExtension.ToolWindows
                     _ = ShieldClient.CreateInstance(ExtensionConfiguration.ApiToken);
                     _viewModel.IsValidClient = true;
                     ApiKeyBox.Password = ExtensionConfiguration.ApiToken;
-                    ConnectButton.IsEnabled = false;
+                    ConnectButton.Content = ExtensionConfiguration.ApiToken != ApiKeyBox.Password ? "Connect and save" : "Retry connection";
                 }
                 catch (Exception)
                 {
@@ -50,6 +50,7 @@ namespace ShieldVSExtension.ToolWindows
 
             if (!_viewModel.IsValidClient)
                 ShieldControl.SelectedIndex = 1;
+            
 
         }
 
@@ -139,7 +140,7 @@ namespace ShieldVSExtension.ToolWindows
 
         private void ApiKeyBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            ConnectButton.IsEnabled = ExtensionConfiguration.ApiToken != ApiKeyBox.Password;
+            ConnectButton.Content = ExtensionConfiguration.ApiToken != ApiKeyBox.Password ? "Connect and save"  : "Retry connection";
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -192,8 +193,18 @@ namespace ShieldVSExtension.ToolWindows
 
         private void Generate_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://dotnetsafer.com/docs/product/shield-vs/1.0/authentication");
+            System.Diagnostics.Process.Start("https://dotnetsafer.com/docs/product/shield-vs/1.0/Authentication");
       
+        }
+
+        private void ProtectionsPreset_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _viewModel.ShieldProjectEdition = (string)e.AddedItems[0];
+        }
+
+        private void ReadMore_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://dotnetsafer.com/docs/product/shield-vs/1.0/Credits");
         }
     }
 }

@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-  <Metadata>
-    <Identity Id="ShieldVSExtension.62df6510-15e7-4df5-8fbb-fc5f39b8545f" Version="1.0" Language="en-US" Publisher="Juan Alberto Espana" />
-    <DisplayName>ShieldVSExtension</DisplayName>
-    <Description>Empty VSIX Project.</Description>
-  </Metadata>
-  <Installation>
-    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
-  </Installation>
-  <Dependencies>
-    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-  </Dependencies>
-  <Prerequisites>
-    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,17.0)" DisplayName="Visual Studio core editor" />
-  </Prerequisites>
-  <Assets>
-    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-  </Assets>
+    <Metadata>
+        <Identity Id="Shield.62df6510-15e7-4df5-8fbb-fc5f39b8545f" Version="1.1.0.0" Language="en-US" Publisher="Dotnetsafer" />
+        <DisplayName>Shield</DisplayName>
+        <Description xml:space="preserve">Dotnetsafer Shield is an advanced obfuscator that allows you to protect your .NET applications easily. Protect your brand, guarantee the integrity of your code, avoid manipulation and theft of sensitive data. Shield is compatible with .NET, Xamarin, UWP, .NET Core, .NET Standard, .NET MAUI, .NET 5 and .NET 6. Shield allows you to integrate different protections in your application and is naturally integrated into the compilation process of visual studio.</Description>
+        <MoreInfo>https://dotnetsafer.com</MoreInfo>
+        <GettingStartedGuide>Resources\starting.html</GettingStartedGuide>
+        <ReleaseNotes>Resources\starting.html</ReleaseNotes>
+        <Icon>Resources\ShieldExtensionIcon.png</Icon>
+        <PreviewImage>Resources\ShieldPrevirew.png</PreviewImage>
+        <Tags>security, source, vulnerabilities, code, obfuscation, obfuscator, code security, code protection, protection, data protection, encryption, analysis</Tags>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0, 18.0)" />
+        <InstallationTarget Version="[14.0,18.0)" Id="Microsoft.VisualStudio.Pro" />
+        <InstallationTarget Version="[14.0,18.0)" Id="Microsoft.VisualStudio.Enterprise" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[14.0,18.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    </Assets>
 </PackageManifest>
