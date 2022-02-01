@@ -10,7 +10,7 @@ namespace ShieldVSExtension.InternalSecureStorage
     public class SecureLocalStorage : ISecureLocalStorage
     {
         internal ISecureLocalStorageConfig Config { get; }
-        internal Dictionary<string,string> StoredData { get; set; }
+        internal Dictionary<string, string> StoredData { get; set; }
         private byte[] Key { get; }
 
         internal void CreateIfNotExists(string path)
@@ -18,6 +18,7 @@ namespace ShieldVSExtension.InternalSecureStorage
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }
+
         public SecureLocalStorage(ISecureLocalStorageConfig configuration)
         {
             Config = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -56,22 +57,21 @@ namespace ShieldVSExtension.InternalSecureStorage
         }
 
         internal void Read()
-            => StoredData = 
-                File.Exists(Path.Combine(Config.StoragePath, "default")) ?
-                    JsonSerializer.Deserialize<Dictionary<string, string>>(DecryptData(File.ReadAllBytes(Path.Combine(Config.StoragePath,"default")), Key, DataProtectionScope.LocalMachine)) :
-                new Dictionary<string,string>();
-        
+            => StoredData =
+                File.Exists(Path.Combine(Config.StoragePath, "default"))
+                    ? JsonSerializer.Deserialize<Dictionary<string, string>>(DecryptData(File.ReadAllBytes(Path.Combine(Config.StoragePath, "default")), Key, DataProtectionScope.LocalMachine))
+                    : new Dictionary<string, string>();
+
 
         internal void Write()
             => File.WriteAllBytes(Path.Combine(Config.StoragePath, "default"),
-                EncryptData(JsonSerializer.Serialize(StoredData), Key, DataProtectionScope.LocalMachine));
+                                  EncryptData(JsonSerializer.Serialize(StoredData), Key, DataProtectionScope.LocalMachine));
 
         public int Count => StoredData.Count;
 
         public void Clear()
-        
-         => File.Delete(Path.Combine(Config.StoragePath, "default"));
-        
+            => File.Delete(Path.Combine(Config.StoragePath, "default"));
+
 
         public bool Exists()
             => File.Exists(Path.Combine(Config.StoragePath, "default"));
@@ -80,19 +80,16 @@ namespace ShieldVSExtension.InternalSecureStorage
             => StoredData.ContainsKey(key);
 
         public string Get(string key)
-        
             => !StoredData.TryGetValue(key, out var value) ? default : JsonSerializer.Deserialize<string>(value ?? string.Empty);
-        
+
 
         public T Get<T>(string key)
-        
             => !StoredData.TryGetValue(key, out var value) ? default : JsonSerializer.Deserialize<T>(value ?? string.Empty);
-        
+
 
         public IReadOnlyCollection<string> Keys()
-        
             => StoredData.Keys;
-        
+
 
         public void Remove(string key)
         {
@@ -102,8 +99,7 @@ namespace ShieldVSExtension.InternalSecureStorage
 
         public void Set<T>(string key, T data)
         {
-            if(Exists(key))
-                Remove(key);
+            if (Exists(key)) Remove(key);
             StoredData.Add(key, JsonSerializer.Serialize(data));
             Write();
         }

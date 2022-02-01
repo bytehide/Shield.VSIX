@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft;
 using ShieldSolutionConfiguration = ShieldVSExtension.Configuration.SolutionConfiguration;
 using Task = System.Threading.Tasks.Task;
 using Shield.Client.Models;
@@ -84,7 +85,7 @@ namespace ShieldVSExtension
 
         private ShieldExtensionConfiguration ExtensionConfiguration { get; set; }
 
-        #region Package Members
+#region Package Members
 
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
@@ -95,7 +96,6 @@ namespace ShieldVSExtension
         /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-
             var tt = AppDomain.CurrentDomain.GetAssemblies().ToList();
 
             // When initialized asynchronously, the current thread may be a background thread at this point.
@@ -105,6 +105,7 @@ namespace ShieldVSExtension
             await ConfigurationWindowCommand.InitializeAsync(this);
 
             Dte = (DTE2)await GetServiceAsync(typeof(DTE));
+            Assumes.Present(Dte);
             if (Dte == null) throw new ArgumentNullException(nameof(Dte));
 
             Pane = Dte.ToolWindows.OutputWindow.OutputWindowPanes.Add("Dotnetsafer Shield");
@@ -149,8 +150,8 @@ namespace ShieldVSExtension
             try
             {
                 LocalStorage = new SecureLocalStorage(
-                    new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
-                );
+                                                      new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
+                                                     );
 
                 ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile)
                     ? LocalStorage.Get<ShieldExtensionConfiguration>(ExtensionConfigurationFile)
@@ -192,7 +193,7 @@ namespace ShieldVSExtension
             if (!(await GetServiceAsync(typeof(SVsSolution)) is IVsSolution solService)) throw new ArgumentNullException(nameof(solService));
 
             ErrorHandler.ThrowOnFailure(solService.GetProperty((int)__VSPROPID.VSPROPID_IsSolutionOpen,
-                    out var value));
+                                                               out var value));
 
             return value is bool isSolOpen && isSolOpen;
         }
@@ -223,7 +224,6 @@ namespace ShieldVSExtension
             }
             catch (Exception e)
             {
-
                 ThreadHelper.ThrowIfNotOnUIThread();
 
                 Configuration = new ShieldSolutionConfiguration();
@@ -294,7 +294,7 @@ namespace ShieldVSExtension
 
         private void SolutionEventsOnOpened()
         {
-            Enable.Command.Visible = true;
+            Enable.Command.Visible                     = true;
             ConfigurationWindowCommand.Command.Visible = true;
 
             if (Configuration == null)
@@ -305,231 +305,228 @@ namespace ShieldVSExtension
 
         public void BuildEvents_OnBuildProjConfigDone(string projectName, string projectConfig, string platform, string solutionConfig, bool success)
         {
-            JoinableTaskFactory.RunAsync(async delegate {
-                  await JoinableTaskFactory.SwitchToMainThreadAsync(DisposalToken);
+            _ = JoinableTaskFactory.RunAsync(async delegate
+            {
+                await JoinableTaskFactory.SwitchToMainThreadAsync(DisposalToken);
 
-                  if (Configuration.BuildConfiguration != "*" && !string.Equals(projectConfig,
-                      Configuration.BuildConfiguration, StringComparison.CurrentCultureIgnoreCase))
-                      return;
+                if (Configuration.BuildConfiguration != "*" && !string.Equals(projectConfig,
+                                                                              Configuration.BuildConfiguration, StringComparison.CurrentCultureIgnoreCase))
+                    return;
 
-                  if (!success || Configuration == null || !Configuration.IsEnabled)
-                      return;
+                if (!success || Configuration == null || !Configuration.IsEnabled)
+                    return;
 
-                  if (CurrentBuildAction != vsBuildAction.vsBuildActionBuild && CurrentBuildAction != vsBuildAction.vsBuildActionRebuildAll)
-                      return;
+                if (CurrentBuildAction != vsBuildAction.vsBuildActionBuild && CurrentBuildAction != vsBuildAction.vsBuildActionRebuildAll)
+                    return;
 
-                  if (!TryConnectShield())
-                  {
-                      await WriteLineAsync("[ERROR] The Dotnetsafer Shield Api token is invalid.");
-                      await WriteLineAsync(
-                          "> Go to the extension UI to update it, or read our documentation at https://dotnetsafer.com/docs/product/shield-vs/1.0.");
-                      await WriteLineAsync("[ERROR] Cannot continue without valid api token.");
-                      return;
-                  }
+                if (!TryConnectShield())
+                {
+                    await WriteLineAsync("[ERROR] The Dotnetsafer Shield Api token is invalid.");
+                    await WriteLineAsync(
+                                         "> Go to the extension UI to update it, or read our documentation at https://dotnetsafer.com/docs/product/shield-vs/1.0.");
+                    await WriteLineAsync("[ERROR] Cannot continue without valid api token.");
+                    return;
+                }
 
-                  var overrideEdition = Configuration.ShieldProjectEdition == "Keep my plan" ? null : Configuration.ShieldProjectEdition ?? null;
+                var overrideEdition = Configuration.ShieldProjectEdition == "Keep my plan" ? null : Configuration.ShieldProjectEdition ?? null;
 
-                  await WriteLineAsync("#");
-                  await WriteLineAsync("[Reminder] This extension is not intended for deployment, if you need to protect Xamarin, WebApp or Apis applications that have automatic deployment on azure, aws or other servers, use: https://dotnetsafer.com/docs/product/shield-msbuild/1.0.");
-                  await WriteLineAsync("#");
+                await WriteLineAsync("#");
+                await
+                    WriteLineAsync("[Reminder] This extension is not intended for deployment, if you need to protect Xamarin, WebApp or Apis applications that have automatic deployment on azure, aws or other servers, use: https://dotnetsafer.com/docs/product/shield-msbuild/1.0.");
+                await WriteLineAsync("#");
 
-                  var projectConfiguration = Configuration.Projects.FirstOrDefault(p => p.ProjectName == projectName && p.IsEnabled);
-                  if (projectConfiguration == null || string.IsNullOrEmpty(projectConfiguration.FileToProtect))
-                      return;
+                var projectConfiguration = Configuration.Projects.FirstOrDefault(p => p.ProjectName == projectName && p.IsEnabled);
+                if (projectConfiguration == null || string.IsNullOrEmpty(projectConfiguration.FileToProtect))
+                    return;
 
-                  await WriteLineAsync("Protection operation started...");
+                await WriteLineAsync("Protection operation started...");
 
-                  var project = Dte.Solution.GetProjects().FirstOrDefault(p => p.UniqueName == projectConfiguration.ProjectName);
+                var project = Dte.Solution.GetProjects().FirstOrDefault(p => p.UniqueName == projectConfiguration.ProjectName);
 
-                  var sourceDirectory = project.GetFullOutputPath();
+                var sourceDirectory = project.GetFullOutputPath();
 
-                  var rootDirectory = project?.GetDirectory();
+                var rootDirectory = project?.GetDirectory();
 
-                  var file = Path.Combine(sourceDirectory, projectConfiguration.FileToProtect);
+                var file = Path.Combine(sourceDirectory, projectConfiguration.FileToProtect);
 
-                  if (!File.Exists(file))
-                  {
-                      await WriteLineAsync($"[WARNING] Cannot find compiled file in: {file}");
+                if (!File.Exists(file))
+                {
+                    await WriteLineAsync($"[WARNING] Cannot find compiled file in: {file}");
 
-                      var projectInformation = await project.GetEvaluatedPropertiesAsync();
+                    var projectInformation = await project.GetEvaluatedPropertiesAsync();
 
-                      if (!projectInformation.TryGetValue("TargetPath", out var originalFile))
-                      {
-                          await WriteLineAsync("[ERROR] Could not get compiled file for this project.");
-                          return;
-                      }
+                    if (!projectInformation.TryGetValue("TargetPath", out var originalFile))
+                    {
+                        await WriteLineAsync("[ERROR] Could not get compiled file for this project.");
+                        return;
+                    }
 
-                      if (!File.Exists(originalFile))
-                      {
-                          await WriteLineAsync($"[ERROR] The original build file: '{originalFile}' cannot be obtained.");
-                          return;
-                      }
+                    if (!File.Exists(originalFile))
+                    {
+                        await WriteLineAsync($"[ERROR] The original build file: '{originalFile}' cannot be obtained.");
+                        return;
+                    }
 
-                      file = originalFile;
+                    file = originalFile;
 
-                      await WriteLineAsync("[WARNING] The original project file has been obtained, which did not correspond to the configuration file.");
-                  }
+                    await WriteLineAsync("[WARNING] The original project file has been obtained, which did not correspond to the configuration file.");
+                }
 
-                  try
-                  {
-                      await WriteLineAsync($"========== {projectName} ==========");
+                try
+                {
+                    await WriteLineAsync($"========== {projectName} ==========");
 
-                      await WriteLineAsync($"> The {Path.GetFileName(file)} file will be protected...");
+                    await WriteLineAsync($"> The {Path.GetFileName(file)} file will be protected...");
 
-                      await VS.Notifications.StartStatusbarAnimationAsync(StatusAnimation.Build);
+                    await VS.Notifications.StartStatusbarAnimationAsync(StatusAnimation.Build);
 
-                      await VS.Notifications.SetStatusbarTextAsync($"Protecting {Path.GetFileName(file)}...");
+                    await VS.Notifications.SetStatusbarTextAsync($"Protecting {Path.GetFileName(file)}...");
 
-                      //var regexName = RefactorProjectName(projectName);
+                    //var regexName = RefactorProjectName(projectName);
 
-                      var shieldProject = await ShieldApiClient.Project.FindOrCreateExternalProjectAsync(Configuration.ShieldProjectName);
+                    var shieldProject = await ShieldApiClient.Project.FindOrCreateExternalProjectAsync(Configuration.ShieldProjectName);
 
-                      await WriteLineAsync(
-                          $"> The project has been linked to your Dotnetsafer account with the name '{Configuration.ShieldProjectName}'.");
+                    await WriteLineAsync(
+                                         $"> The project has been linked to your Dotnetsafer account with the name '{Configuration.ShieldProjectName}'.");
 
-                      var dependencies = project.GetReferences();
+                    var dependencies = project.GetReferences();
 
-                      var moduleCtx = ModuleDef.CreateModuleContext();
+                    var moduleCtx = ModuleDef.CreateModuleContext();
 
-                      var bytes = File.ReadAllBytes(file);
+                    var bytes = File.ReadAllBytes(file);
 
-                      var module = ModuleDefMD.Load(bytes, moduleCtx);
+                    var module = ModuleDefMD.Load(bytes, moduleCtx);
 
-                      var referencies = module.GetAssemblyRefs().ToList();
+                    var referencies = module.GetAssemblyRefs().ToList();
 
-                      var requiredReferencies = dependencies.Where(
-                          dp => referencies.Any(
-                              rf => string.Equals(rf.FullName, dp.strongInfo, StringComparison.InvariantCultureIgnoreCase))
-                                || referencies.Any(rf =>
-                                    !string.IsNullOrEmpty(dp.strongInfo) &&
-                                    dp.strongInfo.ToLowerInvariant().Contains(".csproj")
-                                    && dp.strongInfo.ToLowerInvariant().Contains(rf.Version.ToString())
-                                    && dp.strongInfo.ToLowerInvariant().Contains(rf.Name.ToLowerInvariant())));
+                    var requiredReferencies = dependencies.Where(
+                                                                 dp => referencies.Any(
+                                                                                       rf => string.Equals(rf.FullName, dp.strongInfo, StringComparison.InvariantCultureIgnoreCase))
+                                                                    || referencies.Any(rf =>
+                                                                                           !string.IsNullOrEmpty(dp.strongInfo) &&
+                                                                                           dp.strongInfo.ToLowerInvariant().Contains(".csproj")
+                                                                                        && dp.strongInfo.ToLowerInvariant().Contains(rf.Version.ToString())
+                                                                                        && dp.strongInfo.ToLowerInvariant().Contains(rf.Name.ToLowerInvariant())));
 
-                      var discoverDependencies = requiredReferencies.ToList();
+                    var discoverDependencies = requiredReferencies.ToList();
 
-                      await WriteLineAsync(
-                          $"> {discoverDependencies.Count} dependencies have been found, they will be used to process the application.");
+                    await WriteLineAsync(
+                                         $"> {discoverDependencies.Count} dependencies have been found, they will be used to process the application.");
 
-                      await WriteLineAsync("> Analyzing the application...");
+                    await WriteLineAsync("> Analyzing the application...");
 
-                      var uploadApplicationDirectly = await ShieldApiClient.Application.UploadApplicationDirectlyAsync(
-                          shieldProject.Key, file
-                          , !discoverDependencies.Any() ? null : discoverDependencies.Select(dep => dep.path).ToList());
+                    var uploadApplicationDirectly = await ShieldApiClient.Application.UploadApplicationDirectlyAsync(
+                                                                                                                     shieldProject.Key, file
+                                                                                                                     , !discoverDependencies.Any() ? null : discoverDependencies.Select(dep => dep.path).ToList());
 
-                      if (uploadApplicationDirectly.RequiresDependencies ||
-                          string.IsNullOrEmpty(uploadApplicationDirectly.ApplicationBlob))
-                      {
+                    if (uploadApplicationDirectly.RequiresDependencies ||
+                        string.IsNullOrEmpty(uploadApplicationDirectly.ApplicationBlob))
+                    {
+                        await WriteLineAsync("[ERROR] Some of the required dependencies could not be loaded.");
 
-                          await WriteLineAsync("[ERROR] Some of the required dependencies could not be loaded.");
+                        foreach (var dependency in uploadApplicationDirectly.RequiredDependencies)
+                            await WriteLineAsync($"     > {dependency} could not be found.");
 
-                          foreach (var dependency in uploadApplicationDirectly.RequiredDependencies)
-                              await WriteLineAsync($"     > {dependency} could not be found.");
+                        throw new Exception("Dependencies required."); //TODO: Inform UI
+                    }
 
-                          throw new Exception("Dependencies required."); //TODO: Inform UI
-                      }
+                    var appBlob = uploadApplicationDirectly.ApplicationBlob;
 
-                      var appBlob = uploadApplicationDirectly.ApplicationBlob;
+                    var connection = ShieldApiClient.Connector.CreateQueueConnection();
 
-                      var connection = ShieldApiClient.Connector.CreateQueueConnection();
+                    var taskConnection = ShieldApiClient.Connector.InstanceSseConnector();
 
-                      var taskConnection = ShieldApiClient.Connector.InstanceSseConnector();
+                    var status = 1;
 
-                      var status = 1;
+                    taskConnection.SetDefaultLogger((message, level, time) => ThreadHelper.JoinableTaskFactory.RunAsync(async () => await WriteLineAsync($"> Task [{status++}] => {message}")));
 
-                      taskConnection.SetDefaultLogger((message, level, time) => ThreadHelper.JoinableTaskFactory.RunAsync(async () => await WriteLineAsync($"> Task [{status++}] => {message}")));
+                    ApplicationConfigurationDto config = null;
 
-                      ApplicationConfigurationDto config = null;
+                    if (Configuration.FindCustomConfigurationFile)
+                    {
+                        var foundAppConfig =
+                            ShieldApiClient.Configuration.FindApplicationConfiguration(rootDirectory, Path.GetFileName(file)) ??
+                            ShieldApiClient.Configuration.FindApplicationConfiguration(rootDirectory);
 
-                      if (Configuration.FindCustomConfigurationFile)
-                      {
-                          var foundAppConfig =
-                              ShieldApiClient.Configuration.FindApplicationConfiguration(rootDirectory, Path.GetFileName(file)) ??
-                              ShieldApiClient.Configuration.FindApplicationConfiguration(rootDirectory);
+                        var foundProjectConfig =
+                            ShieldApiClient.Configuration.FindProjectConfiguration(rootDirectory,
+                                                                                   Configuration.ShieldProjectName) ??
+                            ShieldApiClient.Configuration.FindProjectConfiguration(rootDirectory);
 
-                          var foundProjectConfig =
-                              ShieldApiClient.Configuration.FindProjectConfiguration(rootDirectory,
-                                  Configuration.ShieldProjectName) ??
-                              ShieldApiClient.Configuration.FindProjectConfiguration(rootDirectory);
+                        if (foundAppConfig != null && foundAppConfig.InheritFromProject && foundProjectConfig != null)
+                        {
+                            if (foundProjectConfig.ProjectPreset.ToLower() == "custom")
+                            {
+                                config = ShieldApiClient.Configuration.MakeApplicationCustomConfiguration(
+                                                                                                          foundProjectConfig.Protections.ToArray());
 
-                          if (foundAppConfig != null && foundAppConfig.InheritFromProject && foundProjectConfig != null)
-                          {
-                              if (foundProjectConfig.ProjectPreset.ToLower() == "custom")
-                              {
-                                  config = ShieldApiClient.Configuration.MakeApplicationCustomConfiguration(
-                                      foundProjectConfig.Protections.ToArray());
+                                await WriteLineAsync("> A configuration from the parent project has been loaded dynamically.");
+                            }
+                            else
+                            {
+                                config = ShieldApiClient.Configuration.MakeApplicationConfiguration(
+                                                                                                    foundProjectConfig.ProjectPreset.ToPreset());
 
-                                  await WriteLineAsync("> A configuration from the parent project has been loaded dynamically.");
-                              }
-                              else
-                              {
-                                  config = ShieldApiClient.Configuration.MakeApplicationConfiguration(
-                                      foundProjectConfig.ProjectPreset.ToPreset());
+                                await WriteLineAsync("> The application configuration has been loaded dynamically.");
+                            }
+                        }
+                        else if (foundAppConfig != null)
+                            config = foundAppConfig;
+                    }
 
-                                  await WriteLineAsync("> The application configuration has been loaded dynamically.");
-                              }
-                          }
-                          else if (foundAppConfig != null)
-                              config = foundAppConfig;
-                      }
+                    switch (config)
+                    {
+                        case null when projectConfiguration.InheritFromProject:
+                            config =
+                                ShieldApiClient.Configuration.MakeApplicationConfiguration(Configuration.ProjectPreset.Name
+                                                                                                        .ToPreset());
+                            await WriteLineAsync("> The application configuration has been created based on the project from visual studio.");
+                            break;
+                        case null:
+                            config = ShieldApiClient.Configuration.MakeApplicationConfiguration(projectConfiguration.ApplicationPreset.Name
+                                                                                                                    .ToPreset());
+                            await WriteLineAsync("> The application configuration has been created from visual studio.");
+                            break;
+                    }
 
-                      switch (config)
-                      {
-                          case null when projectConfiguration.InheritFromProject:
-                              config =
-                                  ShieldApiClient.Configuration.MakeApplicationConfiguration(Configuration.ProjectPreset.Name
-                                      .ToPreset());
-                              await WriteLineAsync("> The application configuration has been created based on the project from visual studio.");
-                              break;
-                          case null:
-                              config = ShieldApiClient.Configuration.MakeApplicationConfiguration(projectConfiguration.ApplicationPreset.Name
-                                  .ToPreset());
-                              await WriteLineAsync("> The application configuration has been created from visual studio.");
-                              break;
-                      }
+                    if (config.ProjectPreset != "custom")
+                        await WriteLineAsync($"> The application will be protected with the preset: {config.ProjectPreset}");
+                    else
+                        await WriteLineAsync($"> The settings were customized manually. The application will use the following protections: {string.Join(",", config.Protections)}");
 
-                      if (config.ProjectPreset != "custom")
-                          await WriteLineAsync($"> The application will be protected with the preset: {config.ProjectPreset}");
-                      else
-                          await WriteLineAsync($"> The settings were customized manually. The application will use the following protections: {string.Join(",", config.Protections)}");
+                    if (!string.IsNullOrEmpty(overrideEdition))
+                    {
+                        config.OverwriteEdition = overrideEdition;
 
-                      if (!string.IsNullOrEmpty(overrideEdition)){
+                        await WriteLineAsync($"> This process will be executed under the Shield {overrideEdition} edition, because you configured it in the extension.");
+                        await WriteLineAsync($"> *Remember if you do not have enough credits it will give an error.");
+                    }
 
-                          config.OverwriteEdition = overrideEdition;
-
-                          await WriteLineAsync($"> This process will be executed under the Shield {overrideEdition} edition, because you configured it in the extension.");
-                          await WriteLineAsync($"> *Remember if you do not have enough credits it will give an error.");
-
-                      }
-
-                      taskConnection.WhereError((error) => throw new Exception(error));
+                    taskConnection.WhereError((error) => throw new Exception(error));
 
 #pragma warning disable VSTHRD101 // Evite delegados asincrónicos no compatibles
-                      taskConnection.WhereSuccess(async (ProtectedApplicationDto appDto) =>
-                      {
-                          await WriteLineAsync("[DONE] The application has been successfully protected.").ConfigureAwait(false);
+                    taskConnection.WhereSuccess(async (ProtectedApplicationDto appDto) =>
+                    {
+                        await WriteLineAsync("[DONE] The application has been successfully protected.").ConfigureAwait(false);
 
-                          await WriteLineAsync("Saving...");
+                        await WriteLineAsync("Saving...");
 
-                          var app = ShieldApiClient.Application.DownloadApplicationAsArray(appDto);
+                        var app = await ShieldApiClient.Application.DownloadApplicationAsArrayAsync(appDto);
 
-                          var path = projectConfiguration.ReplaceOriginalFile
-                              ? file
-                              : file.Replace(Path.GetExtension(file), $"_shield{Path.GetExtension(file)}");
+                        var path = projectConfiguration.ReplaceOriginalFile
+                            ? file
+                            : file.Replace(Path.GetExtension(file), $"_shield{Path.GetExtension(file)}");
 
-                          app.SaveOn(path, true);
+                        await app.SaveOnAsync(path, true);
 
-                          await WriteLineAsync($"[SAVED] The application has been saved in: {path}");
+                        await WriteLineAsync($"[SAVED] The application has been saved in: {path}");
 
-                          await WriteLineToOutputAsync($"[{DateTime.Now.ToLongTimeString()}]: [{projectName}] => Saved in: {path}");
-
-
-                      });
+                        await WriteLineToOutputAsync($"[{DateTime.Now.ToLongTimeString()}]: [{projectName}] => Saved in: {path}");
+                    });
 #pragma warning restore VSTHRD101 // Evite delegados asincrónicos no compatibles
 
-                      taskConnection.WhereClose(delegate {
-
-
+                    taskConnection.WhereClose(delegate
+                    {
                         ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
                         {
                             await VS.Notifications.EndStatusbarAnimationAsync(StatusAnimation.Build).ConfigureAwait(false);
@@ -537,42 +534,41 @@ namespace ShieldVSExtension
                         });
 
                         ActiveOutputPane();
-
-                      });
+                    });
 
 #pragma warning disable VSTHRD101 // Evite delegados asincrónicos no compatibles
-                      taskConnection.BeforeConnect = async () => await WriteLineAsync("> Starting Shield to protect file...").ConfigureAwait(false);
+                    taskConnection.BeforeConnect = async () => await WriteLineAsync("> Starting Shield to protect file...").ConfigureAwait(false);
 #pragma warning restore VSTHRD101 // Evite delegados asincrónicos no compatibles
 
 #pragma warning disable VSTHRD101 // Evite delegados asincrónicos no compatibles
-                      taskConnection.OnConnected = async () => await WriteLineAsync("> The file is being protected...").ConfigureAwait(false);
+                    taskConnection.OnConnected = async () => await WriteLineAsync("> The file is being protected...").ConfigureAwait(false);
 #pragma warning restore VSTHRD101 // Evite delegados asincrónicos no compatibles
 
 #pragma warning disable VSTHRD101 // Evite delegados asincrónicos no compatibles
-                      taskConnection.BeforeDisconnect = async () => await WriteLineAsync("> The task has been completed.").ConfigureAwait(false);
+                    taskConnection.BeforeDisconnect = async () => await WriteLineAsync("> The task has been completed.").ConfigureAwait(false);
 #pragma warning restore VSTHRD101 // Evite delegados asincrónicos no compatibles
 
-                      ActivePane();
+                    ActivePane();
 
-                      await taskConnection.ProtectSingleFileAsync(shieldProject.Key, appBlob, config);
-                  }
-                  catch (Exception ex)
-                  {
-                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                        await ex.LogAsync();
-                        ActivePane();
-                        await WriteLineAsync($"#");
-                        await WriteLineAsync($"========= [EXCEPTION] =========");
-                        await WriteLineAsync($"#");
-                        await WriteLineAsync($"#  An error occurred while protecting the {projectName} project.");
-                        await WriteLineAsync($"#");
-                        await WriteLineAsync($"#  -> {ex.Message}");
-                        await WriteLineAsync($"#");
-                        await WriteLineAsync("#  The process has been terminated due to an exception, check the 'extensions' output window for exception information.");
-                        await WriteLineAsync($"#");
-                        await WriteLineAsync($"========== {projectName} ==========");
-                  }
-              });
+                    await taskConnection.ProtectSingleFileAsync(shieldProject.Key, appBlob, config);
+                }
+                catch (Exception ex)
+                {
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                    await ex.LogAsync();
+                    ActivePane();
+                    await WriteLineAsync($"#");
+                    await WriteLineAsync($"========= [EXCEPTION] =========");
+                    await WriteLineAsync($"#");
+                    await WriteLineAsync($"#  An error occurred while protecting the {projectName} project.");
+                    await WriteLineAsync($"#");
+                    await WriteLineAsync($"#  -> {ex.Message}");
+                    await WriteLineAsync($"#");
+                    await WriteLineAsync("#  The process has been terminated due to an exception, check the 'extensions' output window for exception information.");
+                    await WriteLineAsync($"#");
+                    await WriteLineAsync($"========== {projectName} ==========");
+                }
+            });
         }
 
         private string RefactorProjectName(string projectName)
@@ -583,7 +579,7 @@ namespace ShieldVSExtension
                 projectName = split[split.Length - 1];
             }
 
-            var rgx = new Regex("[^a-zA-Z0-9 -]");
+            var rgx       = new Regex("[^a-zA-Z0-9 -]");
             var regexName = rgx.Replace(projectName, "");
 
 
@@ -599,6 +595,6 @@ namespace ShieldVSExtension
             ErrorListProvider.Tasks.Clear();
         }
 
-        #endregion
+#endregion
     }
 }
