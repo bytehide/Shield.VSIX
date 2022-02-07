@@ -15,19 +15,20 @@ namespace ShieldVSExtension.InternalSecureStorage
             {
                 var myProduct =
                     (AssemblyProductAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(),
-                        typeof(AssemblyProductAttribute));
+                                                                           typeof(AssemblyProductAttribute));
                 return myProduct.Product;
             }
-
         }
 
         public string StoragePath => Path.Combine(DefaultPath, ApplicationName);
 
-        public Func<string> BuildLocalSecureKey { get; set; }  = () => new DeviceIdBuilder()
-            .AddMachineName()
-            .AddProcessorId()
-            .AddMotherboardSerialNumber()
-            .AddSystemDriveSerialNumber()
-            .ToString();
+        public Func<string> BuildLocalSecureKey { get; set; } = () => new DeviceIdBuilder()
+                                                                     .AddMachineName()
+                                                                     .AddOsVersion()
+                                                                     .OnWindows(windows => windows
+                                                                                          .AddProcessorId()
+                                                                                          .AddMotherboardSerialNumber()
+                                                                                          .AddSystemDriveSerialNumber())
+                                                                     .ToString();
     }
 }
