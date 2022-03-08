@@ -135,8 +135,7 @@ namespace ShieldVSExtension
 
             solutionPersistenceService.LoadPackageUserOpts(this, ShieldConfiguration);
 
-            if (isSolutionLoaded)
-                SolutionEventsOnOpened();
+            if (isSolutionLoaded) SolutionEventsOnOpened();
 
             solutionEvents.Opened += SolutionEventsOnOpened;
 
@@ -149,9 +148,7 @@ namespace ShieldVSExtension
 
             try
             {
-                LocalStorage = new SecureLocalStorage(
-                                                      new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
-                                                     );
+                LocalStorage = new SecureLocalStorage( new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder());
 
                 ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile)
                     ? LocalStorage.Get<ShieldExtensionConfiguration>(ExtensionConfigurationFile)
