@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.Shell;
 namespace ShieldVSExtension.ToolWindows
 {
     [Guid("23b0bdd9-76b7-4917-a75e-e29a99bcd863")]
-    public class ConfigurationWindow : ToolWindowPane
+    public sealed class ConfigurationWindow : ToolWindowPane
     {
         public ConfigurationWindow() : base(null)
         {

@@ -23,24 +23,22 @@ namespace ShieldVSExtension.ToolWindows
         {
             InitializeComponent();
 
-            _viewModel = viewModel;
+            _viewModel  = viewModel;
             DataContext = viewModel;
 
             LocalStorage = new SecureLocalStorage(
-                new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
-            );
+                                                  new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
+                                                 );
 
-            ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile) ?
-                LocalStorage.Get<ShieldExtensionConfiguration>(ExtensionConfigurationFile) :
-                new ShieldExtensionConfiguration();
+            ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile) ? LocalStorage.Get<ShieldExtensionConfiguration>(ExtensionConfigurationFile) : new ShieldExtensionConfiguration();
 
             if (!string.IsNullOrEmpty(ExtensionConfiguration.ApiToken))
                 try
                 {
-                    _ = ShieldClient.CreateInstance(ExtensionConfiguration.ApiToken);
+                    _                        = ShieldClient.CreateInstance(ExtensionConfiguration.ApiToken);
                     _viewModel.IsValidClient = true;
-                    ApiKeyBox.Password = ExtensionConfiguration.ApiToken;
-                    ConnectButton.Content = ExtensionConfiguration.ApiToken != ApiKeyBox.Password ? "Connect and save" : "Retry connection";
+                    ApiKeyBox.Password       = ExtensionConfiguration.ApiToken;
+                    ConnectButton.Content    = ExtensionConfiguration.ApiToken != ApiKeyBox.Password ? "Connect and save" : "Retry connection";
                 }
                 catch (Exception)
                 {
@@ -50,30 +48,26 @@ namespace ShieldVSExtension.ToolWindows
 
             if (!_viewModel.IsValidClient)
                 ShieldControl.SelectedIndex = 1;
-            
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                _ = ShieldClient.CreateInstance(ApiKeyBox.Password);
-                _viewModel.IsValidClient = true;
+                _                               = ShieldClient.CreateInstance(ApiKeyBox.Password);
+                _viewModel.IsValidClient        = true;
                 ExtensionConfiguration.ApiToken = ApiKeyBox.Password;
-                ShieldControl.SelectedIndex = 0;
+                ShieldControl.SelectedIndex     = 0;
                 SaveExtensionConfiguration();
             }
             catch (Exception)
             {
                 _viewModel.IsValidClient = false;
-                MessageBox.Show("The api key is not valid, check that it has not been revoked and the associated scopes.","Invalid Shield API Key",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("The api key is not valid, check that it has not been revoked and the associated scopes.", "Invalid Shield API Key", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void SaveExtensionConfiguration()
-        => LocalStorage.Set(ExtensionConfigurationFile, ExtensionConfiguration);
-        
+        private void SaveExtensionConfiguration() => LocalStorage.Set(ExtensionConfigurationFile, ExtensionConfiguration);
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -85,7 +79,7 @@ namespace ShieldVSExtension.ToolWindows
             foreach (var item in addedItems)
                 _viewModel.SelectedProjects.Add(item);
         }
-    
+
 
         private void ListBox_Loaded(object sender, RoutedEventArgs e)
         {
@@ -108,7 +102,7 @@ namespace ShieldVSExtension.ToolWindows
             {
                 viewModelSelectedProject.InheritFromProject = false;
                 viewModelSelectedProject.ApplicationPreset = _viewModel.ProjectPresets.First(preset =>
-                    preset.Name.ToLower().Equals(((MenuItem) sender).Header.ToString().ToLower()));
+                                                                                                 preset.Name.ToLower().Equals(((MenuItem)sender).Header.ToString().ToLower()));
             }
         }
 
@@ -130,21 +124,21 @@ namespace ShieldVSExtension.ToolWindows
             }
 
             var files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly)
-                .Select(Path.GetFileName)
-                .OrderByDescending(p => p.StartsWith(projectViewModel.Name))
-                .ThenBy(Path.GetFileNameWithoutExtension)
-                .ToArray();
+                                 .Select(Path.GetFileName)
+                                 .OrderByDescending(p => p.StartsWith(projectViewModel.Name))
+                                 .ThenBy(Path.GetFileNameWithoutExtension)
+                                 .ToArray();
 
             comboBox.ItemsSource = files;
         }
 
         private void ApiKeyBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            ConnectButton.Content = ExtensionConfiguration.ApiToken != ApiKeyBox.Password ? "Connect and save"  : "Retry connection";
+            ConnectButton.Content = ExtensionConfiguration.ApiToken != ApiKeyBox.Password ? "Connect and save" : "Retry connection";
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
-        { 
+        {
             _viewModel.Save();
             DialogResult = true;
             Close();
@@ -152,22 +146,18 @@ namespace ShieldVSExtension.ToolWindows
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
         }
 
         private void InheritConfigFromGlobal_Copy_Checked(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void ProtectionsPresetProject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -194,7 +184,6 @@ namespace ShieldVSExtension.ToolWindows
         private void Generate_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             System.Diagnostics.Process.Start("https://dotnetsafer.com/docs/product/shield-vs/1.0/Authentication");
-      
         }
 
         private void ProtectionsPreset_SelectionChanged(object sender, SelectionChangedEventArgs e)
