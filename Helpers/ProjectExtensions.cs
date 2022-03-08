@@ -357,25 +357,30 @@ namespace ShieldVSExtension.Helpers
                     }
                     
                 }
-                var unConfiguredProject = context.UnconfiguredProject;
-                var configuredProject = await unConfiguredProject.GetSuggestedConfiguredProjectAsync();
-                var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+                var unConfiguredProject = context?.UnconfiguredProject;
+                if (unConfiguredProject != null)
+                {
+                    var configuredProject = await unConfiguredProject.GetSuggestedConfiguredProjectAsync();
+                    var properties        = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
-                return new Dictionary<string, string>
-                { 
-                    { "ProjectPath",  await properties.GetEvaluatedPropertyValueAsync("ProjectPath").ConfigureAwait(false)},
-                    { "TargetPath",  await properties.GetEvaluatedPropertyValueAsync("TargetPath").ConfigureAwait(false)},
-                    { "TargetName",  await properties.GetEvaluatedPropertyValueAsync("TargetName").ConfigureAwait(false)},
-                    { "TargetExt",  await properties.GetEvaluatedPropertyValueAsync("TargetExt").ConfigureAwait(false)},
-                    { "TargetFileName", await properties.GetEvaluatedPropertyValueAsync("TargetFileName").ConfigureAwait(false)},
-                    { "TargetDir",  await properties.GetEvaluatedPropertyValueAsync("TargetDir").ConfigureAwait(false)},
-                    { "ProjectDir",  await properties.GetEvaluatedPropertyValueAsync("ProjectDir").ConfigureAwait(false)},
-                    { "ProjectName",  await properties.GetEvaluatedPropertyValueAsync("ProjectName").ConfigureAwait(false)},
-                    { "SolutionName",  await properties.GetEvaluatedPropertyValueAsync("ProjectDir").ConfigureAwait(false)},
-                    { "SolutionDir",  await properties.GetEvaluatedPropertyValueAsync("SolutionDir").ConfigureAwait(false)},
-                    { "PlatformName",  await properties.GetEvaluatedPropertyValueAsync("ProjectDir").ConfigureAwait(false)},
-                    { "ConfigurationName",  await properties.GetEvaluatedPropertyValueAsync("ConfigurationName").ConfigureAwait(false)},
-                };
+                    return new Dictionary<string, string>
+                    { 
+                        { "ProjectPath",  await properties.GetEvaluatedPropertyValueAsync("ProjectPath").ConfigureAwait(false)},
+                        { "TargetPath",  await properties.GetEvaluatedPropertyValueAsync("TargetPath").ConfigureAwait(false)},
+                        { "TargetName",  await properties.GetEvaluatedPropertyValueAsync("TargetName").ConfigureAwait(false)},
+                        { "TargetExt",  await properties.GetEvaluatedPropertyValueAsync("TargetExt").ConfigureAwait(false)},
+                        { "TargetFileName", await properties.GetEvaluatedPropertyValueAsync("TargetFileName").ConfigureAwait(false)},
+                        { "TargetDir",  await properties.GetEvaluatedPropertyValueAsync("TargetDir").ConfigureAwait(false)},
+                        { "ProjectDir",  await properties.GetEvaluatedPropertyValueAsync("ProjectDir").ConfigureAwait(false)},
+                        { "ProjectName",  await properties.GetEvaluatedPropertyValueAsync("ProjectName").ConfigureAwait(false)},
+                        { "SolutionName",  await properties.GetEvaluatedPropertyValueAsync("ProjectDir").ConfigureAwait(false)},
+                        { "SolutionDir",  await properties.GetEvaluatedPropertyValueAsync("SolutionDir").ConfigureAwait(false)},
+                        { "PlatformName",  await properties.GetEvaluatedPropertyValueAsync("ProjectDir").ConfigureAwait(false)},
+                        { "ConfigurationName",  await properties.GetEvaluatedPropertyValueAsync("ConfigurationName").ConfigureAwait(false)},
+                    };
+                }
+
+                return new Dictionary<string, string>();
             }
             catch
             { 
