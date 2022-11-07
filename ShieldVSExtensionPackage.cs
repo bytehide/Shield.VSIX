@@ -399,7 +399,7 @@ namespace ShieldVSExtension
 
                       var requiredReferencies = dependencies.Where(
                           dp => referencies.Any(
-                              rf => string.Equals(rf.FullName, dp.strongInfo, StringComparison.InvariantCultureIgnoreCase))
+                              rf => string.Equals(rf.FullName, dp.reference, StringComparison.InvariantCultureIgnoreCase))
                                 || referencies.Any(rf =>
                                     !string.IsNullOrEmpty(dp.strongInfo) &&
                                     dp.strongInfo.ToLowerInvariant().Contains(".csproj")
