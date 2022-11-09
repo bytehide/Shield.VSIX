@@ -24,6 +24,7 @@ using System.Windows;
 using ShieldSolutionConfiguration = ShieldVSExtension.Configuration.SolutionConfiguration;
 using Task = System.Threading.Tasks.Task;
 using Shield.Client.Models;
+using Shield.Client.Helpers;
 
 namespace ShieldVSExtension
 {
@@ -399,7 +400,8 @@ namespace ShieldVSExtension
 
                       var requiredReferencies = dependencies.Where(
                           dp => referencies.Any(
-                              rf => string.Equals(rf.FullName, dp.reference, StringComparison.InvariantCultureIgnoreCase))
+                              rf => string.Equals(rf.FullName, dp.reference, StringComparison.InvariantCultureIgnoreCase) ||
+                               string.Equals(rf.FullName, dp.strongInfo, StringComparison.InvariantCultureIgnoreCase))
                                 || referencies.Any(rf =>
                                     !string.IsNullOrEmpty(dp.strongInfo) &&
                                     dp.strongInfo.ToLowerInvariant().Contains(".csproj")
@@ -502,7 +504,7 @@ namespace ShieldVSExtension
 
                       }
 
-                      taskConnection.WhereError((error) => throw new Exception(error));
+                      taskConnection.WhereError((error) => throw new ShieldProtectionException(error));
 
 #pragma warning disable VSTHRD101 // Evite delegados asincrónicos no compatibles
                       taskConnection.WhereSuccess(async (ProtectedApplicationDto appDto) =>

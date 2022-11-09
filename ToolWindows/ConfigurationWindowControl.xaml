@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             d:DataContext="{d:DesignInstance UI_Extensions:ProjectViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance UI_Extensions:ConfigurationViewModel, IsDesignTimeCreatable=True}"
              xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
              xmlns:local="clr-namespace:ShieldVSExtension.ToolWindows" xmlns:PlatformUI="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0" xmlns:Imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging" xmlns:UI_Extensions="clr-namespace:ShieldVSExtension.UI_Extensions" x:Class="ShieldVSExtension.ToolWindows.ConfigurationWindowControl"
              Background="#FF1E1E1E"

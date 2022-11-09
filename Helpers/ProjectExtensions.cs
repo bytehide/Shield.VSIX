@@ -3,18 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using dnlib.DotNet;
 using EnvDTE;
+using EnvDTE80;
+using Microsoft.Build.Evaluation;
+
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using ShieldVSExtension.Contracts;
 using VSLangProj;
+using Project = EnvDTE.Project;
 
 namespace ShieldVSExtension.Helpers
 {
@@ -186,7 +193,7 @@ namespace ShieldVSExtension.Helpers
         /// <param name="project">The project.</param>
         /// <param name="filePath">File path, relative to the <paramref name="project"/> root.</param>
         /// <returns>The found file or <c>null</c>.</returns>
-        public static ProjectItem FindProjectItem(this Project project, string filePath)
+        public static EnvDTE.ProjectItem FindProjectItem(this Project project, string filePath)
         {
             return project.ProjectItems.FindProjectItem(filePath);
         }
@@ -615,7 +622,7 @@ namespace ShieldVSExtension.Helpers
                 return true;
             }
 
-            if (project.ProjectItems != null && project.ProjectItems.Cast<ProjectItem>().Any(x => x.ProjectItemIsDirty()))
+            if (project.ProjectItems != null && project.ProjectItems.Cast<EnvDTE.ProjectItem>().Any(x => x.ProjectItemIsDirty()))
             {
                 return true;
             }
@@ -794,25 +801,107 @@ namespace ShieldVSExtension.Helpers
 
             return ordered.Select(key => rootProjects[key]).ToArray();
         }
+        
+        internal static string ResolveAssemblyName(string path)
+        {
+            try
+            {
+                var moduleCtx = ModuleDef.CreateModuleContext();
+
+                var bytes = File.ReadAllBytes(path);
+
+                var module = ModuleDefMD.Load(bytes, moduleCtx);
+
+                var name = module.Assembly?.FullName;
+
+                module.Dispose();
+
+                return name ?? null;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+           
+        }
+
         public static List<(string reference, string strongInfo, string path)> GetReferences(this Project project)
         {
-            if (!(project?.Object is VSProject vsProject)) return null;
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            var dte = Services.Services.Dte2;
 
             var list =
-                new List<(string reference, string strongInfo, string path)>();
+               new List<(string reference, string strongInfo, string path)>();
+
+            foreach (Project projects in dte.Solution.Projects)
+            {
+                if (!(projects.Object is VSProject vsProj) || vsProj.References == null)
+                {
+                    // Project not loaded
+                    continue;
+                }
+
+                foreach (Reference reference in vsProj.References)
+                {
+                    if (reference.SourceProject != null
+                        || reference.Type != prjReferenceType.prjReferenceTypeAssembly)
+                    {
+                        if (reference.StrongName)
+                            //System.Configuration, Version=2.0.0.0,
+                            //Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A
+                            list.Add((reference.Identity,
+                                reference.Identity +
+                                ", Version=" + reference.Version +
+                                ", Culture=" + (string.IsNullOrEmpty(reference.Culture) ?
+                                    "neutral" : reference.Culture) +
+                                ", PublicKeyToken=" + reference.PublicKeyToken,
+                                reference.Path));
+                        else
+                        {
+                            list.Add((reference.Identity, ResolveAssemblyName(reference.Path), reference.Path));
+                        }
+                    }
+
+                    if (reference.StrongName)
+                        //System.Configuration, Version=2.0.0.0,
+                        //Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A
+                        list.Add((reference.Identity,
+                            reference.Identity +
+                            ", Version=" + reference.Version +
+                            ", Culture=" + (string.IsNullOrEmpty(reference.Culture) ?
+                                "neutral" : reference.Culture) +
+                            ", PublicKeyToken=" + reference.PublicKeyToken,
+                            reference.Path));
+                    else
+                        list.Add((reference.Identity, ResolveAssemblyName(reference.Path), reference.Path));
+                }
+            }
+
+            if (!(project?.Object is VSProject vsProject)) return list;
+
             foreach (Reference reference in vsProject.References)
-                if (reference.StrongName)
-                    //System.Configuration, Version=2.0.0.0,
-                    //Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A
-                    list.Add((reference.Identity,
+                if (reference.StrongName) {
+
+                    var item = (reference.Identity,
                         reference.Identity +
                         ", Version=" + reference.Version +
                         ", Culture=" + (string.IsNullOrEmpty(reference.Culture) ?
                             "neutral" : reference.Culture) +
                         ", PublicKeyToken=" + reference.PublicKeyToken,
-                        reference.Path));
+                        reference.Path);
+
+                    if (!list.Contains(item))
+                        list.Add(item);
+                }
                 else
-                    list.Add((reference.Identity, null, reference.Path));
+                {
+                    var item2 = (reference.Identity, ResolveAssemblyName(reference.Path), reference.Path);
+                    if (list.Contains(item2))
+                    list.Add(item2);
+                }
+                  
             return list;
         }
         public static IEnumerable<AssemblyName> CollectSettings(EnvDTE.Project project)
@@ -835,8 +924,7 @@ namespace ShieldVSExtension.Helpers
                 }
             }
         }
-
-        public static string GetFullName(VSLangProj.Reference reference)
+        public static string GetFullName(Reference reference)
         {
             return string.Format("{ 0}, Version ={ 1}.{ 2}.{ 3}.{ 4}, Culture ={ 5}, PublicKeyToken ={ 6}",
             reference.Name,
@@ -848,7 +936,6 @@ namespace ShieldVSExtension.Helpers
         {
             return string.IsNullOrWhiteSpace(text) ? alternative : text;
         }
-
         /// Returns all the dependencies of a number of projects (direct and transitive).
         /// Never returns a root, even if roots hold references to each other.
         public static Project[] Dependencies(BuildDependencies buildDependencies, Project[] allProjects, Project[] roots)

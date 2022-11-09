@@ -21,8 +21,6 @@ namespace ShieldVSExtension.Helpers
             }
         }
 
-        static readonly IDisposable NullDisposeAction = new DisposeAction(() => { });
-
         public static void ForEach<ElementT>(this IEnumerable<ElementT> sequence, Action<ElementT> action)
         {
             foreach (var element in sequence)

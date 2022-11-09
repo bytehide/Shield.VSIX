@@ -13,7 +13,6 @@ namespace ShieldVSExtension.Helpers
 
         private const string VsProjectKindMiscFiles = "{66A2671D-8FB5-11D2-AA7E-00C04F688DDE}";
 
-
         public static IEnumerable<Project> GetProjects(this Solution solution)
         {
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();

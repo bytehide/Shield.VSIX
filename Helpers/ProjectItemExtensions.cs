@@ -11,6 +11,8 @@ namespace ShieldVSExtension.Helpers
     {
         public static bool ProjectItemIsDirty(this ProjectItem projectItem)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+
             if (projectItem.IsDirty)
             {
                 return true;
