@@ -74,10 +74,19 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\bytehide_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\bytehide_white.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\favicon.ico">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\ShieldExtension.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\ShieldExtensionIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -171,9 +180,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\LanguagePackage.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\ShieldExtension.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\ShieldIcon.png">
