@@ -5,9 +5,9 @@ using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Shield.Client;
-using Shield.Client.Extensions;
-using Shield.Client.Models.API.Application;
+using Bytehide.Shield.Client;
+using Bytehide.Shield.Client.Extensions;
+using Bytehide.Shield.Client.Models.API.Application;
 using ShieldVSExtension.Commands;
 using ShieldVSExtension.Configuration;
 using ShieldVSExtension.Helpers;
@@ -21,10 +21,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Bytehide.Shield.Client;
 using Microsoft;
 using ShieldSolutionConfiguration = ShieldVSExtension.Configuration.SolutionConfiguration;
 using Task = System.Threading.Tasks.Task;
-using Shield.Client.Models;
+using Bytehide.Shield.Client.Models;
 
 namespace ShieldVSExtension
 {
@@ -432,7 +433,7 @@ namespace ShieldVSExtension
 
                     var appBlob = uploadApplicationDirectly.ApplicationBlob;
 
-                    var connection = ShieldApiClient.Connector.CreateQueueConnection();
+                    // var connection = ShieldApiClient.Connector.CreateQueueConnection();
 
                     var taskConnection = ShieldApiClient.Connector.InstanceSseConnector();
 
@@ -550,7 +551,8 @@ namespace ShieldVSExtension
 
                     ActivePane();
 
-                    await taskConnection.ProtectSingleFileAsync(shieldProject.Key, appBlob, config);
+                    // await taskConnection.ProtectSingleFileAsync(shieldProject.Key, appBlob, config);
+                    await taskConnection.ProtectSingleFileAsync(shieldProject.Key, appBlob, null);
                 }
                 catch (Exception ex)
                 {

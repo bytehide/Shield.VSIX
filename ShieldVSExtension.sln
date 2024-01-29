@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShieldVSExtension", "Shield
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "submodules", "submodules", "{7AB31BBA-F237-4028-842D-A0131AE3F0CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shield.Client", "..\Shield.Dotnet.Client\Client\Shield.Client.csproj", "{2FC4A56A-E89C-49A2-9131-82D547075814}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bytehide.Shield.Client", "Shield.Client\Client\Bytehide.Shield.Client.csproj", "{A3B58660-C305-4999-9109-BF46C350A50D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,16 @@ Global
 		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7AB4724-AB57-43E3-A95D-84EBBEE21820}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FC4A56A-E89C-49A2-9131-82D547075814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FC4A56A-E89C-49A2-9131-82D547075814}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B58660-C305-4999-9109-BF46C350A50D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B58660-C305-4999-9109-BF46C350A50D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B58660-C305-4999-9109-BF46C350A50D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B58660-C305-4999-9109-BF46C350A50D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2FC4A56A-E89C-49A2-9131-82D547075814} = {7AB31BBA-F237-4028-842D-A0131AE3F0CC}
+		{A3B58660-C305-4999-9109-BF46C350A50D} = {7AB31BBA-F237-4028-842D-A0131AE3F0CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BA3B3F2-587E-43E1-BEC6-C50EE5D37BD3}

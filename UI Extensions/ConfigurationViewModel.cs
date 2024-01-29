@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Shell;
 using ShieldVSExtension.Configuration;
 using ShieldVSExtension.Contracts;
 using ShieldVSExtension.Helpers;
+using System.IO.Packaging;
 
 namespace ShieldVSExtension.UI_Extensions
 {
@@ -28,6 +29,7 @@ namespace ShieldVSExtension.UI_Extensions
         #endregion
 
         #region Design-Time Ctor
+
 #if DEBUG
         [Obsolete("For design-time only")]
         public ConfigurationViewModel()
@@ -70,6 +72,7 @@ namespace ShieldVSExtension.UI_Extensions
             _solutionConfiguration = new Configuration.SolutionConfiguration();
         }
 #endif
+
         #endregion
 
         #region TargetDirectory Property
@@ -150,7 +153,7 @@ namespace ShieldVSExtension.UI_Extensions
 
         #region IsValidClient Property
 
-        private bool _isValidClient;
+        private bool _isValidClient = true;
 
         public bool IsValidClient
         {
@@ -185,6 +188,25 @@ namespace ShieldVSExtension.UI_Extensions
         }
 
         #endregion
+
+        #region Packages Property
+
+        private List<string> _packages;
+
+        public List<string> Packages
+        {
+            get => _packages;
+            set
+            {
+                if (_packages == value) return;
+
+                _packages = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
 
         #region SelectedProjects Property
 
@@ -290,8 +312,9 @@ namespace ShieldVSExtension.UI_Extensions
             {
                 try
                 {
-                    var projectConfiguration = solutionConfiguration.Projects.FirstOrDefault(p => p.ProjectName == dteProject.UniqueName) ??
-                                               new ProjectConfiguration();
+                    var projectConfiguration =
+                        solutionConfiguration.Projects.FirstOrDefault(p => p.ProjectName == dteProject.UniqueName) ??
+                        new ProjectConfiguration();
 
                     var projectViewModel = new ProjectViewModel(dteProject, projectConfiguration.Files)
                     {
@@ -317,16 +340,15 @@ namespace ShieldVSExtension.UI_Extensions
             Projects = projects;
             ProjectPresets = new ObservableCollection<ProjectPreset>
             {
-                  new ProjectPreset {Id=1, Name="Maximum"}
-                , new ProjectPreset {Id=2,Name="Balance"}
-                , new ProjectPreset {Id=3, Name="Optimized"}
+                new ProjectPreset { Id = 1, Name = "Maximum" }, new ProjectPreset { Id = 2, Name = "Balance" },
+                new ProjectPreset { Id = 3, Name = "Optimized" }
             };
             ProjectEditions = new ObservableCollection<string>
             {
-               "Keep my plan",
-               "Essentials",
-               "Professional",
-               "Enterprise"
+                "Keep my plan",
+                "Essentials",
+                "Professional",
+                "Enterprise"
             };
             TargetDirectory = solutionConfiguration.TargetDirectory;
             CreateShieldProjectIfNotExists = solutionConfiguration.CreateShieldProjectIfNotExists;
@@ -630,7 +652,7 @@ namespace ShieldVSExtension.UI_Extensions
 
                 FolderName = Path.GetDirectoryName(project.UniqueName);
 
-                var properties = ThreadHelper.JoinableTaskFactory.Run(async () => 
+                var properties = ThreadHelper.JoinableTaskFactory.Run(async () =>
                     await Project.GetEvaluatedPropertiesAsync());
 
                 properties.TryGetValue("TargetPath", out var targetPath);
@@ -641,7 +663,8 @@ namespace ShieldVSExtension.UI_Extensions
                 ProjectType = project.GetOutputType();
                 ProjectLang = project.GetLanguageName();
 
-                Files = new ObservableCollection<ProjectFileViewModel>(files.Select(p => new ProjectFileViewModel(p)).ToList());
+                Files = new ObservableCollection<ProjectFileViewModel>(files.Select(p => new ProjectFileViewModel(p))
+                    .ToList());
 
                 properties.TryGetValue("TargetFileName", out var targetFileName);
 
@@ -661,40 +684,42 @@ namespace ShieldVSExtension.UI_Extensions
                     }
                 }
 
+                
+
                 //throw new Exception("Can't find output file name.");
 
                 //TODO: Remove:
                 var outPutPaths =
-                        project.GetBuildOutputFilePaths(new BuildOutputFileTypes
-                        {
-                                Built = true,
-                                ContentFiles = false,
-                                Documentation = false,
-                                LocalizedResourceDlls = false,
-                                SourceFiles = false,
-                                Symbols = false,
-                                XmlSerializer = false
-                        });
-                    var outPutFiles = outPutPaths.Select(Path.GetFileName);
-                    if (string.IsNullOrEmpty(ProjectType))
+                    project.GetBuildOutputFilePaths(new BuildOutputFileTypes
                     {
-                        FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
-                    }
-                    else if(ProjectType.ToLower().Contains("winexe"))
-                    {
-                        FileToProtect = 
-                            ProjectFramework.ToLower().Contains("framework") ? 
-                                outPutFiles.FirstOrDefault(x => x.EndsWith(".exe")) : 
-                                outPutFiles.FirstOrDefault(x => x.EndsWith(".dll"));
-                    }
-                    else if (ProjectType.ToLower().Contains("library"))
-                    {
-                        FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll"));
-                    }
-                    else
-                    {
-                        FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
-                    }
+                        Built = true,
+                        ContentFiles = false,
+                        Documentation = false,
+                        LocalizedResourceDlls = false,
+                        SourceFiles = false,
+                        Symbols = false,
+                        XmlSerializer = false
+                    });
+                var outPutFiles = outPutPaths.Select(Path.GetFileName);
+                if (string.IsNullOrEmpty(ProjectType))
+                {
+                    FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
+                }
+                else if (ProjectType.ToLower().Contains("winexe"))
+                {
+                    FileToProtect =
+                        ProjectFramework.ToLower().Contains("framework")
+                            ? outPutFiles.FirstOrDefault(x => x.EndsWith(".exe"))
+                            : outPutFiles.FirstOrDefault(x => x.EndsWith(".dll"));
+                }
+                else if (ProjectType.ToLower().Contains("library"))
+                {
+                    FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll"));
+                }
+                else
+                {
+                    FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
+                }
             }
         }
 
@@ -712,6 +737,4 @@ namespace ShieldVSExtension.UI_Extensions
             }
         }
     }
-
-
 }
