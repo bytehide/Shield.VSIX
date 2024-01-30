@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ShieldVSExtension.Helpers
+namespace ShieldVSExtension.Common.Helpers
 {
     static class DevHelpers
     {

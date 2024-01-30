@@ -1,4 +1,4 @@
-﻿namespace ShieldVSExtension
+﻿namespace ShieldVSExtension.Commands
 {
     internal static class Ids
     {

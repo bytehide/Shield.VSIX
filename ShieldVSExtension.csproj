@@ -59,7 +59,7 @@
     <Compile Include="Common\Configuration\ProjectPreset.cs" />
     <Compile Include="Common\Configuration\ShieldExtensionConfiguration.cs" />
     <Compile Include="Common\Contracts\BuildOutputFileTypes.cs" />
-    <Compile Include="Guids.cs" />
+    <Compile Include="Commands\Guids.cs" />
     <Compile Include="Common\Helpers\DevHelpers.cs" />
     <Compile Include="Common\Helpers\DTE2Helper.cs" />
     <Compile Include="Common\Helpers\EnvDTECodeModelLanguageConstants2.cs" />
@@ -68,7 +68,7 @@
     <Compile Include="Common\Helpers\ProjectExtensions.cs" />
     <Compile Include="Common\Helpers\ProjectItemExtensions.cs" />
     <Compile Include="Common\Helpers\PropertyExtensions.cs" />
-    <Compile Include="Ids.cs" />
+    <Compile Include="Commands\Ids.cs" />
     <Compile Include="Storage\Configurations\CustomLocalStorageConfig.cs" />
     <Compile Include="Storage\Configurations\DefaultLocalStorageConfig.cs" />
     <Compile Include="Storage\ISecureLocalStorage.cs" />

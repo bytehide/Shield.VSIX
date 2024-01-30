@@ -1,4 +1,4 @@
-﻿namespace ShieldVSExtension.Contracts
+﻿namespace ShieldVSExtension.Common.Contracts
 {
     public class BuildOutputFileTypes
     {

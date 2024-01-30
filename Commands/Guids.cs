@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ShieldVSExtension
+namespace ShieldVSExtension.Commands
 {
     internal static class Guids
     {

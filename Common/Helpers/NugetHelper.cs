@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell;
 using NuGet.VisualStudio;
 using MessageBox = System.Windows.MessageBox;
 
-namespace ShieldVSExtension.Helpers
+namespace ShieldVSExtension.Common.Helpers
 {
     [Export(typeof(NugetHelper))]
     internal class NugetHelper

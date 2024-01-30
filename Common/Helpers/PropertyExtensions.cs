@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EnvDTE;
 
-namespace ShieldVSExtension.Helpers
+namespace ShieldVSExtension.Common.Helpers
 {
     public static class PropertiesExtensions
     {

@@ -5,16 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     d:DataContext="{d:DesignInstance Type=viewModels:ConfigurationViewModel, IsDesignTimeCreatable=True}"
     xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
-    xmlns:local="clr-namespace:ShieldVSExtension.ToolWindows"
+    xmlns:local="clr-namespace:ShieldVSExtension.UI"
     xmlns:PlatformUI="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
     xmlns:Imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
     xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
     xmlns:converters="clr-namespace:ShieldVSExtension.Common.Converters"
-    x:Class="ShieldVSExtension.ToolWindows.ConfigurationWindowControl"
+    x:Class="ShieldVSExtension.UI.ConfigurationWindowControl"
     Background="#FF1E1E1E"
     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
     mc:Ignorable="d"
-    x:Name="ShieldConfiguration" Title="Dotnetsafer Shield Configuration" Width="800"
+    x:Name="ShieldConfiguration" Title="ByteHide Shield Configuration" Width="800"
     Icon="{DynamicResource ShieldIcon}" ResizeMode="NoResize" Height="606">
     <Window.Resources>
         <ResourceDictionary>

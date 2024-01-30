@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace ShieldVSExtension.Services
+namespace ShieldVSExtension.Common.Services
 {
     public static class Services
     {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.Shell;
-using ShieldVSExtension.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using EnvDTE;
 using ShieldVSExtension.Common.Configuration;
-using ShieldVSExtension.Helpers;
+using ShieldVSExtension.Common.Contracts;
+using ShieldVSExtension.Common.Helpers;
 using static ShieldVSExtension.ViewModels.ConfigurationViewModel;
 
 namespace ShieldVSExtension.ViewModels

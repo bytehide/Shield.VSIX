@@ -13,10 +13,10 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
-using ShieldVSExtension.Contracts;
+using ShieldVSExtension.Common.Contracts;
 using VSLangProj;
 
-namespace ShieldVSExtension.Helpers
+namespace ShieldVSExtension.Common.Helpers
 {
     public static class ProjectExtensions
     {

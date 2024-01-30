@@ -5,9 +5,8 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using ShieldVSExtension.ToolWindows;
 using ShieldVSExtension.ViewModels;
+using ConfigurationWindowControl = ShieldVSExtension.UI.ConfigurationWindowControl;
 using Task = System.Threading.Tasks.Task;
 
 namespace ShieldVSExtension.Commands

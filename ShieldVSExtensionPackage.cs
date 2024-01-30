@@ -9,8 +9,6 @@ using Bytehide.Shield.Client;
 using Bytehide.Shield.Client.Extensions;
 using Bytehide.Shield.Client.Models.API.Application;
 using ShieldVSExtension.Commands;
-using ShieldVSExtension.Helpers;
-using ShieldVSExtension.ToolWindows;
 using System;
 using System.IO;
 using System.Linq;
@@ -24,8 +22,10 @@ using ShieldSolutionConfiguration = ShieldVSExtension.Common.Configuration.Solut
 using Task = System.Threading.Tasks.Task;
 using Bytehide.Shield.Client.Models;
 using ShieldVSExtension.Common.Configuration;
+using ShieldVSExtension.Common.Helpers;
 using ShieldVSExtension.Storage;
 using ShieldVSExtension.Storage.Configurations;
+using ShieldVSExtension.UI;
 
 namespace ShieldVSExtension
 {

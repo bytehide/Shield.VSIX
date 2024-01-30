@@ -5,12 +5,12 @@ using System.Windows;
 using System.Windows.Controls;
 using Bytehide.Shield.Client;
 using ShieldVSExtension.Common.Configuration;
-using ShieldVSExtension.Helpers;
+using ShieldVSExtension.Common.Helpers;
 using ShieldVSExtension.Storage;
 using ShieldVSExtension.Storage.Configurations;
 using ShieldVSExtension.ViewModels;
 
-namespace ShieldVSExtension.ToolWindows
+namespace ShieldVSExtension.UI
 {
     public partial class ConfigurationWindowControl : Window
     {

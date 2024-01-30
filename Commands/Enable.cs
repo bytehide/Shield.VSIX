@@ -12,7 +12,7 @@ namespace ShieldVSExtension.Commands
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
-            IMenuCommandService commandService = await package.GetServiceAsync<IMenuCommandService, IMenuCommandService>();
+            var commandService = await package.GetServiceAsync<IMenuCommandService, IMenuCommandService>();
             Assumes.Present(commandService);
 
             var cmdId = new CommandID(Guids.GuidShieldVsExtensionPackageCmdSet, (int)Ids.ShieldEnabled);

@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using ShieldVSExtension.Common.Configuration;
-using ShieldVSExtension.Helpers;
+using ShieldVSExtension.Common.Helpers;
 
 namespace ShieldVSExtension.ViewModels
 {

@@ -1,11 +1,11 @@
-﻿using EnvDTE;
-using EnvDTE80;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using EnvDTE;
+using EnvDTE80;
 
-namespace ShieldVSExtension.Helpers
+namespace ShieldVSExtension.Common.Helpers
 {
     public static class Dte2Helper
     {
