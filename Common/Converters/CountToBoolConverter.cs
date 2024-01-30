@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace ShieldVSExtension.ToolWindows
+namespace ShieldVSExtension.Common.Converters
 {
     public class CountToBoolConverter : IValueConverter
     {

@@ -55,43 +55,45 @@
   <ItemGroup>
     <Compile Include="Commands\ConfigurationWindowCommand.cs" />
     <Compile Include="Commands\Enable.cs" />
-    <Compile Include="Configuration\ProjectConfiguration.cs" />
-    <Compile Include="Configuration\ProjectPreset.cs" />
-    <Compile Include="Configuration\ShieldExtensionConfiguration.cs" />
-    <Compile Include="Contracts\BuildOutputFileTypes.cs" />
+    <Compile Include="Common\Configuration\ProjectConfiguration.cs" />
+    <Compile Include="Common\Configuration\ProjectPreset.cs" />
+    <Compile Include="Common\Configuration\ShieldExtensionConfiguration.cs" />
+    <Compile Include="Common\Contracts\BuildOutputFileTypes.cs" />
     <Compile Include="Guids.cs" />
-    <Compile Include="Helpers\DevHelpers.cs" />
-    <Compile Include="Helpers\DTE2Helper.cs" />
-    <Compile Include="Helpers\EnvDTECodeModelLanguageConstants2.cs" />
-    <Compile Include="Helpers\EnvDTEProjectKinds.cs" />
-    <Compile Include="Helpers\NugetHelper.cs" />
-    <Compile Include="Helpers\ProjectExtensions.cs" />
-    <Compile Include="Helpers\ProjectItemExtensions.cs" />
-    <Compile Include="Helpers\PropertyExtensions.cs" />
+    <Compile Include="Common\Helpers\DevHelpers.cs" />
+    <Compile Include="Common\Helpers\DTE2Helper.cs" />
+    <Compile Include="Common\Helpers\EnvDTECodeModelLanguageConstants2.cs" />
+    <Compile Include="Common\Helpers\EnvDTEProjectKinds.cs" />
+    <Compile Include="Common\Helpers\NugetHelper.cs" />
+    <Compile Include="Common\Helpers\ProjectExtensions.cs" />
+    <Compile Include="Common\Helpers\ProjectItemExtensions.cs" />
+    <Compile Include="Common\Helpers\PropertyExtensions.cs" />
     <Compile Include="Ids.cs" />
-    <Compile Include="InternalSecureStorage\CustomLocalStorageConfig.cs" />
-    <Compile Include="InternalSecureStorage\DefaultLocalStorageConfig.cs" />
-    <Compile Include="InternalSecureStorage\ISecureLocalStorage.cs" />
-    <Compile Include="InternalSecureStorage\ISecureLocalStorageConfig.cs" />
-    <Compile Include="InternalSecureStorage\SecureLocalStorage.cs" />
+    <Compile Include="Storage\Configurations\CustomLocalStorageConfig.cs" />
+    <Compile Include="Storage\Configurations\DefaultLocalStorageConfig.cs" />
+    <Compile Include="Storage\ISecureLocalStorage.cs" />
+    <Compile Include="Storage\Configurations\ISecureLocalStorageConfig.cs" />
+    <Compile Include="Storage\SecureLocalStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Configuration\SolutionConfiguration.cs" />
+    <Compile Include="Common\Configuration\SolutionConfiguration.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\Services.cs" />
+    <Compile Include="Common\Services\Services.cs" />
     <Compile Include="ShieldVSExtensionPackage.cs" />
-    <Compile Include="ToolWindows\ConfigurationWindow.cs" />
-    <Compile Include="ToolWindows\ConfigurationWindowControl.xaml.cs">
+    <Compile Include="UI\ConfigurationWindow.cs" />
+    <Compile Include="UI\ConfigurationWindowControl.xaml.cs">
       <DependentUpon>ConfigurationWindowControl.xaml</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="ToolWindows\CountToBoolConverter.cs" />
-    <Compile Include="ToolWindows\StringToBoolConverter.cs" />
-    <Compile Include="ToolWindows\ValueConverterGroup.cs" />
-    <Compile Include="UI Extensions\ConfigurationViewModel.cs" />
+    <Compile Include="Common\Converters\CountToBoolConverter.cs" />
+    <Compile Include="Common\Converters\StringToBoolConverter.cs" />
+    <Compile Include="Common\Converters\ValueConverterGroup.cs" />
+    <Compile Include="ViewModels\ConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\ProjectFileViewModel.cs" />
+    <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="VSCommandTable.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -204,7 +206,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ToolWindows\ConfigurationWindowControl.xaml">
+    <Page Include="UI\ConfigurationWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -241,11 +243,11 @@
     <Resource Include="Resources\user.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="ToolWindows\1024x1024 Icon 1 Png.png">
+    <Content Include="UI\1024x1024 Icon 1 Png.png">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ToolWindows\StatusSecurityWarning.png">
+    <Content Include="UI\StatusSecurityWarning.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -265,6 +267,7 @@
       <Name>Bytehide.Shield.Client</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

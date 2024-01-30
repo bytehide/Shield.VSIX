@@ -7,7 +7,7 @@ using Microsoft;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using ShieldVSExtension.ToolWindows;
-using ShieldVSExtension.UI_Extensions;
+using ShieldVSExtension.ViewModels;
 using Task = System.Threading.Tasks.Task;
 
 namespace ShieldVSExtension.Commands

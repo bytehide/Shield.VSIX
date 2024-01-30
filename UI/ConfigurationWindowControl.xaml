@@ -3,12 +3,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    d:DataContext="{d:DesignInstance Type=UI_Extensions:ConfigurationViewModel, IsDesignTimeCreatable=True}"
+    d:DataContext="{d:DesignInstance Type=viewModels:ConfigurationViewModel, IsDesignTimeCreatable=True}"
     xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
     xmlns:local="clr-namespace:ShieldVSExtension.ToolWindows"
     xmlns:PlatformUI="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
     xmlns:Imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
-    xmlns:UI_Extensions="clr-namespace:ShieldVSExtension.UI_Extensions"
+    xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
+    xmlns:converters="clr-namespace:ShieldVSExtension.Common.Converters"
     x:Class="ShieldVSExtension.ToolWindows.ConfigurationWindowControl"
     Background="#FF1E1E1E"
     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
@@ -26,21 +27,21 @@
                            Height="61" Width="321" />
                 </Grid>
             </DataTemplate>
-            <local:CountToBoolConverter x:Key="CountToBoolConverter" />
-            <local:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <converters:CountToBoolConverter x:Key="CountToBoolConverter" />
+            <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
 
-            <local:ValueConverterGroup x:Key="InvertBoolToVisibility">
-                <local:InvertBoolConverter />
+            <converters:ValueConverterGroup x:Key="InvertBoolToVisibility">
+                <converters:InvertBoolConverter />
                 <BooleanToVisibilityConverter />
-            </local:ValueConverterGroup>
+            </converters:ValueConverterGroup>
 
-            <local:ValueConverterGroup x:Key="InvertCondition">
-                <local:InvertBoolConverter />
-            </local:ValueConverterGroup>
+            <converters:ValueConverterGroup x:Key="InvertCondition">
+                <converters:InvertBoolConverter />
+            </converters:ValueConverterGroup>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-            <UI_Extensions:ConfigurationViewModel x:Key="Object1" />
+            <viewModels:ConfigurationViewModel x:Key="Object1" />
             <BitmapImage x:Key="FrameworkIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad"
                          UriSource="../Resources\DotNETFrameworkDependency.png" />
             <BitmapImage x:Key="LangIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad"

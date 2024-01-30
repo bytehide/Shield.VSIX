@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using DeviceId;
 
-namespace ShieldVSExtension.InternalSecureStorage
+namespace ShieldVSExtension.Storage.Configurations
 {
     public class DefaultLocalStorageConfig : ISecureLocalStorageConfig
     {

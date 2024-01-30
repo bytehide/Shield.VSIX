@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace ShieldVSExtension.ToolWindows
+namespace ShieldVSExtension.Common.Converters
 {
     /// <summary>
     /// Converter to chain together multiple converters.

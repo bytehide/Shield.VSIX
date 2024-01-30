@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace ShieldVSExtension.Configuration
+namespace ShieldVSExtension.Common.Configuration
 {
     public class SolutionConfiguration
     {

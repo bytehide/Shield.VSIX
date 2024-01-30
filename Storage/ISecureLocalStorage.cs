@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ShieldVSExtension.InternalSecureStorage
+namespace ShieldVSExtension.Storage
 {
     internal interface ISecureLocalStorage
     {

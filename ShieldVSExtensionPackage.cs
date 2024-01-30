@@ -9,9 +9,7 @@ using Bytehide.Shield.Client;
 using Bytehide.Shield.Client.Extensions;
 using Bytehide.Shield.Client.Models.API.Application;
 using ShieldVSExtension.Commands;
-using ShieldVSExtension.Configuration;
 using ShieldVSExtension.Helpers;
-using ShieldVSExtension.InternalSecureStorage;
 using ShieldVSExtension.ToolWindows;
 using System;
 using System.IO;
@@ -21,11 +19,13 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Bytehide.Shield.Client;
 using Microsoft;
-using ShieldSolutionConfiguration = ShieldVSExtension.Configuration.SolutionConfiguration;
+using ShieldSolutionConfiguration = ShieldVSExtension.Common.Configuration.SolutionConfiguration;
 using Task = System.Threading.Tasks.Task;
 using Bytehide.Shield.Client.Models;
+using ShieldVSExtension.Common.Configuration;
+using ShieldVSExtension.Storage;
+using ShieldVSExtension.Storage.Configurations;
 
 namespace ShieldVSExtension
 {

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Bytehide.Shield.Client;
-using ShieldVSExtension.Configuration;
+using ShieldVSExtension.Common.Configuration;
 using ShieldVSExtension.Helpers;
-using ShieldVSExtension.InternalSecureStorage;
-using ShieldVSExtension.UI_Extensions;
+using ShieldVSExtension.Storage;
+using ShieldVSExtension.Storage.Configurations;
+using ShieldVSExtension.ViewModels;
 
 namespace ShieldVSExtension.ToolWindows
 {
@@ -58,8 +59,6 @@ namespace ShieldVSExtension.ToolWindows
             {
                 ShieldControl.SelectedIndex = 1;
             }
-
-            Console.Write("test");
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -87,11 +86,11 @@ namespace ShieldVSExtension.ToolWindows
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var removedItems = e.RemovedItems.OfType<ConfigurationViewModel.ProjectViewModel>();
+            var removedItems = e.RemovedItems.OfType<ProjectViewModel>();
             foreach (var item in removedItems)
                 _viewModel.SelectedProjects.Remove(item);
 
-            var addedItems = e.AddedItems.OfType<ConfigurationViewModel.ProjectViewModel>()
+            var addedItems = e.AddedItems.OfType<ProjectViewModel>()
                 .Except(_viewModel.SelectedProjects);
             foreach (var item in addedItems)
                 _viewModel.SelectedProjects.Add(item);

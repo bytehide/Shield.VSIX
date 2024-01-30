@@ -4,8 +4,9 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using ShieldVSExtension.Storage.Configurations;
 
-namespace ShieldVSExtension.InternalSecureStorage
+namespace ShieldVSExtension.Storage
 {
     public class SecureLocalStorage : ISecureLocalStorage
     {

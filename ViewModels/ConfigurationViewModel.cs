@@ -1,19 +1,16 @@
-﻿using EnvDTE;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
-using ShieldVSExtension.Configuration;
-using ShieldVSExtension.Contracts;
+using ShieldVSExtension.Common.Configuration;
 using ShieldVSExtension.Helpers;
-using System.IO.Packaging;
 
-namespace ShieldVSExtension.UI_Extensions
+namespace ShieldVSExtension.ViewModels
 {
     public sealed class ConfigurationViewModel : INotifyPropertyChanged
     {
@@ -69,7 +66,7 @@ namespace ShieldVSExtension.UI_Extensions
 
             SelectedProject = p1;
 
-            _solutionConfiguration = new Configuration.SolutionConfiguration();
+            _solutionConfiguration = new SolutionConfiguration();
         }
 #endif
 
@@ -294,9 +291,9 @@ namespace ShieldVSExtension.UI_Extensions
         }
 
 
-        private readonly Configuration.SolutionConfiguration _solutionConfiguration;
+        private readonly SolutionConfiguration _solutionConfiguration;
 
-        public ConfigurationViewModel(DTE2 dte, Configuration.SolutionConfiguration solutionConfiguration)
+        public ConfigurationViewModel(DTE2 dte, SolutionConfiguration solutionConfiguration)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -425,7 +422,6 @@ namespace ShieldVSExtension.UI_Extensions
                 item.TargetDirectory = null;
         }
 
-
         public void Save()
         {
             _solutionConfiguration.TargetDirectory = TargetDirectory;
@@ -455,285 +451,6 @@ namespace ShieldVSExtension.UI_Extensions
                     projectConfiguration.Files.Add(projectFileViewModel.FileName);
 
                 _solutionConfiguration.Projects.Add(projectConfiguration);
-            }
-        }
-
-        public class ProjectViewModel : INotifyPropertyChanged
-        {
-            #region INotifyPropertyChanged
-
-            public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-            private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-
-            #endregion
-
-            #region IsEnabled Property
-
-            private bool _isEnabled;
-
-            public bool IsEnabled
-            {
-                get { return _isEnabled; }
-                set
-                {
-                    if (_isEnabled == value)
-                        return;
-
-                    _isEnabled = value;
-                    OnPropertyChanged();
-                }
-            }
-
-            #endregion
-
-            #region IncludeSubDirectories Property
-
-            private bool _includeSubDirectories;
-
-            public bool IncludeSubDirectories
-            {
-                get { return _includeSubDirectories; }
-                set
-                {
-                    if (_includeSubDirectories == value)
-                        return;
-
-                    _includeSubDirectories = value;
-                    OnPropertyChanged();
-                }
-            }
-
-            #endregion
-
-            #region InheritFromProject Property
-
-            private bool _inheritFromProject;
-
-            public bool InheritFromProject
-            {
-                get { return _inheritFromProject; }
-                set
-                {
-                    if (_inheritFromProject == value)
-                        return;
-
-                    _inheritFromProject = value;
-                    OnPropertyChanged();
-                }
-            }
-
-            #endregion
-
-            #region ReplaceOriginalFile Property
-
-            private bool _replaceOriginalFile;
-
-            public bool ReplaceOriginalFile
-            {
-                get { return _replaceOriginalFile; }
-                set
-                {
-                    if (_replaceOriginalFile == value)
-                        return;
-
-                    _replaceOriginalFile = value;
-                    OnPropertyChanged();
-                }
-            }
-
-            #endregion
-
-            #region ApplicationPreset Property
-
-            private ProjectPreset _applicationPreset;
-
-            public ProjectPreset ApplicationPreset
-            {
-                get { return _applicationPreset; }
-                set
-                {
-                    if (_applicationPreset == value)
-                        return;
-
-                    _applicationPreset = value;
-                    OnPropertyChanged();
-                }
-            }
-
-            #endregion
-
-            #region TargetDirectory Property
-
-            private string _targetDirectory;
-
-            public string TargetDirectory
-            {
-                get { return _targetDirectory; }
-                set
-                {
-                    if (_targetDirectory == value)
-                        return;
-
-                    _targetDirectory = value;
-                    OnPropertyChanged();
-                }
-            }
-
-            #endregion
-
-            #region FileToProtect Property
-
-            private string _fileToProtect;
-
-            public string FileToProtect
-            {
-                get { return _fileToProtect; }
-                set
-                {
-                    if (_fileToProtect == value)
-                        return;
-
-                    _fileToProtect = value;
-                    OnPropertyChanged();
-                }
-            }
-
-            #endregion
-
-            #region BuildConfiguration Property
-
-            private string _buildConfiguration;
-
-            public string BuildConfiguration
-            {
-                get { return _buildConfiguration; }
-                set
-                {
-                    if (_buildConfiguration == value)
-                        return;
-
-                    _buildConfiguration = value;
-                    OnPropertyChanged();
-                }
-            }
-
-            #endregion
-
-            public string Name { get; internal set; }
-
-            public string FolderName { get; internal set; }
-
-            public string OutputFullPath { get; internal set; }
-
-            public string ProjectFramework { get; internal set; }
-            public string ProjectType { get; internal set; }
-            public string ProjectLang { get; internal set; }
-
-            public ObservableCollection<ProjectFileViewModel> Files { get; }
-
-            internal Project Project { get; }
-
-            public ProjectViewModel()
-            {
-                Files = new ObservableCollection<ProjectFileViewModel>();
-            }
-
-            public ProjectViewModel(Project project, IEnumerable<string> files)
-            {
-                ThreadHelper.ThrowIfNotOnUIThread();
-
-                Project = project;
-
-                Name = Path.GetFileNameWithoutExtension(project.UniqueName);
-
-                FolderName = Path.GetDirectoryName(project.UniqueName);
-
-                var properties = ThreadHelper.JoinableTaskFactory.Run(async () =>
-                    await Project.GetEvaluatedPropertiesAsync());
-
-                properties.TryGetValue("TargetPath", out var targetPath);
-
-                OutputFullPath = targetPath ?? project.GetFullOutputPath();
-
-                ProjectFramework = project.GetFrameworkString();
-                ProjectType = project.GetOutputType();
-                ProjectLang = project.GetLanguageName();
-
-                Files = new ObservableCollection<ProjectFileViewModel>(files.Select(p => new ProjectFileViewModel(p))
-                    .ToList());
-
-                properties.TryGetValue("TargetFileName", out var targetFileName);
-
-                if (!string.IsNullOrEmpty(targetFileName))
-                {
-                    FileToProtect = targetFileName;
-                    return;
-                }
-
-                if (!string.IsNullOrEmpty(targetPath))
-                {
-                    var fileName = Path.GetFileName(targetPath);
-                    if (string.IsNullOrEmpty(fileName))
-                    {
-                        FileToProtect = targetFileName;
-                        return;
-                    }
-                }
-
-                
-
-                //throw new Exception("Can't find output file name.");
-
-                //TODO: Remove:
-                var outPutPaths =
-                    project.GetBuildOutputFilePaths(new BuildOutputFileTypes
-                    {
-                        Built = true,
-                        ContentFiles = false,
-                        Documentation = false,
-                        LocalizedResourceDlls = false,
-                        SourceFiles = false,
-                        Symbols = false,
-                        XmlSerializer = false
-                    });
-                var outPutFiles = outPutPaths.Select(Path.GetFileName);
-                if (string.IsNullOrEmpty(ProjectType))
-                {
-                    FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
-                }
-                else if (ProjectType.ToLower().Contains("winexe"))
-                {
-                    FileToProtect =
-                        ProjectFramework.ToLower().Contains("framework")
-                            ? outPutFiles.FirstOrDefault(x => x.EndsWith(".exe"))
-                            : outPutFiles.FirstOrDefault(x => x.EndsWith(".dll"));
-                }
-                else if (ProjectType.ToLower().Contains("library"))
-                {
-                    FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll"));
-                }
-                else
-                {
-                    FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
-                }
-            }
-        }
-
-        public class ProjectFileViewModel
-        {
-            public string FileName { get; set; }
-
-            public ProjectFileViewModel()
-            {
-            }
-
-            public ProjectFileViewModel(string fileName)
-            {
-                FileName = fileName;
             }
         }
     }

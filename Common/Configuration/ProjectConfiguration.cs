@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace ShieldVSExtension.Configuration
+namespace ShieldVSExtension.Common.Configuration
 {
     public class ProjectConfiguration
     {
