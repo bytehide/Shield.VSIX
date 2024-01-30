@@ -78,11 +78,10 @@ namespace ShieldVSExtension.ViewModels
 
         public string TargetDirectory
         {
-            get { return _targetDirectory; }
+            get => _targetDirectory;
             set
             {
-                if (_targetDirectory == value)
-                    return;
+                if (_targetDirectory == value) return;
 
                 _targetDirectory = value;
                 OnPropertyChanged();
@@ -97,11 +96,10 @@ namespace ShieldVSExtension.ViewModels
 
         public ProjectPreset ProjectPreset
         {
-            get { return _projectPreset; }
+            get => _projectPreset;
             set
             {
-                if (_projectPreset == value)
-                    return;
+                if (_projectPreset == value) return;
 
                 _projectPreset = value;
                 OnPropertyChanged();
@@ -116,11 +114,10 @@ namespace ShieldVSExtension.ViewModels
 
         public bool CreateShieldProjectIfNotExists
         {
-            get { return _createShieldProjectIfNotExists; }
+            get => _createShieldProjectIfNotExists;
             set
             {
-                if (_createShieldProjectIfNotExists == value)
-                    return;
+                if (_createShieldProjectIfNotExists == value) return;
 
                 _createShieldProjectIfNotExists = value;
                 OnPropertyChanged();
@@ -135,11 +132,10 @@ namespace ShieldVSExtension.ViewModels
 
         public bool FindCustomConfigurationFile
         {
-            get { return _findCustomConfigurationFile; }
+            get => _findCustomConfigurationFile;
             set
             {
-                if (_findCustomConfigurationFile == value)
-                    return;
+                if (_findCustomConfigurationFile == value) return;
 
                 _findCustomConfigurationFile = value;
                 OnPropertyChanged();
@@ -154,11 +150,10 @@ namespace ShieldVSExtension.ViewModels
 
         public bool IsValidClient
         {
-            get { return _isValidClient; }
+            get => _isValidClient;
             set
             {
-                if (_isValidClient == value)
-                    return;
+                if (_isValidClient == value) return;
 
                 _isValidClient = value;
                 OnPropertyChanged();
@@ -173,11 +168,10 @@ namespace ShieldVSExtension.ViewModels
 
         public ProjectViewModel SelectedProject
         {
-            get { return _selectedProject; }
+            get => _selectedProject;
             set
             {
-                if (_selectedProject == value)
-                    return;
+                if (_selectedProject == value) return;
 
                 _selectedProject = value;
                 OnPropertyChanged();
@@ -204,7 +198,6 @@ namespace ShieldVSExtension.ViewModels
 
         #endregion
 
-
         #region SelectedProjects Property
 
         public ICollection<ProjectViewModel> SelectedProjects { get; }
@@ -223,11 +216,10 @@ namespace ShieldVSExtension.ViewModels
 
         public string ShieldProjectName
         {
-            get { return _shieldProjectName; }
+            get => _shieldProjectName;
             set
             {
-                if (_shieldProjectName == value)
-                    return;
+                if (_shieldProjectName == value) return;
 
                 _shieldProjectName = value;
                 OnPropertyChanged();
@@ -242,11 +234,10 @@ namespace ShieldVSExtension.ViewModels
 
         public string ShieldProjectEdition
         {
-            get { return _shieldProjectEdition; }
+            get => _shieldProjectEdition;
             set
             {
-                if (_shieldProjectEdition == value)
-                    return;
+                if (_shieldProjectEdition == value) return;
 
                 _shieldProjectEdition = value;
                 OnPropertyChanged();
@@ -261,11 +252,10 @@ namespace ShieldVSExtension.ViewModels
 
         public string BuildConfiguration
         {
-            get { return _buildConfiguration; }
+            get => _buildConfiguration;
             set
             {
-                if (_buildConfiguration == value)
-                    return;
+                if (_buildConfiguration == value) return;
 
                 _buildConfiguration = value;
                 OnPropertyChanged();
@@ -274,22 +264,9 @@ namespace ShieldVSExtension.ViewModels
 
         #endregion
 
-        private ObservableCollection<ProjectPreset> _projectPresets;
+        public ObservableCollection<ProjectPreset> ProjectPresets { get; set; }
 
-        public ObservableCollection<ProjectPreset> ProjectPresets
-        {
-            get { return _projectPresets; }
-            set { _projectPresets = value; }
-        }
-
-        private ObservableCollection<string> _projectEditions;
-
-        public ObservableCollection<string> ProjectEditions
-        {
-            get { return _projectEditions; }
-            set { _projectEditions = value; }
-        }
-
+        public ObservableCollection<string> ProjectEditions { get; set; }
 
         private readonly SolutionConfiguration _solutionConfiguration;
 

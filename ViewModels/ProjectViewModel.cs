@@ -1,18 +1,14 @@
 ﻿using Microsoft.VisualStudio.Shell;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using EnvDTE;
 using ShieldVSExtension.Common.Configuration;
 using ShieldVSExtension.Common.Contracts;
 using ShieldVSExtension.Common.Helpers;
-using static ShieldVSExtension.ViewModels.ConfigurationViewModel;
 
 namespace ShieldVSExtension.ViewModels
 {

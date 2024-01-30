@@ -31,8 +31,7 @@ namespace ShieldVSExtension.Commands
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (ShieldVsExtensionPackage.Configuration is null)
-                return;
+            if (ShieldVsExtensionPackage.Configuration is null) return;
 
             //ToolWindowPane window = package.FindToolWindow(typeof(ConfigurationWindow), 0, true);
             //if (window?.Frame == null)

@@ -53,6 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Commands\WelcomeWindowCommand.cs" />
     <Compile Include="Commands\ConfigurationWindowCommand.cs" />
     <Compile Include="Commands\Enable.cs" />
     <Compile Include="Common\Configuration\ProjectConfiguration.cs" />
@@ -83,7 +84,7 @@
     </Compile>
     <Compile Include="Common\Services\Services.cs" />
     <Compile Include="ShieldVSExtensionPackage.cs" />
-    <Compile Include="UI\ConfigurationWindow.cs" />
+    <Compile Include="UI\MainWindow.cs" />
     <Compile Include="UI\ConfigurationWindowControl.xaml.cs">
       <DependentUpon>ConfigurationWindowControl.xaml</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -91,6 +92,9 @@
     <Compile Include="Common\Converters\CountToBoolConverter.cs" />
     <Compile Include="Common\Converters\StringToBoolConverter.cs" />
     <Compile Include="Common\Converters\ValueConverterGroup.cs" />
+    <Compile Include="UI\WelcomeView.xaml.cs">
+      <DependentUpon>WelcomeWindowControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ProjectFileViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
@@ -162,6 +166,15 @@
     <PackageReference Include="dnlib">
       <Version>3.4.0</Version>
     </PackageReference>
+    <PackageReference Include="MahApps.Metro">
+      <Version>2.4.10</Version>
+    </PackageReference>
+    <PackageReference Include="MaterialDesignColors">
+      <Version>2.1.4</Version>
+    </PackageReference>
+    <PackageReference Include="MaterialDesignThemes">
+      <Version>4.9.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.CSharp">
       <Version>4.7.0</Version>
     </PackageReference>
@@ -202,7 +215,7 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Simple Styles.xaml">
+    <Page Include="Theme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -210,6 +223,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Page>
+    <Page Include="UI\WelcomeWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -243,13 +260,9 @@
     <Resource Include="Resources\user.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="UI\1024x1024 Icon 1 Png.png">
+    <Content Include="Resources\1024x1024 Icon 1 Png.png">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="UI\StatusSecurityWarning.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -260,12 +273,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Shield.Client\Client\Bytehide.Shield.Client.csproj">
-      <Project>{A3B58660-C305-4999-9109-BF46C350A50D}</Project>
-      <Name>Bytehide.Shield.Client</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

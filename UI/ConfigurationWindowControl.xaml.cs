@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Bytehide.Shield.Client;
 using ShieldVSExtension.Common.Configuration;
 using ShieldVSExtension.Common.Helpers;
 using ShieldVSExtension.Storage;
@@ -12,21 +11,21 @@ using ShieldVSExtension.ViewModels;
 
 namespace ShieldVSExtension.UI
 {
-    public partial class ConfigurationWindowControl : Window
+    public partial class ConfigurationWindowControl
     {
-        private readonly ConfigurationViewModel _viewModel;
+        private readonly ConfigurationViewModel _vm;
         private const string ExtensionConfigurationFile = "ExtensionConfiguration";
 
         public SecureLocalStorage LocalStorage { get; set; }
 
         private ShieldExtensionConfiguration ExtensionConfiguration { get; }
 
-        public ConfigurationWindowControl(ConfigurationViewModel viewModel)
+        public ConfigurationWindowControl(ConfigurationViewModel vm)
         {
             InitializeComponent();
 
-            _viewModel = viewModel;
-            DataContext = viewModel;
+            _vm = vm;
+            DataContext = vm;
 
             LocalStorage = new SecureLocalStorage(
                 new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
@@ -40,8 +39,7 @@ namespace ShieldVSExtension.UI
             {
                 try
                 {
-                    _ = ShieldClient.CreateInstance(ExtensionConfiguration.ApiToken);
-                    _viewModel.IsValidClient = true;
+                    _vm.IsValidClient = true;
                     ApiKeyBox.Password = ExtensionConfiguration.ApiToken;
                     ConnectButton.Content = ExtensionConfiguration.ApiToken != ApiKeyBox.Password
                         ? "Connect and save"
@@ -49,13 +47,13 @@ namespace ShieldVSExtension.UI
                 }
                 catch (Exception)
                 {
-                    _viewModel.IsValidClient = false;
+                    _vm.IsValidClient = false;
                 }
             }
 
-            else _viewModel.IsValidClient = false;
+            else _vm.IsValidClient = false;
 
-            if (!_viewModel.IsValidClient)
+            if (!_vm.IsValidClient)
             {
                 ShieldControl.SelectedIndex = 1;
             }
@@ -65,15 +63,14 @@ namespace ShieldVSExtension.UI
         {
             try
             {
-                _ = ShieldClient.CreateInstance(ApiKeyBox.Password);
-                _viewModel.IsValidClient = true;
+                _vm.IsValidClient = true;
                 ExtensionConfiguration.ApiToken = ApiKeyBox.Password;
                 ShieldControl.SelectedIndex = 0;
                 SaveExtensionConfiguration();
             }
             catch (Exception)
             {
-                _viewModel.IsValidClient = false;
+                _vm.IsValidClient = false;
                 MessageBox.Show(
                     "The api key is not valid, check that it has not been revoked and the associated scopes.",
                     "Invalid Shield API Key", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -88,36 +85,36 @@ namespace ShieldVSExtension.UI
         {
             var removedItems = e.RemovedItems.OfType<ProjectViewModel>();
             foreach (var item in removedItems)
-                _viewModel.SelectedProjects.Remove(item);
+                _vm.SelectedProjects.Remove(item);
 
             var addedItems = e.AddedItems.OfType<ProjectViewModel>()
-                .Except(_viewModel.SelectedProjects);
+                .Except(_vm.SelectedProjects);
             foreach (var item in addedItems)
-                _viewModel.SelectedProjects.Add(item);
+                _vm.SelectedProjects.Add(item);
         }
 
 
         private void ListBox_Loaded(object sender, RoutedEventArgs e)
         {
-            ((ListBox)sender).ScrollIntoView(_viewModel.SelectedProject);
+            ((ListBox)sender).ScrollIntoView(_vm.SelectedProject);
         }
 
         private void EnableMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.Enable(true);
+            _vm.Enable(true);
         }
 
         private void DisableMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.Enable(false);
+            _vm.Enable(false);
         }
 
         private void AddCustomProtectionConfigMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var viewModelSelectedProject in _viewModel.SelectedProjects)
+            foreach (var viewModelSelectedProject in _vm.SelectedProjects)
             {
                 viewModelSelectedProject.InheritFromProject = false;
-                viewModelSelectedProject.ApplicationPreset = _viewModel.ProjectPresets.First(preset =>
+                viewModelSelectedProject.ApplicationPreset = _vm.ProjectPresets.First(preset =>
                     preset.Name.ToLower().Equals(((MenuItem)sender).Header.ToString().ToLower()));
             }
         }
@@ -127,7 +124,7 @@ namespace ShieldVSExtension.UI
             var comboBox = (ComboBox)sender;
             comboBox.Focus();
 
-            var projectViewModel = _viewModel.SelectedProject;
+            var projectViewModel = _vm.SelectedProject;
             if (projectViewModel == null)
                 return;
 
@@ -157,7 +154,7 @@ namespace ShieldVSExtension.UI
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.Save();
+            _vm.Save();
             DialogResult = true;
             Close();
         }
@@ -206,7 +203,7 @@ namespace ShieldVSExtension.UI
 
         private void ProtectionsPreset_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _viewModel.ShieldProjectEdition = (string)e.AddedItems[0];
+            _vm.ShieldProjectEdition = (string)e.AddedItems[0];
         }
 
         private void ReadMore_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -217,13 +214,13 @@ namespace ShieldVSExtension.UI
         private void AddProject_Click(object sender, RoutedEventArgs e)
         {
             var helper = new NugetHelper();
-            helper.InstallPackageAsync(_viewModel.Projects.First().Project).GetAwaiter();
+            helper.InstallPackageAsync(_vm.Projects.First().Project).GetAwaiter();
         }
 
         private void RemoveProject_Click(object sender, RoutedEventArgs e)
         {
             var helper = new NugetHelper();
-            helper.UninstallPackageAsync(_viewModel.Projects.First().Project).GetAwaiter();
+            helper.UninstallPackageAsync(_vm.Projects.First().Project).GetAwaiter();
         }
     }
 }

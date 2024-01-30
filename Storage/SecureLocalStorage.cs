@@ -17,7 +17,9 @@ namespace ShieldVSExtension.Storage
         internal void CreateIfNotExists(string path)
         {
             if (!Directory.Exists(path))
+            {
                 Directory.CreateDirectory(path);
+            }
         }
 
         public SecureLocalStorage(ISecureLocalStorageConfig configuration)
@@ -28,31 +30,22 @@ namespace ShieldVSExtension.Storage
             Read();
         }
 
-
         internal byte[] EncryptData(string data, byte[] key, DataProtectionScope scope)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-            if (data.Length <= 0)
-                throw new ArgumentException("data");
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (key.Length <= 0)
-                throw new ArgumentException("key");
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (data.Length <= 0) throw new ArgumentException("data");
+            if (key == null) throw new ArgumentNullException(nameof(key));
+            if (key.Length <= 0) throw new ArgumentException("key");
 
             return ProtectedData.Protect(Encoding.UTF8.GetBytes(data), key, scope);
         }
 
         internal string DecryptData(byte[] data, byte[] key, DataProtectionScope scope)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-            if (data.Length <= 0)
-                throw new ArgumentException("data");
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-            if (key.Length <= 0)
-                throw new ArgumentException("key");
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (data.Length <= 0) throw new ArgumentException("data");
+            if (key == null) throw new ArgumentNullException(nameof(key));
+            if (key.Length <= 0) throw new ArgumentException("key");
 
             return Encoding.UTF8.GetString(ProtectedData.Unprotect(data, key, scope));
         }
@@ -60,13 +53,15 @@ namespace ShieldVSExtension.Storage
         internal void Read()
             => StoredData =
                 File.Exists(Path.Combine(Config.StoragePath, "default"))
-                    ? JsonSerializer.Deserialize<Dictionary<string, string>>(DecryptData(File.ReadAllBytes(Path.Combine(Config.StoragePath, "default")), Key, DataProtectionScope.LocalMachine))
+                    ? JsonSerializer.Deserialize<Dictionary<string, string>>(DecryptData(
+                        File.ReadAllBytes(Path.Combine(Config.StoragePath, "default")), Key,
+                        DataProtectionScope.LocalMachine))
                     : new Dictionary<string, string>();
 
 
         internal void Write()
             => File.WriteAllBytes(Path.Combine(Config.StoragePath, "default"),
-                                  EncryptData(JsonSerializer.Serialize(StoredData), Key, DataProtectionScope.LocalMachine));
+                EncryptData(JsonSerializer.Serialize(StoredData), Key, DataProtectionScope.LocalMachine));
 
         public int Count => StoredData.Count;
 
@@ -81,16 +76,18 @@ namespace ShieldVSExtension.Storage
             => StoredData.ContainsKey(key);
 
         public string Get(string key)
-            => !StoredData.TryGetValue(key, out var value) ? default : JsonSerializer.Deserialize<string>(value ?? string.Empty);
+            => !StoredData.TryGetValue(key, out var value)
+                ? default
+                : JsonSerializer.Deserialize<string>(value ?? string.Empty);
 
 
         public T Get<T>(string key)
-            => !StoredData.TryGetValue(key, out var value) ? default : JsonSerializer.Deserialize<T>(value ?? string.Empty);
-
+            => !StoredData.TryGetValue(key, out var value)
+                ? default
+                : JsonSerializer.Deserialize<T>(value ?? string.Empty);
 
         public IReadOnlyCollection<string> Keys()
             => StoredData.Keys;
-
 
         public void Remove(string key)
         {
