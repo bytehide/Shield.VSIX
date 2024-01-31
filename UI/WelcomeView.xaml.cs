@@ -1,4 +1,6 @@
-﻿namespace ShieldVSExtension.UI
+﻿using MaterialDesignThemes.Wpf;
+
+namespace ShieldVSExtension.UI
 {
     /// <summary>
     ///   Interaction logic for WelcomeWindowControl.xaml
@@ -7,9 +9,14 @@
     {
         public WelcomeWindowControl()
         {
+            InitializeMaterialDesign();
             InitializeComponent();
+        }
 
-            // var vm = new ConfigurationViewModel();
+        private void InitializeMaterialDesign()
+        {
+            _ = new Card();
+            // var hue = new Hue("Dummy", Colors.Black, Colors.White);
         }
     }
 }

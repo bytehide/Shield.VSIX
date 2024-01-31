@@ -30,7 +30,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/ShieldVSExtension;component/Simple Styles.xaml" />
+                <ResourceDictionary Source="/ShieldVSExtension;component/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="DataTemplate1">
                 <Grid d:DesignWidth="408" d:DesignHeight="61">

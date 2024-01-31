@@ -27,15 +27,111 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/ShieldVSExtension;component/../Theme.xaml" />
+                <ResourceDictionary Source="/ShieldVSExtension;component/Theme.xaml" />
+
+                <ResourceDictionary Source="/ShieldVSExtension;component/Theme/Button.Theme.xaml" />
+                <ResourceDictionary Source="/ShieldVSExtension;component/Theme/TabControl.Theme.xaml" />
+                <!-- <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.NavigationRail.xaml" /> -->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid>
-        <Button>
-            Default Duration
-        </Button>
+
+        <!--<Button
+            Style="{StaticResource RaisedButtonStyle}">
+            Test
+        </Button>-->
+
+        <materialDesign:Card>
+            <TabControl
+                HorizontalContentAlignment="Center"
+                materialDesign:ColorZoneAssist.Mode="PrimaryLight"
+                materialDesign:NavigationRailAssist.SelectionCornerRadius="50"
+                materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+                Style="{StaticResource RaisedTabControlStyle}"
+                TabStripPlacement="Bottom">
+                <TabItem
+                    Margin="4">
+                    <TabItem.Header>
+                        <StackPanel
+                            Width="auto"
+                            Height="auto">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                HorizontalAlignment="Center"
+                                Kind="ClockOutline" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Recent" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <TextBlock>
+                        <Run
+                            Text="tab 2 content. Default look and behaviors." />
+                        <LineBreak />
+                        <LineBreak />
+                        <Run
+                            FontStyle="Italic">
+                            Praesent sed dui arcu. Vivamus porta auctor sagittis
+                        </Run>
+                    </TextBlock>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel
+                            Width="auto"
+                            Height="auto">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                HorizontalAlignment="Center"
+                                Kind="Images" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Photos" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <TextBlock>
+                        <Run
+                            Text="tab 3 content. Default look and behaviors." />
+                        <LineBreak />
+                        <LineBreak />
+                        <Run
+                            FontStyle="Italic">
+                            Praesevzddvvvvvvvvvv
+                        </Run>
+                    </TextBlock>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel
+                            Width="auto"
+                            Height="auto">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                HorizontalAlignment="Center"
+                                Kind="MusicBoxMultiple" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Sounds" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <TextBlock>
+                        <Run
+                            Text="tab 4 content. Default look and behaviors." />
+                        <LineBreak />
+                        <LineBreak />
+                        <Run
+                            FontStyle="Italic">
+                            Prfadsssssssssssssssbvdcas
+                        </Run>
+                    </TextBlock>
+                </TabItem>
+            </TabControl>
+        </materialDesign:Card>
     </Grid>
 
 </mah:MetroWindow>
