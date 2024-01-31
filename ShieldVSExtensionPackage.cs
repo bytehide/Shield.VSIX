@@ -47,7 +47,7 @@ namespace ShieldVSExtension
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionOpening_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string, PackageAutoLoadFlags.BackgroundLoad)]
-    [ProvideToolWindow(typeof(MainWindow))]
+    [ProvideToolWindow(typeof(AppWindow))]
     public sealed class ShieldVsExtensionPackage : AsyncPackage
     {
         /// <summary>
@@ -98,7 +98,7 @@ namespace ShieldVSExtension
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await Enable.InitializeAsync(this);
             // await ConfigurationWindowCommand.InitializeAsync(this);
-            await WelcomeWindowCommand.InitializeAsync(this);
+            await MainWindowCommand.InitializeAsync(this);
 
             Dte = (DTE2)await GetServiceAsync(typeof(DTE));
             Assumes.Present(Dte);
@@ -279,7 +279,7 @@ namespace ShieldVSExtension
         {
             Enable.Command.Visible = true;
             // ConfigurationWindowCommand.Command.Visible = true;
-            WelcomeWindowCommand.Command.Visible = true;
+            MainWindowCommand.Command.Visible = true;
 
             if (Configuration == null)
                 Configuration = new ShieldSolutionConfiguration();

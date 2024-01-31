@@ -4,9 +4,9 @@ using Microsoft.VisualStudio.Shell;
 namespace ShieldVSExtension.UI
 {
     [Guid("23b0bdd9-76b7-4917-a75e-e29a99bcd863")]
-    public sealed class MainWindow : ToolWindowPane
+    public sealed class AppWindow : ToolWindowPane
     {
-        public MainWindow() : base(null)
+        public AppWindow() : base(null)
         {
             Caption = "ByteHide Shield";
 
@@ -14,7 +14,7 @@ namespace ShieldVSExtension.UI
             // we are not calling Dispose on this object. This is because ToolWindowPane calls Dispose on
             // the object returned by the Content property.
             // Content = new ConfigurationWindowControl(null);
-            Content = new WelcomeWindowControl();
+            Content = new MainWindowControl(null);
         }
     }
 }

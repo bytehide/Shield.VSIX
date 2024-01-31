@@ -11,9 +11,10 @@ using Task = System.Threading.Tasks.Task;
 
 namespace ShieldVSExtension.Commands
 {
-    internal sealed class WelcomeWindowCommand
+    internal sealed class MainWindowCommand
     {
         public static OleMenuCommand Command { get; private set; }
+
         public static async Task InitializeAsync(AsyncPackage package)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
@@ -43,10 +44,11 @@ namespace ShieldVSExtension.Commands
 
             //var optionsViewModel = new OptionsViewModel(dte, configuration);
 
-            if (!(ServiceProvider.GlobalProvider.GetService(typeof(DTE)) is DTE2 dte)) throw new ArgumentNullException(nameof(dte));
+            if (!(ServiceProvider.GlobalProvider.GetService(typeof(DTE)) is DTE2 dte))
+                throw new ArgumentNullException(nameof(dte));
 
-            var optionsViewModel = new ConfigurationViewModel(dte, ShieldVsExtensionPackage.Configuration);
-            var optionsView = new WelcomeWindowControl();
+            var optionsViewModel = new MainViewModel(dte, ShieldVsExtensionPackage.Configuration);
+            var optionsView = new MainWindowControl(optionsViewModel);
 
             var interop = new WindowInteropHelper(optionsView);
             interop.EnsureHandle();

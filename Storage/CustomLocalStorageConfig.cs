@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using DeviceId;
+using ShieldVSExtension.Storage.Configurations;
 
-namespace ShieldVSExtension.Storage.Configurations
+namespace ShieldVSExtension.Storage
 {
     public class CustomLocalStorageConfig : ISecureLocalStorageConfig
     {

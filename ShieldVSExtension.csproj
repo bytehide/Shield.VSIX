@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands\WelcomeWindowCommand.cs" />
+    <Compile Include="Commands\MainWindowCommand.cs" />
     <Compile Include="Commands\ConfigurationWindowCommand.cs" />
     <Compile Include="Commands\Enable.cs" />
     <Compile Include="Common\Configuration\ProjectConfiguration.cs" />
@@ -70,10 +70,10 @@
     <Compile Include="Common\Helpers\ProjectItemExtensions.cs" />
     <Compile Include="Common\Helpers\PropertyExtensions.cs" />
     <Compile Include="Commands\Ids.cs" />
-    <Compile Include="Storage\Configurations\CustomLocalStorageConfig.cs" />
-    <Compile Include="Storage\Configurations\DefaultLocalStorageConfig.cs" />
-    <Compile Include="Storage\ISecureLocalStorage.cs" />
-    <Compile Include="Storage\Configurations\ISecureLocalStorageConfig.cs" />
+    <Compile Include="Storage\CustomLocalStorageConfig.cs" />
+    <Compile Include="Storage\DefaultLocalStorageConfig.cs" />
+    <Compile Include="Storage\Interfaces\ISecureLocalStorage.cs" />
+    <Compile Include="Storage\Interfaces\ISecureLocalStorageConfig.cs" />
     <Compile Include="Storage\SecureLocalStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Configuration\SolutionConfiguration.cs" />
@@ -84,7 +84,7 @@
     </Compile>
     <Compile Include="Common\Services\Services.cs" />
     <Compile Include="ShieldVSExtensionPackage.cs" />
-    <Compile Include="UI\MainWindow.cs" />
+    <Compile Include="UI\AppWindow.cs" />
     <Compile Include="UI\ConfigurationWindowControl.xaml.cs">
       <DependentUpon>ConfigurationWindowControl.xaml</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -92,9 +92,10 @@
     <Compile Include="Common\Converters\CountToBoolConverter.cs" />
     <Compile Include="Common\Converters\StringToBoolConverter.cs" />
     <Compile Include="Common\Converters\ValueConverterGroup.cs" />
-    <Compile Include="UI\WelcomeView.xaml.cs">
-      <DependentUpon>WelcomeWindowControl.xaml</DependentUpon>
+    <Compile Include="UI\MainWindowControl.xaml.cs">
+      <DependentUpon>MainWindowControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ProjectFileViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
@@ -239,7 +240,7 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
-    <Page Include="UI\WelcomeWindowControl.xaml">
+    <Page Include="UI\MainWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
