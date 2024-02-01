@@ -8,6 +8,8 @@
                  d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=True}"
                  xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
                  xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
+                 xmlns:converters="clr-namespace:ShieldVSExtension.Common.Converters"
+                 xmlns:userControls="clr-namespace:ShieldVSExtension.UI.UserControls"
                  TextElement.FontWeight="Regular"
                  TextElement.FontSize="13"
                  TextOptions.TextFormattingMode="Ideal"
@@ -30,17 +32,20 @@
                  d:DesignHeight="600"
                  ResizeMode="NoResize"
                  Icon="{DynamicResource ShieldIcon}">
-    <Window.Resources>
+
+    <mah:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/ShieldVSExtension;component/Theme.xaml" />
-
                 <ResourceDictionary Source="/ShieldVSExtension;component/Theme/Button.Theme.xaml" />
                 <ResourceDictionary Source="/ShieldVSExtension;component/Theme/TabControl.Theme.xaml" />
-                <!-- <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.NavigationRail.xaml" /> -->
             </ResourceDictionary.MergedDictionaries>
+
+            <converters:ValueConverterGroup x:Key="InvertCondition">
+                <converters:InvertBoolConverter />
+            </converters:ValueConverterGroup>
         </ResourceDictionary>
-    </Window.Resources>
+    </mah:MetroWindow.Resources>
 
     <Grid>
 
@@ -49,209 +54,115 @@
             Test
         </Button>-->
 
-        <materialDesign:Card>
-            <TabControl
-                HorizontalContentAlignment="Center"
-                materialDesign:ColorZoneAssist.Mode="PrimaryLight"
-                materialDesign:NavigationRailAssist.SelectionCornerRadius="50"
-                materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
-                Style="{StaticResource RaisedTabControlStyle}"
-                TabStripPlacement="Bottom">
+        <materialDesign:Card Background="#CCC">
+            <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryLight"
+                        materialDesign:NavigationRailAssist.SelectionCornerRadius="20"
+                        materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+                        Style="{StaticResource RaisedTabControlStyle}"
+                        HorizontalContentAlignment="Right"
+                        TabStripPlacement="Bottom">
+
+                <!-- Pestaña 1 -->
                 <TabItem Margin="5">
                     <TabItem.Header>
-                        <StackPanel
-                            Width="auto"
-                            Height="auto">
-                            <materialDesign:PackIcon
-                                Width="24"
-                                Height="24"
-                                HorizontalAlignment="Center"
-                                Kind="Lock" />
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="App" />
+                        <StackPanel Width="auto" Height="auto">
+                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center"
+                                                     Kind="SquareRoundedBadgeOutline" />
                         </StackPanel>
                     </TabItem.Header>
-                    <Grid Background="#FF1E1E1E">
+                    <Grid>
+                        <!-- Contenido de la Pestaña 1 -->
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="97*" />
-                            <ColumnDefinition Width="690*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0"
-                              x:Name="ProjectsList"
-                              HorizontalAlignment="Left"
-                              Height="auto"
-                              Margin="1,10,0,0"
-                              VerticalAlignment="Top"
-                              Width="220"
-                              Grid.ColumnSpan="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="129*" />
-                                <ColumnDefinition Width="191*" />
-                            </Grid.ColumnDefinitions>
 
-                            <TextBlock
-                                HorizontalAlignment="Left"
-                                Text="Projects"
-                                VerticalAlignment="Top"
-                                FontSize="12"
-                                Margin="10,0,0,0"
-                                Foreground="White" />
+                        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Text="Projects" VerticalAlignment="Top"
+                                   FontSize="12" Margin="10,0,0,0" Foreground="White" />
 
-                            <ListBox Grid.Column="0"
-                                     x:Name="ApplicationsList"
-                                     ItemsSource="{Binding Projects}"
-                                     HorizontalContentAlignment="Stretch"
-                                     SelectedItem="{Binding SelectedProject, Mode=TwoWay}"
-                                     SelectionMode="Extended"
-                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                     Background="{x:Null}" BorderBrush="{x:Null}"
-                                     Foreground="White"
-                                     Margin="1,20,-4,2"
-                                     Grid.ColumnSpan="2" RenderTransformOrigin="0.5,0.5"
-                                     FontSize="13">
-                                <ListBox.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform />
-                                        <SkewTransform AngleY="-0.258" />
-                                        <RotateTransform />
-                                        <TranslateTransform Y="-0.495" />
-                                    </TransformGroup>
-                                </ListBox.RenderTransform>
-                                <ListBox.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Add custom protection">
-                                            <MenuItem Header="Maximum" />
-                                            <MenuItem Header="Balance" />
-                                            <MenuItem Header="Optimization" />
-                                        </MenuItem>
-                                        <Separator />
-                                    </ContextMenu>
-                                </ListBox.ContextMenu>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid x:Name="TemplateRoot">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
+                        <ListBox Grid.Column="0"
+                                 x:Name="ApplicationsList"
+                                 ItemsSource="{Binding Projects}"
+                                 HorizontalContentAlignment="Stretch"
+                                 SelectedItem="{Binding SelectedProject, Mode=TwoWay}"
+                                 SelectionMode="Extended"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 Background="{x:Null}" BorderBrush="{x:Null}"
+                                 Foreground="White"
+                                 Margin="1,20,-4,2"
+                                 RenderTransformOrigin="0.5,0.5"
+                                 FontSize="13"
+                                 Width="200">
+                            <ListBox.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform AngleY="-0.258" />
+                                    <RotateTransform />
+                                    <TranslateTransform Y="-0.495" />
+                                </TransformGroup>
+                            </ListBox.RenderTransform>
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Add custom protection">
+                                        <MenuItem Header="Maximum" />
+                                        <MenuItem Header="Balance" />
+                                        <MenuItem Header="Optimization" />
+                                    </MenuItem>
+                                    <Separator />
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid x:Name="TemplateRoot">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
 
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
 
-                                            <Border Grid.Column="0"
-                                                    Grid.Row="0"
-                                                    x:Name="LeftLine"
-                                                    Grid.RowSpan="2"
-                                                    Margin="0, 2, 2, 2"
-                                                    Width="4"
-                                                    Background="Chartreuse" />
+                                        <Border Grid.Column="0" Grid.Row="0" x:Name="LeftLine" Grid.RowSpan="2"
+                                                Margin="0, 2, 2, 2" Width="4" Background="Chartreuse" />
 
-                                            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Name}" Margin="4, 2" />
-                                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding FolderName}"
-                                                       Margin="4, 2"
-                                                       Foreground="DarkGray" 
-                                                       FontSize="12"
-                                                       TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Name}" Margin="4, 2" />
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding FolderName}"
+                                                   Margin="4, 2" Foreground="DarkGray" FontSize="12"
+                                                   TextTrimming="CharacterEllipsis" />
 
-                                            <TextBlock x:Name="CustomPreset" Grid.Row="0" Grid.RowSpan="2"
-                                                       Grid.Column="3"
-                                                       Text="{Binding ApplicationPreset.Name}"
-                                                       VerticalAlignment="Center" FontSize="16"
-                                                       Margin="3, 0, 3, 1" Visibility="Hidden" />
-                                        </Grid>
+                                        <TextBlock x:Name="CustomPreset" Grid.Row="0" Grid.RowSpan="2" Grid.Column="3"
+                                                   Text="{Binding ApplicationPreset.Name}" VerticalAlignment="Center"
+                                                   FontSize="16" Margin="3, 0, 3, 1" Visibility="Hidden" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
 
-                                        <!--
-                                <DataTemplate.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding FileToProtect, Converter={StaticResource StringToBoolConverter}}"
-                                        Value="True">
-                                        <Setter TargetName="LeftLine" Property="Background" Value="#28C76F" />
-                                    </DataTrigger>
-
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition
-                                                Binding="{Binding FileToProtect, Converter={StaticResource StringToBoolConverter}}"
-                                                Value="True" />
-                                            <Condition
-                                                Binding="{Binding InheritFromProject, Converter={StaticResource InvertCondition}}"
-                                                Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter TargetName="LeftLine" Property="Background" Value="#FF9F43" />
-                                        <Setter TargetName="CustomPreset" Property="Visibility" Value="Visible" />
-                                    </MultiDataTrigger>
-
-                                    <DataTrigger Binding="{Binding IsEnabled}" Value="False">
-                                        <Setter TargetName="LeftLine" Property="Background" Value="LightGray" />
-                                        <Setter TargetName="TemplateRoot" Property="TextElement.Foreground"
-                                                Value="Gray" />
-                                    </DataTrigger>
-
-                                </DataTemplate.Triggers>
-                            -->
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                        <Grid x:Name="ProjectOptions" Background="#C0C0C0" Grid.Column="1" Width="Auto" Height="Auto">
+                            <userControls:PresetsControl />
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem>
+
+                <!-- Pestaña 2 -->
+                <TabItem materialDesign:RippleAssist.IsDisabled="True">
                     <TabItem.Header>
-                        <StackPanel
-                            Width="auto"
-                            Height="auto">
-                            <materialDesign:PackIcon
-                                Width="24"
-                                Height="24"
-                                HorizontalAlignment="Center"
-                                Kind="Images" />
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="Photos" />
+                        <StackPanel Width="auto" Height="auto">
+                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Gear" />
                         </StackPanel>
                     </TabItem.Header>
                     <TextBlock>
-                        <Run
-                            Text="tab 3 content. Default look and behaviors." />
+                        <Run Text="tab 3 content. Default look and behaviors." />
                         <LineBreak />
                         <LineBreak />
-                        <Run
-                            FontStyle="Italic">
-                            Praesevzddvvvvvvvvvv
-                        </Run>
+                        <Run FontStyle="Italic">Settings</Run>
                     </TextBlock>
                 </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel
-                            Width="auto"
-                            Height="auto">
-                            <materialDesign:PackIcon
-                                Width="24"
-                                Height="24"
-                                HorizontalAlignment="Center"
-                                Kind="Lock" />
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Text="Login" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <TextBlock>
-                        <Run
-                            Text="tab 4 content. Default look and behaviors." />
-                        <LineBreak />
-                        <LineBreak />
-                        <Run
-                            FontStyle="Italic">
-                            Prfadsssssssssssssssbvdcas
-                        </Run>
-                    </TextBlock>
-                </TabItem>
+
             </TabControl>
         </materialDesign:Card>
     </Grid>

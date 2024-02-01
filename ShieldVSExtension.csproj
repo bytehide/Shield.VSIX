@@ -56,6 +56,7 @@
     <Compile Include="Commands\MainWindowCommand.cs" />
     <Compile Include="Commands\ConfigurationWindowCommand.cs" />
     <Compile Include="Commands\Enable.cs" />
+    <Compile Include="Common\ApiPath.cs" />
     <Compile Include="Common\Configuration\ProjectConfiguration.cs" />
     <Compile Include="Common\Configuration\ProjectPreset.cs" />
     <Compile Include="Common\Configuration\ShieldExtensionConfiguration.cs" />
@@ -70,6 +71,8 @@
     <Compile Include="Common\Helpers\ProjectItemExtensions.cs" />
     <Compile Include="Common\Helpers\PropertyExtensions.cs" />
     <Compile Include="Commands\Ids.cs" />
+    <Compile Include="Common\Services\HttpX.cs" />
+    <Compile Include="Common\Services\ProtectionService.cs" />
     <Compile Include="Storage\CustomLocalStorageConfig.cs" />
     <Compile Include="Storage\DefaultLocalStorageConfig.cs" />
     <Compile Include="Storage\Interfaces\ISecureLocalStorage.cs" />
@@ -94,6 +97,12 @@
     <Compile Include="Common\Converters\ValueConverterGroup.cs" />
     <Compile Include="UI\MainWindowControl.xaml.cs">
       <DependentUpon>MainWindowControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\PresetsControl.xaml.cs">
+      <DependentUpon>PresetsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\ProtectionControl.xaml.cs">
+      <DependentUpon>ProtectionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
@@ -241,6 +250,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
     <Page Include="UI\MainWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\PresetsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\ProtectionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
