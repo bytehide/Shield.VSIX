@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ShieldVSExtension.Storage.Configurations
+namespace ShieldVSExtension.Storage.Interfaces
 {
     public interface ISecureLocalStorageConfig
     {

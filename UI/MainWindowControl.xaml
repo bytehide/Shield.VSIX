@@ -143,7 +143,16 @@
                         </ListBox>
 
                         <Grid x:Name="ProjectOptions" Background="#C0C0C0" Grid.Column="1" Width="Auto" Height="Auto">
-                            <userControls:PresetsControl />
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <userControls:ActionBarControl Grid.Row="0"
+                                                           Payload="{Binding SelectedProject}" />
+
+                            <userControls:PresetsControl Grid.Row="1" 
+                                                         Payload="{Binding SelectedProject}" />
                         </Grid>
                     </Grid>
                 </TabItem>

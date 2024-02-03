@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:models="clr-namespace:ShieldVSExtension.Common.Models"
              mc:Ignorable="d"
+             d:DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
@@ -15,46 +17,46 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
-        <materialDesign:Card>
-            <TabControl HorizontalContentAlignment="Center"
-                        materialDesign:ColorZoneAssist.Mode="PrimaryMid"
-                        Style="{StaticResource MaterialDesignFilledTabControl}">
-                <TabItem Header="Maximum">
-                    <TextBlock Margin="8" Text="Secondary filled example tab 1" />
-                </TabItem>
-                <TabItem Header="Balanced">
-                    <TextBlock Margin="8" Text="Secondary filled example tab 2" />
-                </TabItem>
-                <TabItem Header="Balanced">
-                    <TextBlock Margin="8" Text="Secondary filled example tab 3" />
-                </TabItem>
-                <TabItem Header="Custom">
-                    <Grid>
-                        <ListBox Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}">
-                            <ListBoxItem Content="Venus" IsSelected="True" />
-                            <ListBoxItem Content="Mercury" />
-                            <ListBoxItem Content="Earth" />
-                            <ListBoxItem Content="Mars" />
-                            <ListBoxItem Content="Jupiter" />
-                            <ListBoxItem Content="Saturn" />
-                            <ListBoxItem Content="Uranus" />
-                            <ListBoxItem Content="Neptune" />
-                            <ListBoxItem Content="Pluto" />
-                            <ListBoxItem Content="Kepler-22b" />
-                            <ListBoxItem Content="HD 209458 b" />
-                            <ListBoxItem Content="WASP-12b" />
-                            <ListBoxItem Content="KELT-9b" />
-                            <ListBoxItem Content="HAT-P-7b" />
-                            <ListBoxItem Content="CoRoT-7b" />
-                            <ListBoxItem Content="XO-3b" />
-                            <ListBoxItem Content="LTT 9779 b" />
-                            <ListBoxItem Content="WASP-33b" />
-                            <ListBoxItem Content="Pluto" />
-                        </ListBox>
-                    </Grid>
-                </TabItem>
-            </TabControl>
-        </materialDesign:Card>
+    <Grid x:Name="RootLayout">
+        <!-- <materialDesign:Card> -->
+        <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid"
+                    Style="{StaticResource MaterialDesignFilledTabControl}"
+                    TabStripPlacement="Top">
+            <TabItem Header="Maximum">
+                <TextBlock Margin="8" Text="Secondary filled example tab 1" />
+            </TabItem>
+            <TabItem Header="Balanced">
+                <TextBlock Margin="8" Text="Secondary filled example tab 2" />
+            </TabItem>
+            <TabItem Header="Balanced">
+                <TextBlock Margin="8" Text="Secondary filled example tab 3" />
+            </TabItem>
+            <TabItem Header="Custom">
+                <Grid>
+                    <ListBox x:Name="ProtectionListBox"
+                             Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Top"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             MinWidth="600"
+                             Margin="0,20,0,0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:ProtectionModel}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}"
+                                               IsEnabled="{Binding IsEnabled}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <!-- </materialDesign:Card> -->
     </Grid>
 </UserControl>

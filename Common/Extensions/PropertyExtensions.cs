@@ -1,7 +1,7 @@
 ﻿using System;
 using EnvDTE;
 
-namespace ShieldVSExtension.Common.Helpers
+namespace ShieldVSExtension.Common.Extensions
 {
     public static class PropertiesExtensions
     {

@@ -12,6 +12,12 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -43,6 +49,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,26 +58,36 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\MainWindowCommand.cs" />
     <Compile Include="Commands\ConfigurationWindowCommand.cs" />
     <Compile Include="Commands\Enable.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Common\ApiPath.cs" />
     <Compile Include="Common\Configuration\ProjectConfiguration.cs" />
     <Compile Include="Common\Configuration\ProjectPreset.cs" />
     <Compile Include="Common\Configuration\ShieldExtensionConfiguration.cs" />
     <Compile Include="Common\Contracts\BuildOutputFileTypes.cs" />
     <Compile Include="Commands\Guids.cs" />
+    <Compile Include="Common\Enums.cs" />
+    <Compile Include="Common\Extensions\DirectoryInfoExtension.cs" />
+    <Compile Include="Common\Extensions\StringExtension.cs" />
+    <Compile Include="Common\FileManager.cs" />
     <Compile Include="Common\Helpers\DevHelpers.cs" />
     <Compile Include="Common\Helpers\DTE2Helper.cs" />
     <Compile Include="Common\Helpers\EnvDTECodeModelLanguageConstants2.cs" />
     <Compile Include="Common\Helpers\EnvDTEProjectKinds.cs" />
+    <Compile Include="Common\Helpers\JsonHelper.cs" />
     <Compile Include="Common\Helpers\NugetHelper.cs" />
-    <Compile Include="Common\Helpers\ProjectExtensions.cs" />
-    <Compile Include="Common\Helpers\ProjectItemExtensions.cs" />
-    <Compile Include="Common\Helpers\PropertyExtensions.cs" />
+    <Compile Include="Common\Extensions\ProjectExtensions.cs" />
+    <Compile Include="Common\Extensions\ProjectItemExtensions.cs" />
+    <Compile Include="Common\Extensions\PropertyExtensions.cs" />
     <Compile Include="Commands\Ids.cs" />
+    <Compile Include="Common\Helpers\Utils.cs" />
+    <Compile Include="Common\Models\ProtectionModel.cs" />
+    <Compile Include="Common\Models\ShieldConfiguration.cs" />
     <Compile Include="Common\Services\HttpX.cs" />
     <Compile Include="Common\Services\ProtectionService.cs" />
     <Compile Include="Storage\CustomLocalStorageConfig.cs" />
@@ -98,6 +115,12 @@
     <Compile Include="UI\MainWindowControl.xaml.cs">
       <DependentUpon>MainWindowControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\ActionBarControl.xaml.cs">
+      <DependentUpon>ActionBarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\IconDownloadControl.xaml.cs">
+      <DependentUpon>IconDownloadControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserControls\PresetsControl.xaml.cs">
       <DependentUpon>PresetsControl.xaml</DependentUpon>
     </Compile>
@@ -108,6 +131,7 @@
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ProjectFileViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
+    <Compile Include="ViewModels\SharedViewModel.cs" />
     <Compile Include="VSCommandTable.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -236,6 +260,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Theme\ToggleButton.Theme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Theme\TabControl.Theme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -250,6 +278,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
     <Page Include="UI\MainWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\ActionBarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\IconDownloadControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

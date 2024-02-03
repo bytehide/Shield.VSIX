@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using DeviceId;
-using ShieldVSExtension.Storage.Configurations;
+using ShieldVSExtension.Storage.Interfaces;
 
 namespace ShieldVSExtension.Storage
 {

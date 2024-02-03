@@ -4,7 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using ShieldVSExtension.Storage.Configurations;
+using ShieldVSExtension.Storage.Interfaces;
 
 namespace ShieldVSExtension.Storage
 {

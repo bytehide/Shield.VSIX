@@ -33,19 +33,23 @@ namespace ShieldVSExtension.ViewModels
         {
             TargetDirectory = "test";
 
-            var p1 = new ProjectViewModel();
-            p1.Name = "shield.exe";
-            p1.IsEnabled = true;
-            p1.FolderName = "common";
+            var p1 = new ProjectViewModel
+            {
+                Name = "shield.exe",
+                IsEnabled = true,
+                FolderName = "common"
+            };
             p1.Files.Add(new ProjectFileViewModel { FileName = "file1" });
             p1.Files.Add(new ProjectFileViewModel { FileName = "file2" });
             p1.Files.Add(new ProjectFileViewModel { FileName = "file3" });
             p1.OutputFullPath = "C:\\Windows";
             p1.TargetDirectory = "C:\\Temp";
 
-            var p2 = new ProjectViewModel();
-            p2.Name = "shield2.exe";
-            p2.IsEnabled = false;
+            var p2 = new ProjectViewModel
+            {
+                Name = "shield2.exe",
+                IsEnabled = false
+            };
             p1.FolderName = "common/lib";
             p2.Files.Add(new ProjectFileViewModel { FileName = "file4" });
             p2.Files.Add(new ProjectFileViewModel { FileName = "file5" });
@@ -269,6 +273,8 @@ namespace ShieldVSExtension.ViewModels
         public ObservableCollection<string> ProjectEditions { get; set; }
 
         private readonly SolutionConfiguration _solutionConfiguration;
+
+        // public SharedViewModel SharedViewModelInstance { get; } = new SharedViewModel();
 
         public MainViewModel(DTE2 dte, SolutionConfiguration solutionConfiguration)
         {

@@ -18,9 +18,9 @@ using Microsoft;
 using ShieldSolutionConfiguration = ShieldVSExtension.Common.Configuration.SolutionConfiguration;
 using Task = System.Threading.Tasks.Task;
 using ShieldVSExtension.Common.Configuration;
+using ShieldVSExtension.Common.Extensions;
 using ShieldVSExtension.Common.Helpers;
 using ShieldVSExtension.Storage;
-using ShieldVSExtension.Storage.Configurations;
 using ShieldVSExtension.UI;
 
 namespace ShieldVSExtension

@@ -25,8 +25,7 @@ namespace ShieldVSExtension.Commands
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (ShieldVsExtensionPackage.Configuration is null)
-                return;
+            if (ShieldVsExtensionPackage.Configuration is null) return;
 
             ShieldVsExtensionPackage.Configuration.IsEnabled = !ShieldVsExtensionPackage.Configuration.IsEnabled;
             ShieldVsExtensionPackage.UpdateExtensionEnabled();

@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using NuGet.VisualStudio;
 using MessageBox = System.Windows.MessageBox;
@@ -67,6 +68,23 @@ namespace ShieldVSExtension.Common.Helpers
             var installerServices = componentModel.GetService<IVsPackageInstallerServices>();
 
             return installerServices.IsPackageInstalled(project, packageId);
+        }
+
+        public bool IsLatestVersionInstalled(Project project, string packageId = PackageId)
+        {
+            if (!IsPackageInstalled(project, packageId))
+            {
+                return false;
+            }
+
+            var componentModel = (IComponentModel)Package.GetGlobalService(typeof(SComponentModel));
+            var installerServices = componentModel.GetService<IVsPackageInstallerServices>();
+
+            var services = installerServices.IsPackageInstalled(project, packageId);
+
+            var version = services.ToString();
+
+            return version == "1.0.0";
         }
 
         public Task UninstallPackageAsync(Project project)
