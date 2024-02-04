@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using EnvDTE;
 using ShieldVSExtension.ViewModels;
 
 namespace ShieldVSExtension.UI.UserControls
@@ -14,14 +13,14 @@ namespace ShieldVSExtension.UI.UserControls
         public PresetsControl()
         {
             InitializeComponent();
-            RootLayout.DataContext = this;
+            // RootLayout.DataContext = this;
             // _vm = vm;
             // DataContext = this;
 
             Loaded += PresetsControl_Loaded;
         }
 
-        private async void PresetsControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private async void PresetsControl_Loaded(object sender, RoutedEventArgs e)
         {
             var result = await Common.Services.ProtectionService.GetAllByToken();
 

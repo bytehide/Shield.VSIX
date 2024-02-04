@@ -3,13 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:userControls="clr-namespace:ShieldVSExtension.UI.UserControls"
+             xmlns:icons="clr-namespace:ShieldVSExtension.UI.UserControls.Icons"
+             xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <!-- d:DataContext="{Binding RelativeSource={RelativeSource Self}}" -->
     <!-- d:DataContext="{d:DesignInstance Type=viewModels:SharedViewModel, IsDesignTimeCreatable=True}" -->
-
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -29,11 +29,13 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center">
 
-            <TextBlock x:Name="TextBlock"
-                       Text="{Binding Payload.Name, Mode=Default}"
-                       Foreground="Orange" />
+            <TextBlock Text="{Binding Payload.Name, Mode=Default}" />
 
-            <userControls:IconDownloadControl Payload="{Binding Payload, Mode=TwoWay}" />
+            <icons:IconDownloadControl Payload="{Binding Payload, Mode=TwoWay}"
+                                       Margin="6 0 3 0" />
+
+            <!--<icons:IconSettingsControl Payload="{Binding Payload, Mode=TwoWay}" 
+                                       Margin="3 0 3 0" />-->
 
             <!--<Button
                 Style="{StaticResource MaterialDesignIconForegroundButton}"

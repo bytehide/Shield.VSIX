@@ -71,7 +71,6 @@
                         </StackPanel>
                     </TabItem.Header>
                     <Grid>
-                        <!-- Contenido de la Pestaña 1 -->
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -140,6 +139,7 @@
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
+
                         </ListBox>
 
                         <Grid x:Name="ProjectOptions" Background="#C0C0C0" Grid.Column="1" Width="Auto" Height="Auto">
@@ -148,7 +148,6 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <!-- Payload="{Binding SelectedProject, Mode=TwoWay}" -->
                             <userControls:ActionBarControl Grid.Row="0"
                                                            Payload="{Binding SelectedProject, Mode=TwoWay}" />
 
@@ -158,18 +157,17 @@
                     </Grid>
                 </TabItem>
 
-                <!-- Pestaña 2 -->
                 <TabItem materialDesign:RippleAssist.IsDisabled="True">
                     <TabItem.Header>
                         <StackPanel Width="auto" Height="auto">
-                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="Gear" />
+                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="InformationCircleOutline" />
                         </StackPanel>
                     </TabItem.Header>
                     <TextBlock>
                         <Run Text="tab 3 content. Default look and behaviors." />
                         <LineBreak />
                         <LineBreak />
-                        <Run FontStyle="Italic">Settings</Run>
+                        <Run FontStyle="Italic">About</Run>
                     </TextBlock>
                 </TabItem>
 

@@ -6,8 +6,9 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:models="clr-namespace:ShieldVSExtension.Common.Models"
              mc:Ignorable="d"
-             d:DataContext="{Binding RelativeSource={RelativeSource Self}}"
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <!-- d:DataContext="{Binding RelativeSource={RelativeSource Self}}" -->
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -17,7 +18,8 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="RootLayout">
+    <Grid x:Name="RootLayout"
+          DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
         <!-- <materialDesign:Card> -->
         <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid"
                     Style="{StaticResource MaterialDesignFilledTabControl}"
@@ -56,6 +58,16 @@
                     </ListBox>
                 </Grid>
             </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Margin="8,0,0,0">
+                        <materialDesign:PackIcon Kind="CogOutline" Width="16" Height="16" />
+                        <TextBlock Margin="8,0,0,0" Text="Settings" />
+                    </StackPanel>
+                </TabItem.Header>
+                <TextBlock Margin="8" Text="{Binding Payload.Name}" />
+            </TabItem>
+
         </TabControl>
         <!-- </materialDesign:Card> -->
     </Grid>

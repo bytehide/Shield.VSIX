@@ -118,8 +118,11 @@
     <Compile Include="UI\UserControls\ActionBarControl.xaml.cs">
       <DependentUpon>ActionBarControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControls\IconDownloadControl.xaml.cs">
+    <Compile Include="UI\UserControls\Icons\IconDownloadControl.xaml.cs">
       <DependentUpon>IconDownloadControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\Icons\IconSettingsControl.xaml.cs">
+      <DependentUpon>IconSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\PresetsControl.xaml.cs">
       <DependentUpon>PresetsControl.xaml</DependentUpon>
@@ -286,7 +289,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\UserControls\IconDownloadControl.xaml">
+    <Page Include="UI\UserControls\Icons\IconDownloadControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\Icons\IconSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

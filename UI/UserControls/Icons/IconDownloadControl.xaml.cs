@@ -1,8 +1,11 @@
 ﻿using System.Windows;
-using ShieldVSExtension.ViewModels;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
+using NuGet;
+using ShieldVSExtension.Common.Helpers;
+using ShieldVSExtension.ViewModels;
 
-namespace ShieldVSExtension.UI.UserControls
+namespace ShieldVSExtension.UI.UserControls.Icons
 {
     /// <summary>
     /// Interaction logic for IconDownloadControl.xaml
@@ -16,12 +19,13 @@ namespace ShieldVSExtension.UI.UserControls
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (sender is not PackIcon { IsInitialized: true }) return;
             if (Payload == null) return;
 
-            MessageBox.Show(Payload.Name);
+            // MessageBox.Show(Payload.Name);
 
-            // var helper = new NugetHelper();
-            // helper.InstallPackageAsync(Payload.Project, SemanticVersion.Parse("1.10.0")).GetAwaiter();
+            var helper = new NugetHelper();
+            helper.InstallPackageAsync(Payload.Project, SemanticVersion.Parse("1.10.0")).GetAwaiter();
         }
 
         #region Commands
