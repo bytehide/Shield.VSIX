@@ -3,8 +3,8 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
+using NuGet;
 using NuGet.VisualStudio;
 using MessageBox = System.Windows.MessageBox;
 
@@ -14,12 +14,13 @@ namespace ShieldVSExtension.Common.Helpers
     internal class NugetHelper
     {
         private const string PackageId = "Bytehide.Shield.Integration";
+        // private static readonly SemanticVersion PackageVersion = new("1.0.0");
 
         [Import(typeof(IVsPackageInstaller2))] private IVsPackageInstaller2 _packageInstaller;
 
         [Import(typeof(IVsPackageUninstaller))] private IVsPackageUninstaller _packageUninstaller;
 
-        public Task InstallPackageAsync(Project project)
+        public Task InstallPackageAsync(Project project, SemanticVersion packageVersion)
         {
             try
             {
@@ -38,7 +39,7 @@ namespace ShieldVSExtension.Common.Helpers
                     return Task.CompletedTask;
                 }
 
-                if (installerServices.IsPackageInstalled(project, PackageId))
+                if (installerServices.IsPackageInstalled(project, PackageId, packageVersion))
                 {
                     MessageBox.Show("Package already installed", "Info");
                     return Task.CompletedTask;
@@ -68,23 +69,6 @@ namespace ShieldVSExtension.Common.Helpers
             var installerServices = componentModel.GetService<IVsPackageInstallerServices>();
 
             return installerServices.IsPackageInstalled(project, packageId);
-        }
-
-        public bool IsLatestVersionInstalled(Project project, string packageId = PackageId)
-        {
-            if (!IsPackageInstalled(project, packageId))
-            {
-                return false;
-            }
-
-            var componentModel = (IComponentModel)Package.GetGlobalService(typeof(SComponentModel));
-            var installerServices = componentModel.GetService<IVsPackageInstallerServices>();
-
-            var services = installerServices.IsPackageInstalled(project, packageId);
-
-            var version = services.ToString();
-
-            return version == "1.0.0";
         }
 
         public Task UninstallPackageAsync(Project project)

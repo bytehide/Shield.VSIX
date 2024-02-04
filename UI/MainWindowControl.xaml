@@ -148,11 +148,12 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
+                            <!-- Payload="{Binding SelectedProject, Mode=TwoWay}" -->
                             <userControls:ActionBarControl Grid.Row="0"
-                                                           Payload="{Binding SelectedProject}" />
+                                                           Payload="{Binding SelectedProject, Mode=TwoWay}" />
 
-                            <userControls:PresetsControl Grid.Row="1" 
-                                                         Payload="{Binding SelectedProject}" />
+                            <userControls:PresetsControl Grid.Row="1"
+                                                         Payload="{Binding SelectedProject, Mode=TwoWay}" />
                         </Grid>
                     </Grid>
                 </TabItem>

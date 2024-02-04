@@ -1,29 +1,9 @@
-﻿using System.ComponentModel;
-using EnvDTE;
+﻿using EnvDTE;
 
 namespace ShieldVSExtension.ViewModels
 {
-    public class SharedViewModel
+    public class SharedViewModel : ViewModelBase
     {
-        private Project _payload;
-
-        public Project Payload
-        {
-            get => _payload;
-            set
-            {
-                if (_payload == value) return;
-
-                _payload = value;
-                OnPropertyChanged(nameof(Payload));
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
     }
 }

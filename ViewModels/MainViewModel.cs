@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using ShieldVSExtension.Common.Configuration;
@@ -12,16 +10,23 @@ using ShieldVSExtension.Common.Helpers;
 
 namespace ShieldVSExtension.ViewModels
 {
-    public sealed class MainViewModel : INotifyPropertyChanged
+    public sealed class MainViewModel : ViewModelBase
     {
         #region INotifyPropertyChanged
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        // public event PropertyChangedEventHandler PropertyChanged;
+        // 
+        // protected void OnPropertyChanged(string propertyName)
+        // {
+        //     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        // }
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+        // public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        // 
+        // private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        // {
+        //     PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        // }
 
         #endregion
 
@@ -76,198 +81,6 @@ namespace ShieldVSExtension.ViewModels
 
         #endregion
 
-        #region TargetDirectory Property
-
-        private string _targetDirectory;
-
-        public string TargetDirectory
-        {
-            get => _targetDirectory;
-            set
-            {
-                if (_targetDirectory == value) return;
-
-                _targetDirectory = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region ProjectPreset Property
-
-        private ProjectPreset _projectPreset;
-
-        public ProjectPreset ProjectPreset
-        {
-            get => _projectPreset;
-            set
-            {
-                if (_projectPreset == value) return;
-
-                _projectPreset = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region CreateShieldProjectIfNotExists Property
-
-        private bool _createShieldProjectIfNotExists;
-
-        public bool CreateShieldProjectIfNotExists
-        {
-            get => _createShieldProjectIfNotExists;
-            set
-            {
-                if (_createShieldProjectIfNotExists == value) return;
-
-                _createShieldProjectIfNotExists = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region FindCustomConfigurationFile Property
-
-        private bool _findCustomConfigurationFile;
-
-        public bool FindCustomConfigurationFile
-        {
-            get => _findCustomConfigurationFile;
-            set
-            {
-                if (_findCustomConfigurationFile == value) return;
-
-                _findCustomConfigurationFile = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region IsValidClient Property
-
-        private bool _isValidClient = true;
-
-        public bool IsValidClient
-        {
-            get => _isValidClient;
-            set
-            {
-                if (_isValidClient == value) return;
-
-                _isValidClient = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region SelectedProject Property
-
-        private ProjectViewModel _selectedProject;
-
-        public ProjectViewModel SelectedProject
-        {
-            get => _selectedProject;
-            set
-            {
-                if (_selectedProject == value) return;
-
-                _selectedProject = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region Packages Property
-
-        private List<string> _packages;
-
-        public List<string> Packages
-        {
-            get => _packages;
-            set
-            {
-                if (_packages == value) return;
-
-                _packages = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region SelectedProjects Property
-
-        public ICollection<ProjectViewModel> SelectedProjects { get; }
-
-        #endregion
-
-        #region Projects Property
-
-        public ICollection<ProjectViewModel> Projects { get; }
-
-        #endregion
-
-        #region ShieldProjectName Property
-
-        private string _shieldProjectName;
-
-        public string ShieldProjectName
-        {
-            get => _shieldProjectName;
-            set
-            {
-                if (_shieldProjectName == value) return;
-
-                _shieldProjectName = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region ShieldProjectEdition Property
-
-        private string _shieldProjectEdition;
-
-        public string ShieldProjectEdition
-        {
-            get => _shieldProjectEdition;
-            set
-            {
-                if (_shieldProjectEdition == value) return;
-
-                _shieldProjectEdition = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region BuildConfiguration Property
-
-        private string _buildConfiguration;
-
-        public string BuildConfiguration
-        {
-            get => _buildConfiguration;
-            set
-            {
-                if (_buildConfiguration == value) return;
-
-                _buildConfiguration = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
         public ObservableCollection<ProjectPreset> ProjectPresets { get; set; }
 
         public ObservableCollection<string> ProjectEditions { get; set; }
@@ -288,36 +101,33 @@ namespace ShieldVSExtension.ViewModels
                 .ThenBy(p => p.UniqueName)
                 .ToArray();
 
-            for (var i = 0; i < 10; i++)
+            foreach (var dteProject in dteProjects)
             {
-                foreach (var dteProject in dteProjects)
+                try
                 {
-                    try
+                    var projectConfiguration =
+                        solutionConfiguration.Projects.FirstOrDefault(p =>
+                            p.ProjectName == dteProject.UniqueName) ??
+                        new ProjectConfiguration();
+
+                    var projectViewModel = new ProjectViewModel(dteProject, projectConfiguration.Files)
                     {
-                        var projectConfiguration =
-                            solutionConfiguration.Projects.FirstOrDefault(p =>
-                                p.ProjectName == dteProject.UniqueName) ??
-                            new ProjectConfiguration();
+                        IsEnabled = projectConfiguration.IsEnabled,
+                        IncludeSubDirectories = projectConfiguration.IncludeSubDirectories,
+                        TargetDirectory = projectConfiguration.TargetDirectory,
+                        InheritFromProject = projectConfiguration.InheritFromProject,
+                        ApplicationPreset = projectConfiguration.ApplicationPreset,
+                        ReplaceOriginalFile = projectConfiguration.ReplaceOriginalFile,
+                    };
 
-                        var projectViewModel = new ProjectViewModel(dteProject, projectConfiguration.Files)
-                        {
-                            IsEnabled = projectConfiguration.IsEnabled,
-                            IncludeSubDirectories = projectConfiguration.IncludeSubDirectories,
-                            TargetDirectory = projectConfiguration.TargetDirectory,
-                            InheritFromProject = projectConfiguration.InheritFromProject,
-                            ApplicationPreset = projectConfiguration.ApplicationPreset,
-                            ReplaceOriginalFile = projectConfiguration.ReplaceOriginalFile,
-                        };
+                    if (!string.IsNullOrEmpty(projectConfiguration.FileToProtect))
+                        projectViewModel.FileToProtect = projectConfiguration.FileToProtect;
 
-                        if (!string.IsNullOrEmpty(projectConfiguration.FileToProtect))
-                            projectViewModel.FileToProtect = projectConfiguration.FileToProtect;
-
-                        projects.Add(projectViewModel);
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
+                    projects.Add(projectViewModel);
+                }
+                catch
+                {
+                    // ignored
                 }
             }
 

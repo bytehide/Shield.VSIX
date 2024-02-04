@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using EnvDTE;
 using ShieldVSExtension.Common.Configuration;
 using ShieldVSExtension.Common.Contracts;
@@ -17,12 +16,20 @@ namespace ShieldVSExtension.ViewModels
     {
         #region INotifyPropertyChanged
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        // [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        // public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        // 
+        // private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        // {
+        //     PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        // }
 
         #endregion
 
@@ -39,7 +46,7 @@ namespace ShieldVSExtension.ViewModels
                     return;
 
                 _isEnabled = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsEnabled));
             }
         }
 
@@ -58,7 +65,7 @@ namespace ShieldVSExtension.ViewModels
                     return;
 
                 _includeSubDirectories = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(IncludeSubDirectories));
             }
         }
 
@@ -77,7 +84,7 @@ namespace ShieldVSExtension.ViewModels
                     return;
 
                 _inheritFromProject = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(InheritFromProject));
             }
         }
 
@@ -96,7 +103,7 @@ namespace ShieldVSExtension.ViewModels
                     return;
 
                 _replaceOriginalFile = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(ReplaceOriginalFile));
             }
         }
 
@@ -115,7 +122,7 @@ namespace ShieldVSExtension.ViewModels
                     return;
 
                 _applicationPreset = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(ApplicationPreset));
             }
         }
 
@@ -134,7 +141,7 @@ namespace ShieldVSExtension.ViewModels
                     return;
 
                 _targetDirectory = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(TargetDirectory));
             }
         }
 
@@ -153,7 +160,7 @@ namespace ShieldVSExtension.ViewModels
                     return;
 
                 _fileToProtect = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(FileToProtect));
             }
         }
 
@@ -172,7 +179,7 @@ namespace ShieldVSExtension.ViewModels
                     return;
 
                 _buildConfiguration = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(BuildConfiguration));
             }
         }
 
@@ -190,7 +197,7 @@ namespace ShieldVSExtension.ViewModels
 
         public ObservableCollection<ProjectFileViewModel> Files { get; }
 
-        internal Project Project { get; }
+        public Project Project { get; }
 
         public ProjectViewModel()
         {

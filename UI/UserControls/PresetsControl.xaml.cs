@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using EnvDTE;
+using ShieldVSExtension.ViewModels;
 
 namespace ShieldVSExtension.UI.UserControls
 {
@@ -40,15 +41,15 @@ namespace ShieldVSExtension.UI.UserControls
 
         #region Commands
 
-        public Project Payload
+        public ProjectViewModel Payload
         {
-            get => (Project)GetValue(PayloadProperty);
+            get => (ProjectViewModel)GetValue(PayloadProperty);
             set => SetValue(PayloadProperty, value);
         }
 
         public static readonly DependencyProperty PayloadProperty = DependencyProperty.Register(
             nameof(Payload),
-            typeof(Project),
+            typeof(ProjectViewModel),
             typeof(PresetsControl),
             new PropertyMetadata(null));
 

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using NuGet;
 using ShieldVSExtension.Common.Configuration;
 using ShieldVSExtension.Common.Helpers;
 using ShieldVSExtension.Storage;
@@ -212,7 +213,7 @@ namespace ShieldVSExtension.UI
         private void AddProject_Click(object sender, RoutedEventArgs e)
         {
             var helper = new NugetHelper();
-            helper.InstallPackageAsync(_vm.Projects.First().Project).GetAwaiter();
+            helper.InstallPackageAsync(_vm.Projects.First().Project, SemanticVersion.Parse("1.10.0")).GetAwaiter();
         }
 
         private void RemoveProject_Click(object sender, RoutedEventArgs e)
