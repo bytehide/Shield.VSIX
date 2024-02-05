@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using EnvDTE;
@@ -9,29 +8,32 @@ using ShieldVSExtension.Common.Configuration;
 using ShieldVSExtension.Common.Contracts;
 using ShieldVSExtension.Common.Extensions;
 using ShieldVSExtension.Common.Helpers;
+using ShieldVSExtension.Commands;
+using ShieldVSExtension.Common;
+using ShieldVSExtension.Common.Models;
 
 namespace ShieldVSExtension.ViewModels
 {
-    public class ProjectViewModel : INotifyPropertyChanged
+    public class ProjectViewModel : ViewModelBase
     {
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        // public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        // #region INotifyPropertyChanged
         // 
-        // private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        // public event PropertyChangedEventHandler PropertyChanged;
+        // 
+        // // [NotifyPropertyChangedInvocator]
+        // protected virtual void OnPropertyChanged(string propertyName)
         // {
-        //     PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        //     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         // }
+        // 
+        // // public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        // // 
+        // // private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        // // {
+        // //     PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        // // }
 
-        #endregion
+        // #endregion
 
         #region IsEnabled Property
 
@@ -39,11 +41,10 @@ namespace ShieldVSExtension.ViewModels
 
         public bool IsEnabled
         {
-            get { return _isEnabled; }
+            get => _isEnabled;
             set
             {
-                if (_isEnabled == value)
-                    return;
+                if (_isEnabled == value) return;
 
                 _isEnabled = value;
                 OnPropertyChanged(nameof(IsEnabled));
@@ -58,7 +59,7 @@ namespace ShieldVSExtension.ViewModels
 
         public bool IncludeSubDirectories
         {
-            get { return _includeSubDirectories; }
+            get => _includeSubDirectories;
             set
             {
                 if (_includeSubDirectories == value)
@@ -77,7 +78,7 @@ namespace ShieldVSExtension.ViewModels
 
         public bool InheritFromProject
         {
-            get { return _inheritFromProject; }
+            get => _inheritFromProject;
             set
             {
                 if (_inheritFromProject == value)
@@ -96,7 +97,7 @@ namespace ShieldVSExtension.ViewModels
 
         public bool ReplaceOriginalFile
         {
-            get { return _replaceOriginalFile; }
+            get => _replaceOriginalFile;
             set
             {
                 if (_replaceOriginalFile == value)
@@ -115,7 +116,7 @@ namespace ShieldVSExtension.ViewModels
 
         public ProjectPreset ApplicationPreset
         {
-            get { return _applicationPreset; }
+            get => _applicationPreset;
             set
             {
                 if (_applicationPreset == value)
@@ -134,7 +135,7 @@ namespace ShieldVSExtension.ViewModels
 
         public string TargetDirectory
         {
-            get { return _targetDirectory; }
+            get => _targetDirectory;
             set
             {
                 if (_targetDirectory == value)
@@ -153,7 +154,7 @@ namespace ShieldVSExtension.ViewModels
 
         public string FileToProtect
         {
-            get { return _fileToProtect; }
+            get => _fileToProtect;
             set
             {
                 if (_fileToProtect == value)
@@ -172,7 +173,7 @@ namespace ShieldVSExtension.ViewModels
 
         public string BuildConfiguration
         {
-            get { return _buildConfiguration; }
+            get => _buildConfiguration;
             set
             {
                 if (_buildConfiguration == value)
@@ -201,7 +202,8 @@ namespace ShieldVSExtension.ViewModels
 
         public ProjectViewModel()
         {
-            Files = new ObservableCollection<ProjectFileViewModel>();
+            Files = [];
+            CheckProjectCommand = new RelayCommand(OnCheckProject);
         }
 
         public ProjectViewModel(Project project, IEnumerable<string> files)
@@ -246,7 +248,6 @@ namespace ShieldVSExtension.ViewModels
                 }
             }
 
-
             //throw new Exception("Can't find output file name.");
 
             //TODO: Remove:
@@ -281,6 +282,31 @@ namespace ShieldVSExtension.ViewModels
             {
                 FileToProtect = outPutFiles.FirstOrDefault(x => x.EndsWith(".dll") || x.EndsWith(".exe"));
             }
+        }
+
+        public void CheckOrCreateShieldConfiguration()
+        {
+            // var shieldConfig = new ShieldConfiguration
+            // {
+            //      Name = Name,
+            //     Enabled = IsEnabled,
+            //     Preset = EPresetType.Custom.GetName(),
+            //     ProjectToken = string.Empty,
+            //     ProtectionSecret = string.Empty,
+            //     RunConfiguration = BuildConfiguration,
+            //     /*Protections =
+            //     [
+            //         new Protection {Name = "IncludeSubDirectories", Value = IncludeSubDirectories},
+            //         new Protection {Name = "InheritFromProject", Value = InheritFromProject},
+            //         new Protection {Name = "ReplaceOriginalFile", Value = ReplaceOriginalFile},
+            //         new Protection {Name = "TargetDirectory", Value = TargetDirectory},
+            //         new Protection {Name = "FileToProtect", Value = FileToProtect}
+            //     ]*/
+            // };
+
+            var shieldConfigPath = Path.Combine(FolderName, "shield.config.json");
+            File.WriteAllText(shieldConfigPath, @"{}");
+            // shieldConfig.Save(shieldConfigPath);
         }
     }
 }

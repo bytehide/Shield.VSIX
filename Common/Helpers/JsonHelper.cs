@@ -13,5 +13,15 @@ namespace ShieldVSExtension.Common.Helpers
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(source);
         }
+
+        public static ShieldConfiguration Parse(string source)
+        {
+            return Deserialize<ShieldConfiguration>(source);
+        }
+
+        public static string Stringify(ShieldConfiguration configuration)
+        {
+            return Serialize(configuration);
+        }
     }
 }

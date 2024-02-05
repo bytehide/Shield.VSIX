@@ -19,7 +19,11 @@ namespace ShieldVSExtension.UI.UserControls
         public ProjectViewModel Payload
         {
             get => (ProjectViewModel)GetValue(PayloadProperty);
-            set => SetValue(PayloadProperty, value);
+            set
+            {
+                SetValue(PayloadProperty, value);
+                // _vm.Payload = value;
+            }
         }
 
         public static readonly DependencyProperty PayloadProperty = DependencyProperty.Register(

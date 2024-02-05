@@ -3,8 +3,10 @@ using System.Windows.Input;
 
 namespace ShieldVSExtension.Commands
 {
-    internal class RelayCommand(Action<object> execute, Predicate<object> canExecute) : ICommand
+    public class RelayCommand(Action<object> execute, Predicate<object> canExecute = null) : ICommand
     {
+        private readonly Action<object> _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+
         public bool CanExecute(object parameter)
         {
             return canExecute == null || canExecute.Invoke(parameter);
@@ -12,7 +14,7 @@ namespace ShieldVSExtension.Commands
 
         public void Execute(object parameter)
         {
-            execute.Invoke(parameter);
+            _execute?.Invoke(parameter);
         }
 
         public event EventHandler CanExecuteChanged;

@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary
+            Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.textbox.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="FloatingHintTextBoxStyle"
+           TargetType="TextBox"
+           BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+
+        <Setter Property="FontFamily" Value="Roboto" />
+        <Setter Property="FontSize" Value="11 pt" />
+        <Setter Property="FontStyle" Value="Normal" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="FontStretch" Value="UltraExpanded" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="MinLines" Value="1" />
+        <Setter Property="MaxLines" Value="1" />
+        <Setter Property="materialDesign:TransitionAssist.DisableTransitions" Value="True" />
+    </Style>
+
+    <Style x:Key="OutlinedTextFieldTextBoxStyle"
+           TargetType="TextBox"
+           BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+
+        <Setter Property="FontFamily" Value="Roboto" />
+        <Setter Property="FontSize" Value="11 pt" />
+        <Setter Property="FontStyle" Value="Normal" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="FontStretch" Value="UltraExpanded" />
+        <Setter Property="materialDesign:ValidationAssist.Background" Value="Transparent" />
+        <Setter Property="materialDesign:TransitionAssist.DisableTransitions" Value="True" />
+        <Setter Property="materialDesign:HintAssist.Background" Value="#CC1A1A1A" />
+    </Style>
+
+</ResourceDictionary>

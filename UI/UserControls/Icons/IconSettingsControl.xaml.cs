@@ -1,7 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
-using ShieldVSExtension.ViewModels;
+﻿using ShieldVSExtension.ViewModels;
 using System.Windows;
-using System.Windows.Input;
 
 namespace ShieldVSExtension.UI.UserControls.Icons
 {
@@ -10,25 +8,35 @@ namespace ShieldVSExtension.UI.UserControls.Icons
     /// </summary>
     public partial class IconSettingsControl
     {
+        private readonly ProjectViewModel _vm;
+
         public IconSettingsControl()
         {
             InitializeComponent();
+            _vm = new ProjectViewModel();
+            DataContext = _vm;
         }
 
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not PackIcon { IsInitialized: true }) return;
-            if (Payload == null) return;
-
-            MessageBox.Show($"settings for {Payload.Name} project");
-        }
+        // private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        // {
+        //     if (sender is not PackIcon { IsInitialized: true }) return;
+        //     if (Payload == null) return;
+        // 
+        //     MessageBox.Show($"settings for {Payload.Name} project");
+        // }
 
         #region Commands
+
+        // public object CheckProjectCommand { get; }
 
         public ProjectViewModel Payload
         {
             get => (ProjectViewModel)GetValue(PayloadProperty);
-            set => SetValue(PayloadProperty, value);
+            set
+            {
+                SetValue(PayloadProperty, value);
+                _vm.Payload = value;
+            }
         }
 
         public static readonly DependencyProperty PayloadProperty = DependencyProperty.Register(

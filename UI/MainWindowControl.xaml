@@ -25,7 +25,6 @@
                  Title="ByteHide Shield"
                  Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
                  mc:Ignorable="d"
-                 x:Name="ShieldConfiguration"
                  Width="1280"
                  Height="600"
                  d:DesignWidth="1260"

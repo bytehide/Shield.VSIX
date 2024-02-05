@@ -5,11 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:icons="clr-namespace:ShieldVSExtension.UI.UserControls.Icons"
              xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewModels:ViewModelBase, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <!-- d:DataContext="{Binding RelativeSource={RelativeSource Self}}" -->
     <!-- d:DataContext="{d:DesignInstance Type=viewModels:SharedViewModel, IsDesignTimeCreatable=True}" -->
+    <!-- d:DataContext="{d:DesignInstance Type=viewModels:ViewModelBase, IsDesignTimeCreatable=True}" -->
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -20,6 +22,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <!-- DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" -->
     <Grid Background="#1c1c1c"
           DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
           Height="50">
@@ -34,8 +37,8 @@
             <icons:IconDownloadControl Payload="{Binding Payload, Mode=TwoWay}"
                                        Margin="6 0 3 0" />
 
-            <!--<icons:IconSettingsControl Payload="{Binding Payload, Mode=TwoWay}" 
-                                       Margin="3 0 3 0" />-->
+            <icons:IconSettingsControl Payload="{Binding Payload, Mode=TwoWay}" 
+                                       Margin="3 0 3 0" />
 
             <!--<Button
                 Style="{StaticResource MaterialDesignIconForegroundButton}"

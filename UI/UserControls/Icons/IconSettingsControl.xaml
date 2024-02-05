@@ -4,8 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
+             xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewModels:ProjectViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <!-- d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=True}" -->
+    <!--xmlns:viewmodels="clr-namespace:ShieldVSExtension.ViewModels" 
+    d:DataContext="{d:DesignInstance Type=viewmodels:ProjectViewModel}"-->
+    <!-- d:DataContext="{d:DesignInstance Type=viewModels:ViewModelBase, IsDesignTimeCreatable=True}" -->
+    <!--xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels" 
+    d:DataContext="{d:DesignInstance Type=viewModels:ViewModelBase, IsDesignTimeCreatable=True}"-->
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -15,21 +25,20 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <!-- DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" -->
     <Grid>
         <StackPanel>
             <materialDesign:PackIcon Kind="GearOutline"
                                      ToolTip="Settings"
                                      Cursor="Hand"
-                                     
-                                     Background="Transparent"
-                                     PreviewMouseLeftButtonDown="OnMouseLeftButtonDown">
+                                     Background="Transparent">
 
-                <!--<i:Interaction.Triggers>
-                        <b:EventTrigger x:Name="Trigger" EventName="MouseLeftButtonDown">
-                            <b:InvokeCommandAction Command="{Binding Path=OpenQrCommand}" />
-                            <b:InvokeCommandAction CommandParameter="{Binding RelativeSource={RelativeSource Self}}" />
-                        </b:EventTrigger>
-                </i:Interaction.Triggers>-->
+                <b:Interaction.Triggers>
+                    <b:EventTrigger x:Name="Trigger" EventName="MouseLeftButtonDown">
+                        <b:InvokeCommandAction Command="{Binding CheckProjectCommand}" />
+                        <b:InvokeCommandAction CommandParameter="{Binding RelativeSource={RelativeSource Self}}" />
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
 
                 <materialDesign:PackIcon.Style>
                     <Style TargetType="materialDesign:PackIcon">

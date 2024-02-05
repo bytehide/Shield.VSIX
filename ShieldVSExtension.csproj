@@ -73,8 +73,10 @@
     <Compile Include="Commands\Guids.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="Common\Extensions\DirectoryInfoExtension.cs" />
+    <Compile Include="Common\Extensions\PresetExtension.cs" />
     <Compile Include="Common\Extensions\StringExtension.cs" />
     <Compile Include="Common\FileManager.cs" />
+    <Compile Include="Common\Globals.cs" />
     <Compile Include="Common\Helpers\DevHelpers.cs" />
     <Compile Include="Common\Helpers\DTE2Helper.cs" />
     <Compile Include="Common\Helpers\EnvDTECodeModelLanguageConstants2.cs" />
@@ -104,6 +106,7 @@
     </Compile>
     <Compile Include="Common\Services\Services.cs" />
     <Compile Include="ShieldVSExtensionPackage.cs" />
+    <Compile Include="Storage\ShieldLocalStorageConfig.cs" />
     <Compile Include="UI\AppWindow.cs" />
     <Compile Include="UI\ConfigurationWindowControl.xaml.cs">
       <DependentUpon>ConfigurationWindowControl.xaml</DependentUpon>
@@ -130,10 +133,14 @@
     <Compile Include="UI\UserControls\ProtectionControl.xaml.cs">
       <DependentUpon>ProtectionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\SettingsControl.xaml.cs">
+      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ProjectFileViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\SharedViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="VSCommandTable.cs">
@@ -264,6 +271,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Theme\TextBox.Theme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\PasswordBox.Theme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Theme\ToggleButton.Theme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -302,6 +317,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\UserControls\ProtectionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\SettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
