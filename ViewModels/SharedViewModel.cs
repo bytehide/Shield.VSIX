@@ -13,7 +13,7 @@ namespace ShieldVSExtension.ViewModels
         protected override void OnCheckProject(object _)
         {
             if (Payload == null) return;
-
+        
             MessageBox.Show($"settings for {Payload.Name} project");
         }
     }

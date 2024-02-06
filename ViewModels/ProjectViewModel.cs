@@ -9,8 +9,7 @@ using ShieldVSExtension.Common.Contracts;
 using ShieldVSExtension.Common.Extensions;
 using ShieldVSExtension.Common.Helpers;
 using ShieldVSExtension.Commands;
-using ShieldVSExtension.Common;
-using ShieldVSExtension.Common.Models;
+using System;
 
 namespace ShieldVSExtension.ViewModels
 {
@@ -34,6 +33,23 @@ namespace ShieldVSExtension.ViewModels
         // // }
 
         // #endregion
+
+        private string _projectToken = string.Empty;
+
+        public string ProjectToken
+        {
+            get => _projectToken;
+            set
+            {
+                if (null == _projectToken || _projectToken.Equals(value, StringComparison.OrdinalIgnoreCase)) return;
+
+                _projectToken = value;
+                OnPropertyChanged(nameof(ProjectToken));
+
+                // Payload = new PayloadType {Id = Id, Content = Utils.StringToSecureString(Content)};
+                // OnPropertyChanged(nameof(Payload));
+            }
+        }
 
         #region IsEnabled Property
 

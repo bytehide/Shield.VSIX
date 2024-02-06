@@ -10,7 +10,7 @@ namespace ShieldVSExtension.Common.Extensions
             {
                 EPresetType.Maximum => "Maximum",
                 EPresetType.Balance => "Balance",
-                EPresetType.Optimized => "Optimal",
+                EPresetType.Optimized => "Optimized",
                 EPresetType.Custom => "Custom",
                 _ => throw new ArgumentOutOfRangeException(nameof(preset), preset, null)
             };

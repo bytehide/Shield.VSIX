@@ -71,6 +71,7 @@
     <Compile Include="Common\Configuration\ShieldExtensionConfiguration.cs" />
     <Compile Include="Common\Contracts\BuildOutputFileTypes.cs" />
     <Compile Include="Commands\Guids.cs" />
+    <Compile Include="Common\Delegates.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="Common\Extensions\DirectoryInfoExtension.cs" />
     <Compile Include="Common\Extensions\PresetExtension.cs" />
@@ -90,8 +91,10 @@
     <Compile Include="Common\Helpers\Utils.cs" />
     <Compile Include="Common\Models\ProtectionModel.cs" />
     <Compile Include="Common\Models\ShieldConfiguration.cs" />
+    <Compile Include="Common\PasswordBoxAssistant.cs" />
     <Compile Include="Common\Services\HttpX.cs" />
     <Compile Include="Common\Services\ProtectionService.cs" />
+    <Compile Include="Common\Validators\ProjectTokenValidationRule.cs" />
     <Compile Include="Storage\CustomLocalStorageConfig.cs" />
     <Compile Include="Storage\DefaultLocalStorageConfig.cs" />
     <Compile Include="Storage\Interfaces\ISecureLocalStorage.cs" />

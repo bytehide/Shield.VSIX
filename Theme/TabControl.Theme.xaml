@@ -3,13 +3,23 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary
-            Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.tabcontrol.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.tabcontrol.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="RaisedTabControlStyle" TargetType="TabControl"
            BasedOn="{StaticResource MaterialDesignNavigationRailTabControl}">
         <Setter Property="Foreground" Value="GhostWhite" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+
+        <Setter Property="TabItem.ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <ContentPresenter Content="{TemplateBinding Content}" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

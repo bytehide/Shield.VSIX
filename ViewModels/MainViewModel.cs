@@ -133,6 +133,7 @@ namespace ShieldVSExtension.ViewModels
                 if (_selectedProject == value) return;
 
                 _selectedProject = value;
+                OnCheckProject(value);
                 // _payload = value;
 
                 // value.PropertyChanged += (sender, args) =>

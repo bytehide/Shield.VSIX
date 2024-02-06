@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel;
 using ShieldVSExtension.Commands;
 using System;
+using static ShieldVSExtension.Common.Delegates;
 
 namespace ShieldVSExtension.ViewModels
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
+        internal static ProjectChangedHandler ProjectChangedHandler = delegate { };
+
         private ProjectViewModel _payload;
 
         public ProjectViewModel Payload
@@ -24,7 +27,8 @@ namespace ShieldVSExtension.ViewModels
 
         public RelayCommand CheckProjectCommand { get; set; }
 
-        protected virtual void OnCheckProject(object obj) => throw new NotImplementedException();
+        protected virtual void OnCheckProject(ProjectViewModel payload) => ProjectChangedHandler.Invoke(payload);
+        protected virtual void OnCheckProject(object _) => throw new NotImplementedException();
 
         #endregion
 

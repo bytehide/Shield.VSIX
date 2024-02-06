@@ -8,15 +8,13 @@ namespace ShieldVSExtension.UI
     /// </summary>
     public partial class MainWindowControl
     {
-        private readonly MainViewModel _vm;
-        private const string ExtensionConfigurationFile = "ExtensionConfiguration";
+        // private const string ExtensionConfigurationFile = "ExtensionConfiguration";
 
         public MainWindowControl(MainViewModel vm)
         {
             InitializeMaterialDesign();
             InitializeComponent();
 
-            _vm = vm;
             DataContext = vm;
         }
 

@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
-             d:DataContext="{d:DesignInstance Type=viewModels:ProjectViewModel, IsDesignTimeCreatable=True}"
+             xmlns:construction="clr-namespace:Microsoft.Build.Construction;assembly=Microsoft.Build"
+             d:DataContext="{d:DesignInstance Type=viewModels:SettingsViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="800">
 
-    <!-- d:DataContext="{d:DesignInstance Type=viewModels:ViewModelBase, IsDesignTimeCreatable=True}" -->
+    <!-- d:DataContext="{d:DesignInstance Type=viewModels:ProjectViewModel, IsDesignTimeCreatable=True}" -->
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -22,40 +23,105 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <!-- DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" -->
-    <Grid 
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch"
           Margin="20">
         <StackPanel>
+            <TextBlock Text="{Binding Path=Payload.Name, StringFormat='Settings for {0}', Mode=Default}"
+                       HorizontalAlignment="Right"
+                       Margin="20,0,0,20" />
 
-            <TextBlock Text="{Binding Payload.Name, Mode=Default}"
-                       Margin="0,0,0,20" />
+            <StackPanel Orientation="Horizontal"
+                        Margin="20,0,0,30">
 
-            <TextBox 
-                materialDesign:HintAssist.HelperText="Enter your project name"
-                materialDesign:HintAssist.Hint="Project Name"   
-                materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible" 
-                Style="{StaticResource OutlinedTextFieldTextBoxStyle}"   
-                Margin="0,0,0,20"
-                />
+                <TextBlock>
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked, ElementName=StatusToggle}" Value="True">
+                                    <Setter Property="Text" Value="Enabled" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsChecked, ElementName=StatusToggle}" Value="False">
+                                    <Setter Property="Text" Value="Disabled" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
-            <PasswordBox
-                materialDesign:HintAssist.HelperText="Enter your project token"
-                materialDesign:HintAssist.Hint="Project Token"
-                materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
-                Style="{StaticResource FloatingHintPasswordBoxStyle}" />
+                <ToggleButton x:Name="StatusToggle"
+                              Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                              IsChecked="{Binding Payload.IsEnabled, Mode=TwoWay}"
+                              ToolTip="Enabled"
+                              Margin="5,0,0,0"
+                              HorizontalAlignment="Left" />
+            </StackPanel>
 
-            <PasswordBox
-                materialDesign:HintAssist.HelperText="Enter your protection secret"
-                materialDesign:HintAssist.Hint="Password"
-                materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
-                Style="{StaticResource FloatingHintPasswordBoxStyle}"
-                Margin="0,20,0,0" />
+            <!-- DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" -->
+            <!-- SelectedItem="{Binding Payload.Project.ConfigurationManager.ActiveConfiguration, Mode=TwoWay}" -->
+            <!-- SelectedItem="{Binding Payload.Project.ConfigurationManager.ActiveConfiguration.ConfigurationName, Mode=TwoWay}" -->
+            <!-- SelectedItem="{Binding Payload.Project.ConfigurationManager.ActiveConfiguration.ConfigurationName, Mode=OneTime}" -->
+            <!-- SelectedValue="{Binding Payload.Project.ConfigurationManager.ActiveConfiguration.ConfigurationName, Mode=OneTime}" -->
+            <ComboBox x:Name="ProjectRunCombo"
+                      Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                      ItemsSource="{Binding Payload.Project.ConfigurationManager}"
+                      Width="256"
+                      materialDesign:HintAssist.Hint="Run Configuration"
+                      Margin="20,0,0,30"
+                      HorizontalAlignment="Left">
 
-            <Button
-                Content="Save"
-                Style="{StaticResource RaisedLightButtonStyle}"
-                Margin="0,20,0,0"
-                Click="SaveButtonOnClick" />
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type construction:SolutionConfigurationInSolution}">
+                        <TextBlock Text="{Binding ConfigurationName}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+            </ComboBox>
+
+
+            <!--<ComboBoxItem Content="Release" />
+                <ComboBoxItem Content="Debug" />-->
+
+            <TextBox x:Name="ProjectNameBox"
+                     materialDesign:HintAssist.Hint="Enter your project name"
+                     materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
+                     Style="{StaticResource OutlinedTextFieldTextBoxStyle}"
+                     Margin="20,0,20,30" />
+
+            <!-- PasswordChanged="ProjectTokenBoxOnPasswordChanged" -->
+            <!-- Style="{StaticResource FloatingHintPasswordBoxStyle}" -->
+            <!-- DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" -->
+            <TextBox x:Name="ProjectTokenBox"
+                     materialDesign:HintAssist.Hint="Enter your project token"
+                     materialDesign:HintAssist.HelperText="Required*"
+                     materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
+                     Style="{StaticResource OutlinedTextFieldTextBoxStyle}"
+                     Margin="20,0,20,30"
+                     TextChanged="ProjectTokenBoxOnChanged">
+                <!--<TextBox.Text>
+                    <Binding Path="ProjectToken"
+                             Mode="TwoWay"
+                             ValidatesOnDataErrors="True"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validators:ProjectTokenValidationRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>-->
+            </TextBox>
+
+
+            <PasswordBox x:Name="SecretBox"
+                         materialDesign:HintAssist.Hint="Enter your protection secret"
+                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
+                         Style="{StaticResource FloatingHintPasswordBoxStyle}"
+                         Margin="20,0,20,30" />
+
+            <Button x:Name="SaveButton"
+                    Content="Save"
+                    Style="{StaticResource RaisedLightButtonStyle}"
+                    Click="SaveButtonOnClick"
+                    Margin="20,40,20,20" />
         </StackPanel>
     </Grid>
 </UserControl>
