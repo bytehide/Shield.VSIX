@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using ShieldVSExtension.ViewModels;
 using System.Windows.Controls;
 using ShieldVSExtension.Common;
@@ -9,12 +8,8 @@ using ShieldVSExtension.Common.Models;
 using ShieldVSExtension.Storage;
 using ShieldVSExtension.Common.Validators;
 using System.Globalization;
-using EnvDTE;
-using Microsoft.VisualStudio.PlatformUI;
-using Globals = ShieldVSExtension.Common.Globals;
-using System.Collections.Generic;
-using System.Linq;
 using System.Collections;
+using Globals = ShieldVSExtension.Common.Globals;
 
 namespace ShieldVSExtension.UI.UserControls
 {
@@ -36,15 +31,25 @@ namespace ShieldVSExtension.UI.UserControls
 
             Loaded += OnLoaded;
             ViewModelBase.ProjectChangedHandler += OnRefresh;
+            // ViewModelBase.TabSelectedHandler += OnSelected;
         }
+
+        private void OnLoaded(object sender, RoutedEventArgs e) => Refresh();
 
         private void OnRefresh(ProjectViewModel payload)
         {
+            if (payload == null) return;
+
             Payload = payload;
             Refresh();
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e) => Refresh();
+        // private void OnSelected(ETabType tab)
+        // {
+        //     if (tab != ETabType.SettingsTab || Payload == null) return;
+        // 
+        //     Refresh();
+        // }
 
         private void Refresh()
         {
@@ -56,7 +61,6 @@ namespace ShieldVSExtension.UI.UserControls
                 .WithDefaultKeyBuilder());
 
             var data = LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName);
-
             if (data == null) return;
 
             ProjectNameBox.Text = data.Name ?? $"Configuration {Payload.Project.Name}";
@@ -105,7 +109,6 @@ namespace ShieldVSExtension.UI.UserControls
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
 
             if (sender is not Button { IsInitialized: true }) return;
-
             if (Payload == null) return;
 
             LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)

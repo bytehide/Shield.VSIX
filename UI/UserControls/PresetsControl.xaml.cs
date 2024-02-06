@@ -1,4 +1,9 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using ShieldVSExtension.Common;
+using ShieldVSExtension.Common.Models;
+using ShieldVSExtension.Storage;
 using ShieldVSExtension.ViewModels;
 
 namespace ShieldVSExtension.UI.UserControls
@@ -8,6 +13,9 @@ namespace ShieldVSExtension.UI.UserControls
     /// </summary>
     public partial class PresetsControl
     {
+        public SecureLocalStorage LocalStorage { get; set; }
+        // public bool HasSettings { get; set; }
+
         // private SharedViewModel _vm;
 
         public PresetsControl()
@@ -16,25 +24,93 @@ namespace ShieldVSExtension.UI.UserControls
             // RootLayout.DataContext = this;
             // _vm = vm;
             // DataContext = this;
-
-            Loaded += PresetsControl_Loaded;
+            Loaded += OnLoaded;
+            ViewModelBase.ProjectChangedHandler += OnRefresh;
+            Unloaded += OnFree;
         }
 
-        private async void PresetsControl_Loaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e) => Refresh();
+
+        private void OnRefresh(ProjectViewModel payload)
         {
-            var result = await Common.Services.ProtectionService.GetAllByToken();
+            Payload = payload;
+            Refresh();
+        }
 
-            if (result.Length > 0)
+        private void Refresh()
+        {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+            if (Payload == null) return;
+
+            LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
+                .WithDefaultKeyBuilder());
+
+            var data = LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName);
+            if (data == null || string.IsNullOrWhiteSpace(data.ProjectToken))
             {
-                var protections =
-                    Newtonsoft.Json.JsonConvert.DeserializeObject<Common.Models.ProtectionModel[]>(result);
-                ProtectionListBox.ItemsSource = protections;
+                ToggleTabs(false);
+                SettingsTab.IsSelected = true;
 
-                // search shield.config.json in root directory and create it if not exists
+                return;
             }
-            else
+
+            var preset = data?.Preset;
+            if (preset == null) return;
+
+            // HasSettings = true;
+            ToggleTabs(true);
+
+            switch (preset)
             {
-                MessageBox.Show("Error while fetching data from server");
+                case "Maximum":
+                    MaximumTab.IsSelected = true;
+                    break;
+                case "Balance":
+                    BalanceTab.IsSelected = true;
+                    break;
+                case "Optimized":
+                    OptimizedTab.IsSelected = true;
+                    break;
+                case "Custom":
+                    CustomTab.IsSelected = true;
+                    break;
+                default:
+                    SettingsTab.IsSelected = true;
+                    break;
+            }
+        }
+
+        private void ToggleTabs(bool isEnabled)
+        {
+            MaximumTab.IsEnabled = isEnabled;
+            OptimizedTab.IsEnabled = isEnabled;
+            BalanceTab.IsEnabled = isEnabled;
+            CustomTab.IsEnabled = isEnabled;
+        }
+
+        private void OnSelectedTab(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not TabItem { IsInitialized: true } tabItem) return;
+
+            var tabName = tabItem.Header.ToString();
+
+            switch (tabName)
+            {
+                case "Maximum":
+                    ViewModelBase.TabSelectedHandler.Invoke(EPresetType.Maximum);
+                    break;
+                case "Balance":
+                    ViewModelBase.TabSelectedHandler.Invoke(EPresetType.Balance);
+                    break;
+                case "Optimized":
+                    ViewModelBase.TabSelectedHandler.Invoke(EPresetType.Optimized);
+                    break;
+                case "Custom":
+                    ViewModelBase.TabSelectedHandler.Invoke(EPresetType.Custom);
+                    break;
+                // case "Settings":
+                //     ViewModelBase.TabSelectedHandler.Invoke(EPresetType.Settings);
+                //     break;
             }
         }
 
@@ -53,5 +129,11 @@ namespace ShieldVSExtension.UI.UserControls
             new PropertyMetadata(null));
 
         #endregion
+
+        private void OnFree(object sender, RoutedEventArgs e)
+        {
+            ViewModelBase.ProjectChangedHandler -= OnRefresh;
+            Unloaded -= OnFree;
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace ShieldVSExtension.ViewModels
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
         internal static ProjectChangedHandler ProjectChangedHandler = delegate { };
+        internal static TabSelectedHandler TabSelectedHandler = delegate { };
 
         private ProjectViewModel _payload;
 
@@ -26,9 +27,9 @@ namespace ShieldVSExtension.ViewModels
         #region Commands
 
         public RelayCommand CheckProjectCommand { get; set; }
-
         protected virtual void OnCheckProject(ProjectViewModel payload) => ProjectChangedHandler.Invoke(payload);
         protected virtual void OnCheckProject(object _) => throw new NotImplementedException();
+        // public virtual void OnTabSelected(ETabType tab) => TabSelectedHandler.Invoke(tab);
 
         #endregion
 

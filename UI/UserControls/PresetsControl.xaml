@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:models="clr-namespace:ShieldVSExtension.Common.Models"
              xmlns:userControls="clr-namespace:ShieldVSExtension.UI.UserControls"
+             xmlns:presets="clr-namespace:ShieldVSExtension.UI.UserControls.Presets"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -19,54 +19,40 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="RootLayout"
-          DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
         <!-- <materialDesign:Card> -->
         <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid"
                     Style="{StaticResource MaterialDesignFilledTabControl}"
                     TabStripPlacement="Top">
-            <TabItem Header="Maximum">
-                <TextBlock Margin="8" Text="Secondary filled example tab 1" />
+            <TabItem x:Name="MaximumTab"
+                     Header="Maximum"
+                     MouseLeftButtonUp="OnSelectedTab">
+                <presets:MaximumControl />
             </TabItem>
-            <TabItem Header="Balance">
-                <TextBlock Margin="8" Text="Secondary filled example tab 2" />
+            <TabItem x:Name="BalanceTab"
+                     Header="Balance"
+                     MouseLeftButtonUp="OnSelectedTab">
+                <presets:BalanceControl />
             </TabItem>
-            <TabItem Header="Optimized">
-                <TextBlock Margin="8" Text="Secondary filled example tab 3" />
+            <TabItem x:Name="OptimizedTab"
+                     Header="Optimized"
+                     MouseLeftButtonUp="OnSelectedTab">
+                <presets:OptimizedControl />
             </TabItem>
-            <TabItem Header="Custom">
-                <Grid>
-                    <ListBox x:Name="ProtectionListBox"
-                             Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Top"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             MinWidth="600"
-                             Margin="0,20,0,0">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type models:ProtectionModel}">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Name}"
-                                               IsEnabled="{Binding IsEnabled}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                    </ListBox>
-                </Grid>
+            <TabItem x:Name="CustomTab"
+                     Header="Custom"
+                     MouseLeftButtonUp="OnSelectedTab">
+                <presets:CustomControl />
             </TabItem>
-            <TabItem>
+            <TabItem x:Name="SettingsTab"
+                     MouseLeftButtonUp="OnSelectedTab">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" Margin="8,0,0,0">
                         <materialDesign:PackIcon Kind="CogOutline" Width="16" Height="16" />
                         <TextBlock Margin="8,0,0,0" Text="Settings" />
                     </StackPanel>
                 </TabItem.Header>
-                <!-- <TextBlock Margin="8" Text="{Binding Payload.Name}" /> -->
+
                 <userControls:SettingsControl Payload="{Binding Payload, Mode=TwoWay}" />
 
             </TabItem>

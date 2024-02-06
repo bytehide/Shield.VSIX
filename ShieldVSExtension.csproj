@@ -124,17 +124,29 @@
     <Compile Include="UI\UserControls\ActionBarControl.xaml.cs">
       <DependentUpon>ActionBarControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\Presets\BalanceControl.xaml.cs">
+      <DependentUpon>BalanceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserControls\Icons\IconDownloadControl.xaml.cs">
       <DependentUpon>IconDownloadControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\Icons\IconSettingsControl.xaml.cs">
       <DependentUpon>IconSettingsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\Presets\CustomControl.xaml.cs">
+      <DependentUpon>CustomControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\Presets\MaximumControl.xaml.cs">
+      <DependentUpon>MaximumControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\Presets\OptimizedControl.xaml.cs">
+      <DependentUpon>OptimizedControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserControls\PresetsControl.xaml.cs">
       <DependentUpon>PresetsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControls\ProtectionControl.xaml.cs">
-      <DependentUpon>ProtectionControl.xaml</DependentUpon>
+    <Compile Include="UI\UserControls\ProtectionCheckControl.xaml.cs">
+      <DependentUpon>ProtectionCheckControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>
@@ -307,6 +319,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\UserControls\Presets\BalanceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\UserControls\Icons\IconDownloadControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -315,11 +331,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\UserControls\Presets\CustomControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\Presets\MaximumControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\Presets\OptimizedControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\UserControls\PresetsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\UserControls\ProtectionControl.xaml">
+    <Page Include="UI\UserControls\ProtectionCheckControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
