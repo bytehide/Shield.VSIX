@@ -91,7 +91,6 @@ internal static class FileManager
     public static bool WriteJsonShieldConfiguration(string path, string content)
     {
         if (path.IsEmpty() || content.IsEmpty()) return false;
-
         if (!CheckDirectory(path)) return false;
 
         var file = new FileInfo(Path.Combine(path, "shield.config.json"));

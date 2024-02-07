@@ -71,6 +71,7 @@
     <Compile Include="Common\Configuration\ShieldExtensionConfiguration.cs" />
     <Compile Include="Common\Contracts\BuildOutputFileTypes.cs" />
     <Compile Include="Commands\Guids.cs" />
+    <Compile Include="Common\Converters\BooleanToColorConverter.cs" />
     <Compile Include="Common\Delegates.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="Common\Extensions\DirectoryInfoExtension.cs" />

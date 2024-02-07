@@ -2,86 +2,142 @@
 using ShieldVSExtension.Storage;
 using ShieldVSExtension.ViewModels;
 using System.Windows;
+using System.Windows.Controls;
 using ShieldVSExtension.Common;
 using ShieldVSExtension.Common.Extensions;
 using ShieldVSExtension.Common.Helpers;
 using ShieldVSExtension.Common.Models;
+using Microsoft.VisualStudio.Shell;
 
-namespace ShieldVSExtension.UI.UserControls.Presets
+namespace ShieldVSExtension.UI.UserControls.Presets;
+
+/// <summary>
+/// Interaction logic for CustomControl.xaml
+/// </summary>
+public partial class CustomControl
 {
-    /// <summary>
-    /// Interaction logic for CustomControl.xaml
-    /// </summary>
-    public partial class CustomControl
+    public SecureLocalStorage LocalStorage { get; set; }
+    public ProjectViewModel Payload { get; set; }
+
+    public CustomControl()
     {
-        public SecureLocalStorage LocalStorage { get; set; }
-        public ProjectViewModel Payload { get; set; }
+        InitializeComponent();
 
-        public CustomControl()
+        // Loaded += OnLoaded;
+        ViewModelBase.ProjectChangedHandler += OnRefresh;
+        ViewModelBase.TabSelectedHandler += OnSelected;
+    }
+
+    private void OnRefresh(ProjectViewModel payload)
+    {
+        if (payload == null) return;
+
+        Payload = payload;
+        LoadDataAsync().GetAwaiter();
+    }
+
+    private void OnSelected(EPresetType preset)
+    {
+        if (preset != EPresetType.Custom || Payload == null) return;
+
+        SaveConfiguration();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        var result = await Common.Services.ProtectionService.GetAllByToken();
+        if (result.Length > 0)
         {
-            InitializeComponent();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            // Loaded += OnLoaded;
-            ViewModelBase.ProjectChangedHandler += OnRefresh;
-            ViewModelBase.TabSelectedHandler += OnSelected;
-        }
+            LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
+                .WithDefaultKeyBuilder());
 
-        private void OnRefresh(ProjectViewModel payload)
-        {
-            if (payload == null) return;
-
-            Payload = payload;
-            LoadDataAsync().GetAwaiter();
-        }
-
-        private void OnSelected(EPresetType preset)
-        {
-            if (preset != EPresetType.Custom || Payload == null) return;
-
-            SaveConfiguration();
-        }
-
-        private async Task LoadDataAsync()
-        {
-            var result = await Common.Services.ProtectionService.GetAllByToken();
-            if (result.Length > 0)
+            var data = LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName) ??
+                       new ShieldConfiguration();
+            if (string.IsNullOrWhiteSpace(data.ProjectToken))
             {
-                var protections =
-                    Newtonsoft.Json.JsonConvert.DeserializeObject<Common.Models.ProtectionModel[]>(result);
-                ProtectionListBox.ItemsSource = protections;
+                MessageBox.Show("You need a Project Token to enable a protection");
+                return;
             }
-            else
+
+            var protections =
+                Newtonsoft.Json.JsonConvert.DeserializeObject<Common.Models.ProtectionModel[]>(result);
+            foreach (var protection in protections)
             {
-                MessageBox.Show("Error while fetching data from server");
+                if (data.Protections.ContainsKey(protection.Id))
+                {
+                    protection.IsSelected = true;
+                }
+
+                protection.IsEnabled = true;
             }
+
+            ProtectionList.ItemsSource = protections;
+            return;
         }
 
-        private void SaveConfiguration()
+        MessageBox.Show("Error while fetching data from server");
+    }
+
+
+    private void SaveConfiguration()
+    {
+        try
         {
-            try
-            {
-                Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
 
-                LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
-                    .WithDefaultKeyBuilder());
-                var data = LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName) ??
-                           new ShieldConfiguration();
-                if (string.IsNullOrWhiteSpace(data.ProjectToken)) return;
+            LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
+                .WithDefaultKeyBuilder());
 
-                var buff = data.Preset;
-                var custom = EPresetType.Custom.ToFriendlyString();
-                if (data.Preset == custom) return;
+            var data = LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName) ?? new ShieldConfiguration();
+            if (string.IsNullOrWhiteSpace(data.ProjectToken)) return;
 
-                data.Preset = custom;
-                LocalStorage.Set(Payload.Project.UniqueName, data);
+            var custom = EPresetType.Custom.ToFriendlyString();
+            if (data.Preset == custom) return;
 
-                FileManager.WriteJsonShieldConfiguration(Payload.FolderName,
-                    JsonHelper.Stringify(LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName)));
-            }
-            catch (System.Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+            data.Preset = custom;
+            LocalStorage.Set(Payload.Project.UniqueName, data);
+
+            FileManager.WriteJsonShieldConfiguration(Payload.FolderName,
+                JsonHelper.Stringify(LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName)));
         }
+        catch (System.Exception e)
+        {
+            MessageBox.Show(e.Message);
+        }
+    }
+
+    private void ProtectionOnSelected(object sender, RoutedEventArgs e)
+    {
+        if (sender is not CheckBox { IsInitialized: true } checkBox) return;
+
+        Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+
+        LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
+            .WithDefaultKeyBuilder());
+
+        var data = LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName) ?? new ShieldConfiguration();
+        if (string.IsNullOrWhiteSpace(data.ProjectToken))
+        {
+            MessageBox.Show("You need a Project Token to enable a protection");
+            return;
+        }
+
+        var protection = (ProtectionModel)checkBox.DataContext;
+
+        if (checkBox.IsChecked == true)
+        {
+            data.Protections[protection.Id] = null;
+        }
+        else
+        {
+            data.Protections.Remove(protection.Id);
+        }
+
+        LocalStorage.Set(Payload.Project.UniqueName, data);
+
+        FileManager.WriteJsonShieldConfiguration(Payload.FolderName,
+            JsonHelper.Stringify(LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName)));
     }
 }

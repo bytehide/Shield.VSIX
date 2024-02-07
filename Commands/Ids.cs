@@ -1,9 +1,8 @@
-﻿namespace ShieldVSExtension.Commands
-{
-    internal static class Ids
-    {
-        public const uint ShieldEnabled = 0x100;
+﻿namespace ShieldVSExtension.Commands;
 
-        public const uint ShieldConfiguration = 0x200;
-    }
+internal static class Ids
+{
+    public const uint ShieldEnabled = 0x100;
+
+    public const uint ShieldConfiguration = 0x200;
 }

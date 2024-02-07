@@ -1,9 +1,8 @@
-﻿namespace ShieldVSExtension.Common.Configuration
+﻿namespace ShieldVSExtension.Common.Configuration;
+
+internal class ShieldExtensionConfiguration
 {
-    internal class ShieldExtensionConfiguration
-    {
-        public string ApiToken { get; set; }
-        public string LogsPath { get; set; }
-        public bool StoreLogs { get; set; }
-    }
+    public string ApiToken { get; set; }
+    public string LogsPath { get; set; }
+    public bool StoreLogs { get; set; }
 }

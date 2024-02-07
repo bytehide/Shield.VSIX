@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace ShieldVSExtension.Commands
+namespace ShieldVSExtension.Commands;
+
+public class RelayCommand(Action<object> execute, Predicate<object> canExecute = null) : ICommand
 {
-    public class RelayCommand(Action<object> execute, Predicate<object> canExecute = null) : ICommand
+    private readonly Action<object> _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+
+    public bool CanExecute(object parameter)
     {
-        private readonly Action<object> _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-
-        public bool CanExecute(object parameter)
-        {
-            return canExecute == null || canExecute.Invoke(parameter);
-        }
-
-        public void Execute(object parameter)
-        {
-            _execute?.Invoke(parameter);
-        }
-
-        public event EventHandler CanExecuteChanged;
+        return canExecute == null || canExecute.Invoke(parameter);
     }
+
+    public void Execute(object parameter)
+    {
+        _execute?.Invoke(parameter);
+    }
+
+    public event EventHandler CanExecuteChanged;
 }

@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace ShieldVSExtension.Storage.Interfaces
+namespace ShieldVSExtension.Storage.Interfaces;
+
+public interface ISecureLocalStorageConfig
 {
-    public interface ISecureLocalStorageConfig
-    {
-        string DefaultPath { get; }
-        string ApplicationName { get; }
-        string StoragePath { get; }
-        Func<string> BuildLocalSecureKey { get; set;  }
-    }
+    string DefaultPath { get; }
+    string ApplicationName { get; }
+    string StoragePath { get; }
+    Func<string> BuildLocalSecureKey { get; set;  }
 }

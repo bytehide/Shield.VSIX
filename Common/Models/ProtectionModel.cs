@@ -1,10 +1,10 @@
-﻿namespace ShieldVSExtension.Common.Models
+﻿namespace ShieldVSExtension.Common.Models;
+
+public class ProtectionModel
 {
-    internal class ProtectionModel
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool IsEnabled { get; set; }
-    }
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public bool IsEnabled { get; set; }
+    public bool IsSelected { get; set; }
 }

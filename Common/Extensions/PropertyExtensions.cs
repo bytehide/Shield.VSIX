@@ -1,40 +1,39 @@
 ﻿using System;
 using EnvDTE;
 
-namespace ShieldVSExtension.Common.Extensions
+namespace ShieldVSExtension.Common.Extensions;
+
+public static class PropertiesExtensions
 {
-    public static class PropertiesExtensions
+    public static Property GetPropertyOrDefault(this EnvDTE.Properties properties, string propertyName)
     {
-        public static Property GetPropertyOrDefault(this EnvDTE.Properties properties, string propertyName)
+        try
         {
-            try
-            {
-                return properties.Item(propertyName);
-            }
-            catch (ArgumentException)
-            {
-                return null;
-            }
+            return properties.Item(propertyName);
         }
-
-        public static T GetPropertyOrDefault<T>(this EnvDTE.Properties properties, string propertyName)
-            where T : class
+        catch (ArgumentException)
         {
-            var property = GetPropertyOrDefault(properties, propertyName);
-
-            return (T)property?.Value;
+            return null;
         }
+    }
 
-        public static object TryGetPropertyValueOrDefault(this EnvDTE.Properties properties, string propertyName)
+    public static T GetPropertyOrDefault<T>(this EnvDTE.Properties properties, string propertyName)
+        where T : class
+    {
+        var property = GetPropertyOrDefault(properties, propertyName);
+
+        return (T)property?.Value;
+    }
+
+    public static object TryGetPropertyValueOrDefault(this EnvDTE.Properties properties, string propertyName)
+    {
+        try
         {
-            try
-            {
-                return properties.Item(propertyName).Value;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return properties.Item(propertyName).Value;
+        }
+        catch (Exception)
+        {
+            return null;
         }
     }
 }

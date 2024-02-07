@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace ShieldVSExtension.Common.Extensions
+namespace ShieldVSExtension.Common.Extensions;
+
+public static class PresetExtension
 {
-    public static class PresetExtension
+    public static string ToFriendlyString(this EPresetType preset)
     {
-        public static string ToFriendlyString(this EPresetType preset)
+        return preset switch
         {
-            return preset switch
-            {
-                EPresetType.Maximum => "Maximum",
-                EPresetType.Balance => "Balance",
-                EPresetType.Optimized => "Optimized",
-                EPresetType.Custom => "Custom",
-                _ => throw new ArgumentOutOfRangeException(nameof(preset), preset, null)
-            };
-        }
+            EPresetType.Maximum => "Maximum",
+            EPresetType.Balance => "Balance",
+            EPresetType.Optimized => "Optimized",
+            EPresetType.Custom => "Custom",
+            _ => throw new ArgumentOutOfRangeException(nameof(preset), preset, null)
+        };
     }
 }

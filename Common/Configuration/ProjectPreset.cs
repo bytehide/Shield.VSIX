@@ -1,9 +1,8 @@
-﻿namespace ShieldVSExtension.Common.Configuration
-{
-    public class ProjectPreset
-    {
-        public int Id { get; set; }
+﻿namespace ShieldVSExtension.Common.Configuration;
 
-        public string Name { get; set; }
-    }
+public class ProjectPreset
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; }
 }

@@ -87,7 +87,8 @@
                              SelectedItem="{Binding SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              SelectionMode="Extended"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             Background="{x:Null}" BorderBrush="{x:Null}"
+                             Background="{x:Null}" 
+                             BorderBrush="{x:Null}"
                              Foreground="White"
                              Margin="1,48,-4,2"
                              RenderTransformOrigin="0.5,0.5"
@@ -101,7 +102,7 @@
                                 <TranslateTransform Y="-0.495" />
                             </TransformGroup>
                         </ListBox.RenderTransform>
-                        <ListBox.ContextMenu>
+                        <!--<ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Add custom protection">
                                     <MenuItem Header="Maximum" />
@@ -110,7 +111,7 @@
                                 </MenuItem>
                                 <Separator />
                             </ContextMenu>
-                        </ListBox.ContextMenu>
+                        </ListBox.ContextMenu>-->
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid x:Name="TemplateRoot">

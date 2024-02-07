@@ -1,15 +1,14 @@
 ﻿using System.Threading.Tasks;
 
-namespace ShieldVSExtension.Common.Services
+namespace ShieldVSExtension.Common.Services;
+
+internal class HttpX
 {
-    internal class HttpX
+    public static async Task<string> Get(string url)
     {
-        public static async Task<string> Get(string url)
+        using (var client = new System.Net.Http.HttpClient())
         {
-            using (var client = new System.Net.Http.HttpClient())
-            {
-                return await client.GetStringAsync(url);
-            }
+            return await client.GetStringAsync(url);
         }
     }
 }

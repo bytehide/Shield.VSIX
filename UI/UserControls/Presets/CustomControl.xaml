@@ -16,27 +16,28 @@
     </UserControl.Resources>
 
     <Grid>
-        <ListBox x:Name="ProtectionListBox"
-                 Style="{StaticResource MaterialDesignFilterChipPrimaryListBox}"
-                 HorizontalAlignment="Center"
-                 VerticalAlignment="Top"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 MinWidth="600"
-                 Margin="0,20,0,0">
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:ProtectionModel}">
-                    <StackPanel>
-                        <TextBlock Text="{Binding Name}"
-                                   IsEnabled="{Binding IsEnabled}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-        </ListBox>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="ProtectionList"
+                          Margin="120, 10, 120, 300"
+                          Grid.IsSharedSizeScope="True">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="4" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:ProtectionModel}">
+                        <Grid Margin="0,0">
+                            <CheckBox VerticalAlignment="Center"
+                                      Style="{StaticResource MaterialDesignFilterChipOutlineCheckBox}"
+                                      IsChecked="{Binding IsSelected}"
+                                      Content="{Binding Name}"
+                                      IsEnabled="{Binding IsEnabled}"
+                                      Click="ProtectionOnSelected" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
-
 </UserControl>

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using dnlib.DotNet.Emit;
 using ShieldVSExtension.Common.Helpers;
 using ShieldVSExtension.Common.Models;
 using ShieldVSExtension.Common;
@@ -39,27 +40,29 @@ public partial class BalanceControl
 
     private void SaveConfiguration()
     {
-        try
-        {
-            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+        Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
 
-            LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
-                .WithDefaultKeyBuilder());
-            var data = LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName) ?? new ShieldConfiguration();
-            if (string.IsNullOrWhiteSpace(data.ProjectToken)) return;
+        LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
+            .WithDefaultKeyBuilder());
 
-            var balance = EPresetType.Balance.ToFriendlyString();
-            if (data.Preset == balance) return;
+        // try
+        // {
+        var data = LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName) ?? new ShieldConfiguration();
+        if (string.IsNullOrWhiteSpace(data.ProjectToken)) return;
 
-            data.Preset = balance;
-            LocalStorage.Set(Payload.Project.UniqueName, data);
+        var balance = EPresetType.Balance.ToFriendlyString();
+        if (data.Preset == balance) return;
 
-            FileManager.WriteJsonShieldConfiguration(Payload.FolderName,
-                JsonHelper.Stringify(LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName)));
-        }
-        catch (System.Exception ex)
-        {
-            MessageBox.Show(ex.Message);
-        }
+        data.Preset = balance;
+        LocalStorage.Set(Payload.Project.UniqueName, data);
+
+        FileManager.WriteJsonShieldConfiguration(Payload.FolderName,
+            JsonHelper.Stringify(LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName)));
+        // }
+        // catch (System.Exception ex)
+        // {
+        //     LocalStorage.Remove(Payload.Project.UniqueName);
+        //     MessageBox.Show(ex.Message);
+        // }
     }
 }

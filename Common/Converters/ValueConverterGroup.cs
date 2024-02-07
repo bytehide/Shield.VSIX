@@ -3,73 +3,72 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace ShieldVSExtension.Common.Converters
+namespace ShieldVSExtension.Common.Converters;
+
+/// <summary>
+/// Converter to chain together multiple converters.
+/// </summary>
+public class ValueConverterGroup : List<IValueConverter>,
+    IValueConverter
 {
-    /// <summary>
-    /// Converter to chain together multiple converters.
-    /// </summary>
-    public class ValueConverterGroup : List<IValueConverter>,
-                                       IValueConverter
+    public object Convert(object value,
+        Type targetType,
+        object parameter,
+        CultureInfo language)
     {
-        public object Convert(object value,
-                              Type targetType,
-                              object parameter,
-                              CultureInfo language)
+        var curValue = value;
+        for (var i = 0; i < Count; i++)
         {
-            var curValue = value;
-            for (var i = 0; i < Count; i++)
-            {
-                curValue = this[i].Convert(curValue, targetType, parameter, language);
-            }
-
-            return (curValue);
+            curValue = this[i].Convert(curValue, targetType, parameter, language);
         }
 
-        public object ConvertBack(object value,
-                                  Type targetType,
-                                  object parameter,
-                                  CultureInfo culture)
-        {
-            var curValue = value;
-            for (var i = (Count - 1); i >= 0; i--)
-            {
-                curValue = this[i].ConvertBack(curValue, targetType, parameter, culture);
-            }
-
-            return (curValue);
-        }
-
+        return (curValue);
     }
 
-    /// <summary>
-    /// Inverts a boolean value.
-    /// </summary>
-    public class InvertBoolConverter : IValueConverter
+    public object ConvertBack(object value,
+        Type targetType,
+        object parameter,
+        CultureInfo culture)
     {
-        public object Convert(object value,
-                              Type targetType,
-                              object parameter,
-                              CultureInfo language)
+        var curValue = value;
+        for (var i = (Count - 1); i >= 0; i--)
         {
-            if (value is bool b)
-            {
-                return (!b);
-            }
-
-            throw new ArgumentException("Value must be of the type bool");
+            curValue = this[i].ConvertBack(curValue, targetType, parameter, culture);
         }
 
-        public object ConvertBack(object value,
-                                  Type targetType,
-                                  object parameter,
-                                  CultureInfo language)
-        {
-            if (value is bool b)
-            {
-                return (!b);
-            }
+        return (curValue);
+    }
 
-            throw new ArgumentException();
+}
+
+/// <summary>
+/// Inverts a boolean value.
+/// </summary>
+public class InvertBoolConverter : IValueConverter
+{
+    public object Convert(object value,
+        Type targetType,
+        object parameter,
+        CultureInfo language)
+    {
+        if (value is bool b)
+        {
+            return (!b);
         }
+
+        throw new ArgumentException("Value must be of the type bool");
+    }
+
+    public object ConvertBack(object value,
+        Type targetType,
+        object parameter,
+        CultureInfo language)
+    {
+        if (value is bool b)
+        {
+            return (!b);
+        }
+
+        throw new ArgumentException();
     }
 }

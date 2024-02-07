@@ -1,13 +1,31 @@
-﻿namespace ShieldVSExtension.UI.UserControls
+﻿using ShieldVSExtension.Common.Models;
+using System.Windows;
+
+namespace ShieldVSExtension.UI.UserControls;
+
+/// <summary>
+/// Interaction logic for ProtectionCheckControl.xaml
+/// </summary>
+public partial class ProtectionCheckControl
 {
-    /// <summary>
-    /// Interaction logic for ProtectionCheckControl.xaml
-    /// </summary>
-    public partial class ProtectionCheckControl
+    public ProtectionCheckControl()
     {
-        public ProtectionCheckControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
+
+    #region Commands
+
+    public ProtectionModel Protection
+    {
+        get => (ProtectionModel)GetValue(ProtectionProperty);
+        set => SetValue(ProtectionProperty, value);
+    }
+
+    public static readonly DependencyProperty ProtectionProperty = DependencyProperty.Register(
+        nameof(Protection),
+        typeof(ProtectionModel),
+        typeof(ProtectionCheckControl),
+        new PropertyMetadata(null));
+
+    #endregion
 }
