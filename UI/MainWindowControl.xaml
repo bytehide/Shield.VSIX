@@ -46,6 +46,23 @@
         </ResourceDictionary>
     </mah:MetroWindow.Resources>
 
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <Image Source="/ShieldVSExtension;component/Resources/shield.png"
+                   ToolTip="ByteHide Shield"
+                   Width="25"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Stretch="Uniform"
+                   RenderOptions.BitmapScalingMode="HighQuality" />
+            <!--<Button ToolTip="{lang:Static i18N:Resource.App}">
+              <materialDesign:PackIcon
+                  Kind="Lock" />
+          </Button>-->
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+
+
     <Grid>
 
         <!--<Button

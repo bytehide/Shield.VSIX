@@ -122,7 +122,7 @@ public partial class SettingsControl
         dynamic runConfigurationSelected = ProjectRunCombo.SelectedItem;
 
         data.Name = $"{ProjectNameBox.Text}";
-        data.Preset = EPresetType.Optimized.ToFriendlyString();
+        data.Preset ??= EPresetType.Optimized.ToFriendlyString();
         data.ProjectToken = ProjectTokenBox.Text;
         data.ProtectionSecret = SecretBox.Password;
         data.Enabled = StatusToggle.IsChecked ?? false;

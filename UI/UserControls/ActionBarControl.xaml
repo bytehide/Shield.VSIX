@@ -30,7 +30,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="{Binding Loading}"
+        <TextBlock Text="{Binding Payload.Name}"
                    Margin="10 0"
                    VerticalAlignment="Center"
                    Foreground="White"
