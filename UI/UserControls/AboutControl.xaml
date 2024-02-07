@@ -1,0 +1,157 @@
+﻿<UserControl x:Class="ShieldVSExtension.UI.UserControls.AboutControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/ShieldVSExtension;component/Theme.xaml" />
+                <ResourceDictionary Source="/ShieldVSExtension;component/Theme/TextBox.Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+        <Grid.Background>
+            <ImageBrush ImageSource="/ShieldVSExtension;component/Resources/about-bg.png"
+                        Opacity="0.3"/>
+
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    Margin="15 10 0 0"
+                    Grid.Row="0">
+
+            <Button x:Name="ButtonSite"
+                    Height="32"
+                    Width="32"
+                    Margin="0 0 0 0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                    Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    Click="ButtonSiteOnClick">
+                <materialDesign:PackIcon Kind="Web" Width="20" Height="20" />
+            </Button>
+
+            <Button x:Name="ButtonTwitter"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                    Height="32"
+                    Width="32"
+                    Margin="0 0 0 0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    Click="ButtonTwitterOnClick">
+                <materialDesign:PackIcon Kind="Twitter" Width="20" Height="20" />
+            </Button>
+
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical"
+                            Margin="0 0 0 0"
+                            Grid.Row="0">
+
+                    <TextBlock x:Name="VersionBox"
+                               Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                               Margin="0 0 40 0"
+                               Text="Version 2.0.0"
+                               TextAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="LightGray" />
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Margin="40 100 40 0"
+                            Grid.Row="0">
+
+                    <RichTextBox Height="350"
+                                 AcceptsReturn="True"
+                                 IsDocumentEnabled="False"
+                                 IsReadOnly="True"
+                                 VerticalScrollBarVisibility="Hidden"
+                                 Background="Transparent"
+                                 Opacity="0.8"
+                                 Foreground="White"
+                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                 SpellCheck.IsEnabled="False"
+                                 BorderThickness="0">
+                        <FlowDocument>
+
+                            <BlockUIContainer>
+                                <Image Source="/ShieldVSExtension;component/Resources/shield.png"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Width="100"
+                                       Height="Auto"
+                                       Stretch="Uniform"
+                                       RenderOptions.BitmapScalingMode="HighQuality" />
+                            </BlockUIContainer>
+
+
+                            <Paragraph TextAlignment="Center">
+                                <Grid HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Source="/ShieldVSExtension;component/Resources/bytehide-logo.png"
+                                           Width="20"
+                                           Height="Auto"
+                                           Stretch="Uniform"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           Grid.Column="0" />
+
+                                    <TextBlock Text="ByteHide Solutions S.L."
+                                               FontSize="16"
+                                               FontWeight="Light"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="10"
+                                               Grid.Column="1" />
+                                </Grid>
+                            </Paragraph>
+
+                            <Paragraph TextAlignment="Center">
+                                <Run FontSize="10"
+                                     FontWeight="Light">
+                                    Copyright (C) All Rights Reserved.
+                                </Run>
+                            </Paragraph>
+
+                        </FlowDocument>
+                    </RichTextBox>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

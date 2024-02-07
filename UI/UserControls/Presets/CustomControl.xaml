@@ -15,7 +15,15 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/ShieldVSExtension;component/Resources/custom-bg.png"
+                        Opacity="1"/>
+            
+        </Grid.Background>
+
+
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <ItemsControl x:Name="ProtectionList"
                           Margin="120, 10, 120, 300"

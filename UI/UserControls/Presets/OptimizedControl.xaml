@@ -6,6 +6,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Margin="8" Text="Secondary filled example tab 3" />
+        <Grid.Background>
+            <ImageBrush ImageSource="/ShieldVSExtension;component/Resources/optimized-bg.png"/>
+        </Grid.Background>
+
     </Grid>
 </UserControl>

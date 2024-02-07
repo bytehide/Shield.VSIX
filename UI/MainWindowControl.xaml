@@ -185,12 +185,7 @@
                                                  Kind="InformationCircleOutline" />
                     </StackPanel>
                 </TabItem.Header>
-                <TextBlock>
-                    <Run Text="tab 3 content. Default look and behaviors." />
-                    <LineBreak />
-                    <LineBreak />
-                    <Run FontStyle="Italic">About</Run>
-                </TextBlock>
+                <userControls:AboutControl />
             </TabItem>
 
         </TabControl>

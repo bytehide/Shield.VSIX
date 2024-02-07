@@ -122,6 +122,9 @@
     <Compile Include="UI\MainWindowControl.xaml.cs">
       <DependentUpon>MainWindowControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\AboutControl.xaml.cs">
+      <DependentUpon>AboutControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserControls\ActionBarControl.xaml.cs">
       <DependentUpon>ActionBarControl.xaml</DependentUpon>
     </Compile>
@@ -174,10 +177,17 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\bytehide-logo.png" />
+    <Resource Include="Resources\balance-bg.png" />
+    <Resource Include="Resources\custom-bg.png" />
+    <Resource Include="Resources\about-bg.png" />
     <Content Include="Resources\favicon.ico">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\maximum-bg.png" />
+    <Resource Include="Resources\shield.png" />
+    <Resource Include="Resources\optimized-bg.png" />
     <Content Include="Resources\ShieldExtensionIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -313,6 +323,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
     <Page Include="UI\MainWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\AboutControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
