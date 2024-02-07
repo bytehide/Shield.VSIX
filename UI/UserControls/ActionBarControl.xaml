@@ -3,61 +3,68 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:icons="clr-namespace:ShieldVSExtension.UI.UserControls.Icons"
-             xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
-             d:DataContext="{d:DesignInstance Type=viewModels:ViewModelBase, IsDesignTimeCreatable=True}"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:ShieldVSExtension.Common.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="50" d:DesignWidth="800">
 
-    <!-- d:DataContext="{Binding RelativeSource={RelativeSource Self}}" -->
-    <!-- d:DataContext="{d:DesignInstance Type=viewModels:SharedViewModel, IsDesignTimeCreatable=True}" -->
-    <!-- d:DataContext="{d:DesignInstance Type=viewModels:ViewModelBase, IsDesignTimeCreatable=True}" -->
-
+    <!-- DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" -->
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/ShieldVSExtension;component/Theme.xaml" />
                 <ResourceDictionary Source="/ShieldVSExtension;component/Theme/ToggleButton.Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <converters:BooleanToColorConverter x:Key="BooleanToColorConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
     <!-- DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" -->
-    <Grid Background="#1c1c1c"
-          DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
+          Background="#1c1c1c"
           Height="50">
 
-        <StackPanel Orientation="Horizontal"
-                    Margin="5 2 10 2"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding Payload.Name, Mode=Default}" />
+        <TextBlock Text="{Binding Loading}"
+                   Margin="10 0"
+                   VerticalAlignment="Center"
+                   Foreground="White"
+                   FontWeight="Bold"
+                   FontSize="16" />
 
-            <icons:IconDownloadControl Payload="{Binding Payload, Mode=TwoWay}"
-                                       Margin="6 0 3 0" />
+        <ProgressBar x:Name="LoaderControl"
+                     Visibility="Collapsed"
+                     Grid.Column="0"
+                     Style="{StaticResource MaterialDesignCircularProgressBar}"
+                     Value="0"
+                     IsIndeterminate="True"
+                     Margin="3 3 6 3"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Right" />
 
-            <icons:IconSettingsControl Payload="{Binding Payload, Mode=TwoWay}" 
-                                       Margin="3 0 3 0" />
+        <ToggleButton x:Name="ActiveButton"
+                      Visibility="{Binding Path=IsVisible, ElementName=LoaderControl, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                      Style="{StaticResource ToggleButtonFilterStyle}"
+                      Grid.Column="1"
+                      Width="28"
+                      Height="28"
+                      Margin="3 3 6 3"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Right"
+                      Checked="ActiveOnChanged"
+                      Unchecked="ActiveOnChanged">
 
-            <!--<Button
-                Style="{StaticResource MaterialDesignIconForegroundButton}"
-                materialDesign:RippleAssist.IsDisabled="True"
-                materialDesign:ButtonProgressAssist.IsIndeterminate="True"
-                materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                materialDesign:ButtonProgressAssist.Value="-1"
-                materialDesign:NavigationRailAssist.SelectionCornerRadius="0"
-                ToolTip="MaterialDesignFloatingActionMiniSecondaryDarkButton">
-                <materialDesign:PackIcon
-                    Width="18"
-                    Height="18"
-                    Kind="DownloadCircleOutline" />
-            </Button>-->
+            <materialDesign:PackIcon Kind="ShieldHalfFull"
+                                     Foreground="{Binding IsChecked, ElementName=ActiveButton, Converter={StaticResource BooleanToColorConverter}}"
+                                     Focusable="False"
+                                     Height="22"
+                                     Width="22" />
 
-            <!--<ToggleButton Style="{StaticResource ToggleButtonFilterStyle}" ToolTip="AAAAA" Width="22" Height="22"
-                          Margin="0 2 0 2 ">
-                <materialDesign:PackIcon Kind="DownloadCircleOutline" Foreground="Gold" Height="18" Width="18" />
-            </ToggleButton>-->
-        </StackPanel>
+        </ToggleButton>
     </Grid>
 </UserControl>

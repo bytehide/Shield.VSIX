@@ -13,6 +13,7 @@ public partial class MainWindowControl
     // private const string ExtensionConfigurationFile = "ExtensionConfiguration";
     private readonly MainViewModel _vm;
 
+
     public MainWindowControl(MainViewModel vm)
     {
         InitializeMaterialDesign();
@@ -22,6 +23,14 @@ public partial class MainWindowControl
         DataContext = vm;
 
         Loaded += OnLoaded;
+
+        ViewModelBase.InstalledHandler += OnInstalled;
+    }
+
+    private void OnInstalled(bool installed)
+    {
+        _vm.SelectedProject.Installed = installed;
+        
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e) =>

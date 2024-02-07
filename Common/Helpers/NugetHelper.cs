@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using NuGet;
 using NuGet.VisualStudio;
+using ShieldVSExtension.ViewModels;
 using MessageBox = System.Windows.MessageBox;
 
 namespace ShieldVSExtension.Common.Helpers;
@@ -18,7 +20,8 @@ internal class NugetHelper
 
     [Import(typeof(IVsPackageInstaller2))] private IVsPackageInstaller2 _packageInstaller;
 
-    [Import(typeof(IVsPackageUninstaller))] private IVsPackageUninstaller _packageUninstaller;
+    [Import(typeof(IVsPackageUninstaller))]
+    private IVsPackageUninstaller _packageUninstaller;
 
     public Task InstallPackageAsync(Project project, SemanticVersion packageVersion)
     {
@@ -41,7 +44,7 @@ internal class NugetHelper
 
             if (installerServices.IsPackageInstalled(project, PackageId, packageVersion))
             {
-                MessageBox.Show("Package already installed", "Info");
+                // MessageBox.Show("Package already installed", "Info");
                 return Task.CompletedTask;
             }
 
@@ -53,22 +56,23 @@ internal class NugetHelper
                 ignoreDependencies: false
             );
 
-            MessageBox.Show(@"Package installed successfully");
+            // MessageBox.Show(@"Package installed successfully");
         }
         catch (Exception ex)
         {
             MessageBox.Show($@"Error during package installation: {ex.Message}");
         }
 
+        ViewModelBase.InstalledHandler.Invoke(true);
         return Task.CompletedTask;
     }
 
-    public bool IsPackageInstalled(Project project, string packageId = PackageId)
+    public bool IsPackageInstalled(Project project, SemanticVersion packageVersion, string packageId = PackageId)
     {
         var componentModel = (IComponentModel)Package.GetGlobalService(typeof(SComponentModel));
         var installerServices = componentModel.GetService<IVsPackageInstallerServices>();
 
-        return installerServices.IsPackageInstalled(project, packageId);
+        return installerServices.IsPackageInstalled(project, packageId, packageVersion);
     }
 
     public Task UninstallPackageAsync(Project project)
@@ -82,7 +86,7 @@ internal class NugetHelper
 
             if (!installerServices.IsPackageInstalled(project, PackageId))
             {
-                MessageBox.Show(@"Package not installed");
+                // MessageBox.Show(@"Package not installed");
                 return Task.CompletedTask;
             }
 
@@ -98,13 +102,15 @@ internal class NugetHelper
 
             _packageUninstaller?.UninstallPackage(project, PackageId, false);
 
-            MessageBox.Show(@"Package uninstalled successfully");
+            // MessageBox.Show(@"Package uninstalled successfully");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($@"Error during package uninstallation: {ex.Message}");
+            // Console.WriteLine($@"Error during package uninstallation: {ex.Message}");
+            Debug.WriteLine($@"Error during package uninstallation: {ex.Message}");
         }
 
+        ViewModelBase.InstalledHandler.Invoke(false);
         return Task.CompletedTask;
     }
 }

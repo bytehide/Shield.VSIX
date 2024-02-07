@@ -9,6 +9,7 @@ public abstract class ViewModelBase : INotifyPropertyChanged
 {
     internal static ProjectChangedHandler ProjectChangedHandler = delegate { };
     internal static TabSelectedHandler TabSelectedHandler = delegate { };
+    internal static InstalledHandler InstalledHandler = delegate { };
 
     private ProjectViewModel _payload;
 

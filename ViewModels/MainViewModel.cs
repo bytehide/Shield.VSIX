@@ -121,6 +121,7 @@ public sealed class MainViewModel : ViewModelBase
 
     #endregion
 
+
     #region SelectedProject Property
 
     private ProjectViewModel _selectedProject;

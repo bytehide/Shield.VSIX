@@ -87,7 +87,7 @@
                              SelectedItem="{Binding SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              SelectionMode="Extended"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             Background="{x:Null}" 
+                             Background="{x:Null}"
                              BorderBrush="{x:Null}"
                              Foreground="White"
                              Margin="1,48,-4,2"
@@ -127,8 +127,13 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Border Grid.Column="0" Grid.Row="0" x:Name="LeftLine" Grid.RowSpan="2"
-                                            Width="4" Background="LawnGreen">
+                                    <Border x:Name="BorderControl"
+                                            Visibility="{Binding Installed, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            Grid.RowSpan="2"
+                                            Width="4" 
+                                            Background="LawnGreen">
                                         <Border.OpacityMask>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                                                 <GradientStop Color="Transparent" Offset="0.6" />

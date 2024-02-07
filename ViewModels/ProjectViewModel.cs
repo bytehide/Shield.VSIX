@@ -50,6 +50,24 @@ public class ProjectViewModel : ViewModelBase
     //     }
     // }
 
+    #region Installed Property
+
+    private bool _installed;
+
+    public bool Installed
+    {
+        get => _installed;
+        set
+        {
+            if (_installed == value) return;
+
+            _installed = value;
+            OnPropertyChanged(nameof(Installed));
+        }
+    }
+
+    #endregion
+
     #region IsEnabled Property
 
     private bool _isEnabled;
