@@ -8,7 +8,6 @@
                  d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=True}"
                  xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
                  xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
-                 xmlns:converters="clr-namespace:ShieldVSExtension.Common.Converters"
                  xmlns:userControls="clr-namespace:ShieldVSExtension.UI.UserControls"
                  TextElement.FontWeight="Regular"
                  TextElement.FontSize="13"
@@ -40,9 +39,6 @@
                 <ResourceDictionary Source="/ShieldVSExtension;component/Theme/TabControl.Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <converters:ValueConverterGroup x:Key="InvertCondition">
-                <converters:InvertBoolConverter />
-            </converters:ValueConverterGroup>
         </ResourceDictionary>
     </mah:MetroWindow.Resources>
 
@@ -71,7 +67,8 @@
         </Button>-->
 
         <!-- <materialDesign:Card> -->
-        <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryLight"
+        <TabControl x:Name="TabControl"
+            materialDesign:ColorZoneAssist.Mode="Dark"
                     materialDesign:NavigationRailAssist.SelectionCornerRadius="10"
                     materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                     materialDesign:TabAssist.HasUniformTabWidth="True"
@@ -102,23 +99,33 @@
                              ItemsSource="{Binding Projects}"
                              HorizontalContentAlignment="Stretch"
                              SelectedItem="{Binding SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             materialDesign:RippleAssist.IsDisabled="True"
                              SelectionMode="Extended"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              Background="{x:Null}"
                              BorderBrush="{x:Null}"
-                             Foreground="White"
-                             Margin="1,48,-4,2"
+                             Foreground="DarkGray"
+                             Margin="1,48,5,2"
                              RenderTransformOrigin="0.5,0.5"
                              FontSize="13"
                              Width="200">
-                        <ListBox.RenderTransform>
+
+                        <!--<ListBox.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
                                 <SkewTransform AngleY="-0.258" />
                                 <RotateTransform />
                                 <TranslateTransform Y="-0.495" />
                             </TransformGroup>
-                        </ListBox.RenderTransform>
+                        </ListBox.RenderTransform>-->
+
+                        <ListBox.OpacityMask>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="Transparent" Offset="0.8" />
+                                <GradientStop Color="Black" Offset="0.1" />
+                            </LinearGradientBrush>
+                        </ListBox.OpacityMask>
+
                         <!--<ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Add custom protection">
@@ -129,6 +136,7 @@
                                 <Separator />
                             </ContextMenu>
                         </ListBox.ContextMenu>-->
+
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid x:Name="TemplateRoot">

@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using NuGet;
+using ShieldVSExtension.Common;
 using ShieldVSExtension.Common.Helpers;
 using ShieldVSExtension.ViewModels;
 
@@ -13,42 +15,67 @@ public partial class ActionBarControl
 {
     // private readonly SharedViewModel _vm;
 
-    public bool Loading { get; set; }
-
     public ActionBarControl()
     {
         InitializeComponent();
         // _vm = new SharedViewModel();
         // DataContext = _vm;
 
-        ViewModelBase.ProjectChangedHandler += OnProjectChanged;
-        ViewModelBase.InstalledHandler += OnInstalled;
+        // ViewModelBase.ProjectChangedHandler += OnProjectChanged;
+        ViewModelBase.IsMsbuilderInstalledHandler += OnMsbuilderInstalled;
+        ViewModelBase.VsixVersionHandler += OnVsixVersion;
     }
 
-    private void OnInstalled(bool installed)
+    private void OnMsbuilderInstalled(bool installed)
     {
         ActiveButton.IsChecked = installed;
     }
 
-    private void OnProjectChanged(ProjectViewModel payload)
+    // private void OnProjectChanged(ProjectViewModel payload)
+    // {
+    //     Payload = payload;
+    // 
+    //     // if (payload.Installed) 
+    //     // 
+    //     // LoaderControl.Visibility = Visibility.Visible;
+    //     // ActiveButton.Visibility = Visibility.Collapsed;
+    //     // 
+    //     // var helper = new NugetHelper();
+    //     // var isInstalled = helper.IsPackageInstalled(payload.Project, SemanticVersion.Parse("1.10.0"));
+    //     // 
+    //     // ActiveButton.IsChecked = isInstalled;
+    //     // 
+    //     // LoaderControl.Visibility = Visibility.Collapsed;
+    //     // ActiveButton.Visibility = Visibility.Visible;
+    // }
+
+    private void OnVsixVersion(VersionInfo info)
     {
-        Payload = payload;
+        ViewModelBase.VsixVersionHandler -= OnVsixVersion;
 
-        LoaderControl.Visibility = Visibility.Visible;
-        ActiveButton.Visibility = Visibility.Collapsed;
+        if (info is { ForceUpdate: false, CanUpdate: false })
+        {
+            ActiveButton.IsEnabled = true;
+            VersionRoot.Visibility = Visibility.Collapsed;
+            return;
+        }
 
-        var helper = new NugetHelper();
-        var isInstalled = helper.IsPackageInstalled(payload.Project, SemanticVersion.Parse("1.10.0"));
+        VersionRoot.Background = info.ForceUpdate
+            ? new SolidColorBrush(Colors.Crimson) { Opacity = 0.7 }
+            : new SolidColorBrush(Colors.IndianRed) { Opacity = 0.7 };
 
-        ActiveButton.IsChecked = isInstalled;
+        ActiveButton.IsEnabled = !info.ForceUpdate;
 
-        LoaderControl.Visibility = Visibility.Collapsed;
-        ActiveButton.Visibility = Visibility.Visible;
+        VersionRoot.ToolTip = info.Message;
+        VersionMessageBox.Text = info.Message;
+
+        VersionRoot.Visibility = Visibility.Visible;
     }
 
     private async void ActiveOnChanged(object sender, RoutedEventArgs e)
     {
         if (sender is not ToggleButton { IsInitialized: true } control) return;
+        if (!control.IsMouseOver) return;
 
         control.Visibility = Visibility.Collapsed;
         LoaderControl.Visibility = Visibility.Visible;
@@ -63,13 +90,17 @@ public partial class ActionBarControl
             if (!installed)
             {
                 await helper.InstallPackageAsync(Payload.Project, SemanticVersion.Parse("1.10.0"));
+                // ActiveButton.IsChecked = true;
+                Payload.Installed = true;
+                ViewModelBase.IsMsbuilderInstalledHandler.Invoke(true);
             }
             else
             {
                 await helper.UninstallPackageAsync(Payload.Project);
+                // ActiveButton.IsChecked = false;
+                Payload.Installed = false;
+                ViewModelBase.IsMsbuilderInstalledHandler.Invoke(false);
             }
-
-            ActiveButton.IsChecked = !installed;
         }
         catch (Exception ex)
         {

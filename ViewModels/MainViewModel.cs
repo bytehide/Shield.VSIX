@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Shell;
 using ShieldVSExtension.Commands;
 using ShieldVSExtension.Common.Configuration;
 using ShieldVSExtension.Common.Helpers;
+using static ShieldVSExtension.Common.Delegates;
 
 namespace ShieldVSExtension.ViewModels;
 
@@ -135,6 +136,7 @@ public sealed class MainViewModel : ViewModelBase
 
             _selectedProject = value;
             OnCheckProject(value);
+
             // _payload = value;
 
             // value.PropertyChanged += (sender, args) =>

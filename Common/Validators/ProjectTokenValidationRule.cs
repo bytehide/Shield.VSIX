@@ -15,7 +15,8 @@ public class ProjectTokenValidationRule : ValidationRule
             return new ValidationResult(false, "Value cannot be empty");
         }
 
-        const string tokenPattern = @"^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[0-9]{4}-[0-9]{4}-[a-fA-F0-9]{12}$";
+        const string tokenPattern =
+            @"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
 
         return !Regex.IsMatch(token, tokenPattern)
             ? new ValidationResult(false, "Invalid token format")

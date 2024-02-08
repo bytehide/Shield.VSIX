@@ -9,7 +9,8 @@ public abstract class ViewModelBase : INotifyPropertyChanged
 {
     internal static ProjectChangedHandler ProjectChangedHandler = delegate { };
     internal static TabSelectedHandler TabSelectedHandler = delegate { };
-    internal static InstalledHandler InstalledHandler = delegate { };
+    internal static IsMsbuilderInstalledHandler IsMsbuilderInstalledHandler = delegate { };
+    internal static VsixVersionHandler VsixVersionHandler = delegate { };
 
     private ProjectViewModel _payload;
 

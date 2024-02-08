@@ -15,15 +15,20 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/ShieldVSExtension;component/Theme.xaml" />
+                <ResourceDictionary Source="/ShieldVSExtension;component/Theme/TabControl.Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
         <!-- <materialDesign:Card> -->
-        <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid"
-                    Style="{StaticResource MaterialDesignFilledTabControl}"
-                    TabStripPlacement="Top">
+        <TabControl  materialDesign:ColorZoneAssist.Background="{DynamicResource MaterialDesignCardBackground}"
+                     materialDesign:ColorZoneAssist.Foreground="{DynamicResource PrimaryHueMidBrush}"
+                     materialDesign:RippleAssist.IsDisabled="True"
+                     materialDesign:ColorZoneAssist.Mode="Custom"
+                     Style="{StaticResource MaterialDesignFilledTabControl}"
+                     HorizontalContentAlignment="Center"
+                     TabStripPlacement="Top">
             <TabItem x:Name="MaximumTab"
                      Header="Maximum"
                      MouseLeftButtonUp="OnSelectedTab">

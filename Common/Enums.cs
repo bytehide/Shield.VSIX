@@ -7,3 +7,9 @@ public enum EPresetType
     Optimized = 2,
     Custom = 3
 }
+
+public enum EPackageType
+{
+    Vsix = 0,
+    Msbuilder = 1
+}

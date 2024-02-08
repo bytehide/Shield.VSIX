@@ -20,51 +20,124 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <!-- DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" -->
-    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
-          Background="#1c1c1c"
-          Height="50">
+    <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding Payload.Name}"
-                   Margin="10 0"
-                   VerticalAlignment="Center"
-                   Foreground="White"
-                   FontWeight="Bold"
-                   FontSize="16" />
+        <!-- DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" -->
+        <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
+              Background="#202020"
+              Height="50"
+              Row="1">
 
-        <ProgressBar x:Name="LoaderControl"
-                     Visibility="Collapsed"
-                     Grid.Column="0"
-                     Style="{StaticResource MaterialDesignCircularProgressBar}"
-                     Value="0"
-                     IsIndeterminate="True"
-                     Margin="3 3 6 3"
-                     VerticalAlignment="Center"
-                     HorizontalAlignment="Right" />
+            <Grid.OpacityMask>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="Transparent" Offset="0.1" />
+                    <GradientStop Color="#000000" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.OpacityMask>
 
-        <ToggleButton x:Name="ActiveButton"
-                      Visibility="{Binding Path=IsVisible, ElementName=LoaderControl, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
-                      Style="{StaticResource ToggleButtonFilterStyle}"
-                      Grid.Column="1"
-                      Width="28"
-                      Height="28"
-                      Margin="3 3 6 3"
-                      VerticalAlignment="Center"
-                      HorizontalAlignment="Right"
-                      Checked="ActiveOnChanged"
-                      Unchecked="ActiveOnChanged">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-            <materialDesign:PackIcon Kind="ShieldHalfFull"
-                                     Foreground="{Binding IsChecked, ElementName=ActiveButton, Converter={StaticResource BooleanToColorConverter}}"
-                                     Focusable="False"
-                                     Height="22"
-                                     Width="22" />
+            <TextBlock Text="{Binding Payload.Name}"
+                       Margin="10 0"
+                       VerticalAlignment="Center"
+                       Foreground="White"
+                       FontWeight="Bold"
+                       FontSize="16" />
 
-        </ToggleButton>
+            <ProgressBar x:Name="LoaderControl"
+                         Visibility="Collapsed"
+                         Grid.Column="0"
+                         Style="{StaticResource MaterialDesignCircularProgressBar}"
+                         Value="0"
+                         IsIndeterminate="True"
+                         Margin="3 3 10 10"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Right" />
+
+            <ToggleButton x:Name="ActiveButton"
+                          Visibility="{Binding Path=IsVisible, ElementName=LoaderControl, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                          Style="{StaticResource ToggleButtonFilterStyle}"
+                          Grid.Column="1"
+                          Width="28"
+                          Height="28"
+                          Margin="3 3 10 10"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Right"
+                          IsChecked="{Binding Payload.Installed}"
+                          Checked="ActiveOnChanged"
+                          Unchecked="ActiveOnChanged">
+
+                <materialDesign:PackIcon Kind="ShieldHalfFull"
+                                         Foreground="{Binding Path=IsChecked, ElementName=ActiveButton, Converter={StaticResource BooleanToColorConverter}, ConverterParameter='MediumSpringGreen, Crimson'}"
+                                         Focusable="False"
+                                         Height="22"
+                                         Width="22" />
+
+            </ToggleButton>
+        </Grid>
+
+        <!-- Background="MediumSpringGreen" -->
+        <Grid Grid.Row="1"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Bottom"
+              Background="{Binding IsChecked, ElementName=ActiveButton, Converter={StaticResource BooleanToColorConverter}, ConverterParameter='MediumSpringGreen, Crimson'}"
+              Height="5">
+
+            <Grid.OpacityMask>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="Transparent" Offset="0.1" />
+                    <GradientStop Color="#000000" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.OpacityMask>
+
+        </Grid>
+
+        <!-- Background="Crimson" -->
+        <!-- Background="IndianRed" -->
+        <Grid x:Name="VersionRoot"
+              DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
+              Grid.Row="2"
+              Visibility="Collapsed"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Bottom"
+              Background="Crimson"
+              Height="40">
+
+            <Grid.OpacityMask>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="Transparent" Offset="0.1" />
+                    <GradientStop Color="#000000" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.OpacityMask>
+
+            <!--<TextBlock Text="{Binding Payload.Installed}"
+                       Margin="10 0"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right"
+                       Foreground="White"
+                       FontWeight="Bold"
+                       FontSize="16" />-->
+
+            <TextBlock x:Name="VersionMessageBox"
+                       Text="You must update"
+                       Visibility="Visible"
+                       Margin="10 0"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right"
+                       Foreground="White"
+                       FontWeight="Bold"
+                       FontSize="16" />
+
+        </Grid>
+
     </Grid>
 </UserControl>

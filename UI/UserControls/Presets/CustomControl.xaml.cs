@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using ShieldVSExtension.Storage;
 using ShieldVSExtension.ViewModels;
 using System.Windows;
@@ -41,28 +42,28 @@ public partial class CustomControl
         if (preset != EPresetType.Custom || Payload == null) return;
 
         SaveConfiguration();
+        LoadDataAsync().GetAwaiter();
     }
 
     private async Task LoadDataAsync()
     {
-        var result = await Common.Services.ProtectionService.GetAllByToken();
+        if (Payload == null) return;
+
+        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+        LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
+            .WithDefaultKeyBuilder());
+
+        var data = LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName) ?? new ShieldConfiguration();
+        if (string.IsNullOrWhiteSpace(data.ProjectToken)) return;
+
+        if (data.Preset != EPresetType.Custom.ToFriendlyString()) return;
+
+        var result = await Common.Services.ProtectionService.GetAllByTokenAsync(data.ProjectToken);
+
         if (result.Length > 0)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
-                .WithDefaultKeyBuilder());
-
-            var data = LocalStorage.Get<ShieldConfiguration>(Payload.Project.UniqueName) ??
-                       new ShieldConfiguration();
-            if (string.IsNullOrWhiteSpace(data.ProjectToken))
-            {
-                MessageBox.Show("You need a Project Token to enable a protection");
-                return;
-            }
-
-            var protections =
-                Newtonsoft.Json.JsonConvert.DeserializeObject<Common.Models.ProtectionModel[]>(result);
+            var protections = Newtonsoft.Json.JsonConvert.DeserializeObject<ProtectionModel[]>(result);
             foreach (var protection in protections)
             {
                 if (data.Protections.ContainsKey(protection.Id))
@@ -85,7 +86,7 @@ public partial class CustomControl
     {
         try
         {
-            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
                 .WithDefaultKeyBuilder());
@@ -104,15 +105,16 @@ public partial class CustomControl
         }
         catch (System.Exception e)
         {
-            MessageBox.Show(e.Message);
+            Debug.Fail(e.Message);
         }
     }
 
     private void ProtectionOnSelected(object sender, RoutedEventArgs e)
     {
-        if (sender is not CheckBox { IsInitialized: true } checkBox) return;
+        if (sender is not CheckBox { IsInitialized: true } control) return;
+        if (!control.IsMouseOver) return;
 
-        Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+        ThreadHelper.ThrowIfNotOnUIThread();
 
         LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
             .WithDefaultKeyBuilder());
@@ -124,9 +126,9 @@ public partial class CustomControl
             return;
         }
 
-        var protection = (ProtectionModel)checkBox.DataContext;
+        var protection = (ProtectionModel)control.DataContext;
 
-        if (checkBox.IsChecked == true)
+        if (control.IsChecked == true)
         {
             data.Protections[protection.Id] = null;
         }

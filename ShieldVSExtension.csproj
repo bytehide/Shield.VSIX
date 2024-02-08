@@ -94,7 +94,9 @@
     <Compile Include="Common\Models\ShieldConfiguration.cs" />
     <Compile Include="Common\PasswordBoxAssistant.cs" />
     <Compile Include="Common\Services\HttpX.cs" />
+    <Compile Include="Common\Services\CoreService.cs" />
     <Compile Include="Common\Services\ProtectionService.cs" />
+    <Compile Include="Common\Structures.cs" />
     <Compile Include="Common\Validators\ProjectTokenValidationRule.cs" />
     <Compile Include="Storage\CustomLocalStorageConfig.cs" />
     <Compile Include="Storage\DefaultLocalStorageConfig.cs" />

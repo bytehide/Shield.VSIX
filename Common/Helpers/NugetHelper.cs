@@ -45,6 +45,7 @@ internal class NugetHelper
             if (installerServices.IsPackageInstalled(project, PackageId, packageVersion))
             {
                 // MessageBox.Show("Package already installed", "Info");
+                // ViewModelBase.IsMsbuilderInstalledHandler.Invoke(true);
                 return Task.CompletedTask;
             }
 
@@ -63,7 +64,7 @@ internal class NugetHelper
             MessageBox.Show($@"Error during package installation: {ex.Message}");
         }
 
-        ViewModelBase.InstalledHandler.Invoke(true);
+        // ViewModelBase.IsMsbuilderInstalledHandler.Invoke(true);
         return Task.CompletedTask;
     }
 
@@ -72,7 +73,10 @@ internal class NugetHelper
         var componentModel = (IComponentModel)Package.GetGlobalService(typeof(SComponentModel));
         var installerServices = componentModel.GetService<IVsPackageInstallerServices>();
 
-        return installerServices.IsPackageInstalled(project, packageId, packageVersion);
+        var installed =  installerServices.IsPackageInstalled(project, packageId, packageVersion);
+        // ViewModelBase.IsMsbuilderInstalledHandler.Invoke(installed);
+        return installed;
+
     }
 
     public Task UninstallPackageAsync(Project project)
@@ -87,6 +91,7 @@ internal class NugetHelper
             if (!installerServices.IsPackageInstalled(project, PackageId))
             {
                 // MessageBox.Show(@"Package not installed");
+                // ViewModelBase.IsMsbuilderInstalledHandler.Invoke(false);
                 return Task.CompletedTask;
             }
 
@@ -110,7 +115,7 @@ internal class NugetHelper
             Debug.WriteLine($@"Error during package uninstallation: {ex.Message}");
         }
 
-        ViewModelBase.InstalledHandler.Invoke(false);
+        // ViewModelBase.IsMsbuilderInstalledHandler.Invoke(false);
         return Task.CompletedTask;
     }
 }

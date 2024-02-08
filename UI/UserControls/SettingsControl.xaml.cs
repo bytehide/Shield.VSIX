@@ -9,7 +9,6 @@ using ShieldVSExtension.Storage;
 using ShieldVSExtension.Common.Validators;
 using System.Globalization;
 using System.Collections;
-using System.IO;
 using Globals = ShieldVSExtension.Common.Globals;
 
 namespace ShieldVSExtension.UI.UserControls;
@@ -110,10 +109,11 @@ public partial class SettingsControl
 
     private void SaveButtonOnClick(object sender, RoutedEventArgs e)
     {
-        Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
-
-        if (sender is not Button { IsInitialized: true }) return;
+        if (sender is not Button { IsInitialized: true } control) return;
+        if (!control.IsMouseOver) return;
         if (Payload == null) return;
+
+        Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
 
         LocalStorage = new SecureLocalStorage(new CustomLocalStorageConfig(null, Globals.ShieldLocalStorageName)
             .WithDefaultKeyBuilder());

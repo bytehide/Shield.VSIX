@@ -1,16 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using System;
 
 namespace ShieldVSExtension.Common.Helpers;
-
-public struct Version
-{
-    public string Major;
-    public string Minor;
-    public string Build;
-    public string Get() => $"{Major}.{Minor}.{Build}";
-}
 
 internal static class Utils
 {
