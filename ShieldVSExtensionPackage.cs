@@ -104,9 +104,9 @@ public sealed class ShieldVsExtensionPackage : AsyncPackage
         Assumes.Present(Dte);
         if (Dte == null) throw new ArgumentNullException(nameof(Dte));
 
-        Pane = Dte.ToolWindows.OutputWindow.OutputWindowPanes.Add("Dotnetsafer Shield");
+        Pane = Dte.ToolWindows.OutputWindow.OutputWindowPanes.Add("ByteHide Shield");
 
-        OutputPane = Dte.ToolWindows.OutputWindow.OutputWindowPanes.Add("Dotnetsafer Shield Output");
+        OutputPane = Dte.ToolWindows.OutputWindow.OutputWindowPanes.Add("ByteHide Shield Output");
 
         ErrorListProvider = new ErrorListProvider(this);
 
@@ -148,7 +148,7 @@ public sealed class ShieldVsExtensionPackage : AsyncPackage
         try
         {
             LocalStorage = new SecureLocalStorage(
-                new CustomLocalStorageConfig(null, "DotnetsaferShieldForVisualStudio").WithDefaultKeyBuilder()
+                new CustomLocalStorageConfig(null, "ByteHideShieldForVisualStudio").WithDefaultKeyBuilder()
             );
 
             ExtensionConfiguration = LocalStorage.Exists(ExtensionConfigurationFile)
@@ -307,9 +307,9 @@ public sealed class ShieldVsExtensionPackage : AsyncPackage
 
             if (!TryConnectShield())
             {
-                await WriteLineAsync("[ERROR] The Dotnetsafer Shield Api token is invalid.");
+                await WriteLineAsync("[ERROR] The ByteHide Shield Api token is invalid.");
                 await WriteLineAsync(
-                    "> Go to the extension UI to update it, or read our documentation at https://dotnetsafer.com/docs/product/shield-vs/1.0.");
+                    "> Go to the extension UI to update it, or read our documentation at https://docs.bytehide.com/platforms/dotnet/products/shield/vs-authentication");
                 await WriteLineAsync("[ERROR] Cannot continue without valid api token.");
                 return;
             }
@@ -319,9 +319,7 @@ public sealed class ShieldVsExtensionPackage : AsyncPackage
                 : Configuration.ShieldProjectEdition ?? null;
 
             await WriteLineAsync("#");
-            await
-                WriteLineAsync(
-                    "[Reminder] This extension is not intended for deployment, if you need to protect Xamarin, WebApp or Apis applications that have automatic deployment on azure, aws or other servers, use: https://dotnetsafer.com/docs/product/shield-msbuild/1.0.");
+            await WriteLineAsync("[Reminder] This extension is not intended for deployment, if you need to protect Xamarin, WebApp or Apis applications that have automatic deployment on azure, aws or other servers, use: https://docs.bytehide.com/platforms/dotnet/products/shield/msbuild-install");
             await WriteLineAsync("#");
 
             var projectConfiguration =
@@ -379,7 +377,8 @@ public sealed class ShieldVsExtensionPackage : AsyncPackage
                 // var shieldProject = await ShieldApiClient.Project.FindOrCreateExternalProjectAsync(Configuration.ShieldProjectName);
 
                 await WriteLineAsync(
-                    $"> The project has been linked to your Dotnetsafer account with the name '{Configuration.ShieldProjectName}'.");
+                    $"> The project has been linked to your ByteHide account with the name '{Configuration.ShieldProjectName}'.");
+
 
                 var dependencies = project.GetReferences();
 

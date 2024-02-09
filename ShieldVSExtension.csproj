@@ -62,7 +62,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\MainWindowCommand.cs" />
-    <Compile Include="Commands\ConfigurationWindowCommand.cs" />
     <Compile Include="Commands\Enable.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Common\ApiPath.cs" />
@@ -114,17 +113,13 @@
     <Compile Include="ShieldVSExtensionPackage.cs" />
     <Compile Include="Storage\ShieldLocalStorageConfig.cs" />
     <Compile Include="UI\AppWindow.cs" />
-    <Compile Include="UI\ConfigurationWindowControl.xaml.cs">
-      <DependentUpon>ConfigurationWindowControl.xaml</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
     <Compile Include="Common\Converters\CountToBoolConverter.cs" />
     <Compile Include="Common\Converters\StringToBoolConverter.cs" />
     <Compile Include="Common\Converters\ValueConverterGroup.cs" />
     <Compile Include="UI\MainWindowControl.xaml.cs">
       <DependentUpon>MainWindowControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControls\AboutControl.xaml.cs">
+    <Compile Include="UI\Views\AboutControl.xaml.cs">
       <DependentUpon>AboutControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\ActionBarControl.xaml.cs">
@@ -148,13 +143,10 @@
     <Compile Include="UI\UserControls\Presets\OptimizedControl.xaml.cs">
       <DependentUpon>OptimizedControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControls\PresetsControl.xaml.cs">
+    <Compile Include="UI\Views\PresetsControl.xaml.cs">
       <DependentUpon>PresetsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControls\ProtectionCheckControl.xaml.cs">
-      <DependentUpon>ProtectionCheckControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\UserControls\SettingsControl.xaml.cs">
+    <Compile Include="UI\Views\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -183,10 +175,9 @@
     <Resource Include="Resources\balance-bg.png" />
     <Resource Include="Resources\custom-bg.png" />
     <Resource Include="Resources\about-bg.png" />
-    <Content Include="Resources\favicon.ico">
-      <IncludeInVSIX>true</IncludeInVSIX>
+    <Resource Include="Resources\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Resource Include="Resources\maximum-bg.png" />
     <Resource Include="Resources\shield.png" />
     <Resource Include="Resources\optimized-bg.png" />
@@ -319,16 +310,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\ConfigurationWindowControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Page>
     <Page Include="UI\MainWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\UserControls\AboutControl.xaml">
+    <Page Include="UI\Views\AboutControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -360,15 +346,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\UserControls\PresetsControl.xaml">
+    <Page Include="UI\Views\PresetsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\UserControls\ProtectionCheckControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\UserControls\SettingsControl.xaml">
+    <Page Include="UI\Views\SettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

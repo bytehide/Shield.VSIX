@@ -30,17 +30,29 @@ public partial class MainWindowControl
         ViewModelBase.IsMsbuilderInstalledHandler += OnInstalled;
     }
 
+    private void InitializeMaterialDesign()
+    {
+        _ = new MahApps.Metro.Controls.MetroWindow();
+        _ = new Card();
+    }
+
     private void OnInstalled(bool installed)
     {
         _vm.SelectedProject.Installed = installed;
     }
 
     // private void OnVsixVersion(VersionInfo info)
+
     // {
+
     //     if (info is { ForceUpdate: false }) return;
+
     // 
+
     //     TabControl.IsEnabled = false;
+
     // }
+
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
@@ -52,8 +64,6 @@ public partial class MainWindowControl
         var isInstalled = helper.IsPackageInstalled(_vm.SelectedProject.Project, SemanticVersion.Parse("1.10.0"));
         ViewModelBase.IsMsbuilderInstalledHandler.Invoke(isInstalled);
     }
-
-    private void InitializeMaterialDesign() => _ = new Card();
 
     private async Task CheckVersionAsync()
     {

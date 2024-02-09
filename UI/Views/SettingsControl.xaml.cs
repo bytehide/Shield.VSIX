@@ -1,17 +1,17 @@
-﻿using System.Windows;
-using ShieldVSExtension.ViewModels;
+﻿using System.Collections;
+using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using ShieldVSExtension.Common;
 using ShieldVSExtension.Common.Extensions;
 using ShieldVSExtension.Common.Helpers;
 using ShieldVSExtension.Common.Models;
-using ShieldVSExtension.Storage;
 using ShieldVSExtension.Common.Validators;
-using System.Globalization;
-using System.Collections;
+using ShieldVSExtension.Storage;
+using ShieldVSExtension.ViewModels;
 using Globals = ShieldVSExtension.Common.Globals;
 
-namespace ShieldVSExtension.UI.UserControls;
+namespace ShieldVSExtension.UI.Views;
 
 /// <summary>
 /// Interaction logic for SettingsControl.xaml
@@ -65,7 +65,7 @@ public partial class SettingsControl
         ProjectNameBox.Text = data?.Name ?? $"Configuration {Payload.Project.Name}";
         ProjectTokenBox.Text = data?.ProjectToken ?? string.Empty;
         SecretBox.Password = data?.ProtectionSecret ?? string.Empty;
-        StatusToggle.IsChecked = data?.Enabled ?? false;
+        StatusToggle.IsChecked = data?.Enabled ?? true;
 
         if (data != null)
         {

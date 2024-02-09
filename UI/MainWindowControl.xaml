@@ -1,37 +1,34 @@
-﻿<mah:MetroWindow x:Class="ShieldVSExtension.UI.MainWindowControl"
-                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                 d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=True}"
-                 xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
-                 xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
-                 xmlns:userControls="clr-namespace:ShieldVSExtension.UI.UserControls"
-                 TextElement.FontWeight="Regular"
-                 TextElement.FontSize="13"
-                 TextOptions.TextFormattingMode="Ideal"
-                 TextOptions.TextRenderingMode="Auto"
-                 TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-                 GlowBrush="#191818"
-                 WindowTitleBrush="#191818"
-                 NonActiveWindowTitleBrush="#242424"
-                 FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
-                 Background="#111111"
-                 WindowStartupLocation="CenterScreen"
-                 Focusable="True"
-                 Title="ByteHide Shield"
-                 Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
-                 mc:Ignorable="d"
-                 Width="1280"
-                 Height="800"
-                 d:DesignWidth="1280"
-                 d:DesignHeight="800"
-                 ResizeMode="NoResize"
-                 Icon="{DynamicResource ShieldIcon}">
+﻿<Window x:Class="ShieldVSExtension.UI.MainWindowControl"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=True}"
+        xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+        xmlns:viewModels="clr-namespace:ShieldVSExtension.ViewModels"
+        xmlns:userControls="clr-namespace:ShieldVSExtension.UI.UserControls"
+        xmlns:views="clr-namespace:ShieldVSExtension.UI.Views"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        Background="#111111"
+        WindowStartupLocation="CenterScreen"
+        Focusable="True"
+        Title="ByteHide Shield"
+        Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
+        mc:Ignorable="d"
+        Width="1280"
+        Height="800"
+        d:DesignWidth="1280"
+        d:DesignHeight="800"
+        ResizeMode="NoResize"
+        Icon="{DynamicResource ShieldIcon}">
 
-    <mah:MetroWindow.Resources>
+    <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/ShieldVSExtension;component/Theme.xaml" />
@@ -40,35 +37,16 @@
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>
-    </mah:MetroWindow.Resources>
+    </Window.Resources>
 
-    <mah:MetroWindow.LeftWindowCommands>
-        <mah:WindowCommands>
-            <Image Source="/ShieldVSExtension;component/Resources/shield.png"
-                   ToolTip="ByteHide Shield"
-                   Width="25"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Stretch="Uniform"
-                   RenderOptions.BitmapScalingMode="HighQuality" />
-            <!--<Button ToolTip="{lang:Static i18N:Resource.App}">
-              <materialDesign:PackIcon
-                  Kind="Lock" />
-          </Button>-->
-        </mah:WindowCommands>
-    </mah:MetroWindow.LeftWindowCommands>
-
+    <!--<WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="40" GlassFrameThickness="0" ResizeBorderThickness="4" />
+    </WindowChrome.WindowChrome>-->
 
     <Grid>
-
-        <!--<Button
-            Style="{StaticResource RaisedButtonStyle}">
-            Test
-        </Button>-->
-
         <!-- <materialDesign:Card> -->
         <TabControl x:Name="TabControl"
-            materialDesign:ColorZoneAssist.Mode="Dark"
+                    materialDesign:ColorZoneAssist.Mode="Dark"
                     materialDesign:NavigationRailAssist.SelectionCornerRadius="10"
                     materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                     materialDesign:TabAssist.HasUniformTabWidth="True"
@@ -157,7 +135,7 @@
                                             Grid.Column="0"
                                             Grid.Row="0"
                                             Grid.RowSpan="2"
-                                            Width="4" 
+                                            Width="4"
                                             Background="LawnGreen">
                                         <Border.OpacityMask>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -197,8 +175,8 @@
                         <userControls:ActionBarControl Grid.Row="0"
                                                        Payload="{Binding SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <userControls:PresetsControl Grid.Row="1"
-                                                     Payload="{Binding SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <views:PresetsControl Grid.Row="1"
+                                              Payload="{Binding SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </Grid>
             </TabItem>
@@ -210,11 +188,21 @@
                                                  Kind="InformationCircleOutline" />
                     </StackPanel>
                 </TabItem.Header>
-                <userControls:AboutControl />
+                <views:AboutControl />
             </TabItem>
+
+            <!--<TabItem>
+                <TabItem.Header>
+                    <Button Command="SystemCommands.CloseWindowCommand" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <StackPanel Width="auto" Height="auto">
+                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="CloseCircleOutline" />
+                        </StackPanel>
+                    </Button>
+                </TabItem.Header>
+            </TabItem>-->
 
         </TabControl>
         <!-- </materialDesign:Card> -->
     </Grid>
 
-</mah:MetroWindow>
+</Window>

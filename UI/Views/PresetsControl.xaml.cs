@@ -6,7 +6,7 @@ using ShieldVSExtension.Common.Models;
 using ShieldVSExtension.Storage;
 using ShieldVSExtension.ViewModels;
 
-namespace ShieldVSExtension.UI.UserControls;
+namespace ShieldVSExtension.UI.Views;
 
 /// <summary>
 /// Interaction logic for PresetsControl.xaml

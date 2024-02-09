@@ -1,8 +1,8 @@
-﻿using ShieldVSExtension.Common.Helpers;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using ShieldVSExtension.Common.Helpers;
 
-namespace ShieldVSExtension.UI.UserControls;
+namespace ShieldVSExtension.UI.Views;
 
 /// <summary>
 /// Interaction logic for AboutControl.xaml

@@ -1,52 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <Extern href="stdidcmd.h"/>
-  <Extern href="vsshlids.h"/>
-  <Include href="KnownImageIds.vsct"/>
+	<Extern href="stdidcmd.h"/>
+	<Extern href="vsshlids.h"/>
+	<Include href="KnownImageIds.vsct"/>
 
-  <Commands package="guidPackage">
-    <Groups>
-      <Group guid="guidShieldVSExtensionPackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_BUILD"/>
-      </Group>
-    </Groups>
 
-    <!--This section defines the elements the user can interact with, like a menu command or a button
+	<Commands package="guidPackage">
+		<Groups>
+			<Group guid="guidShieldVSExtensionPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_BUILD"/>
+			</Group>
+		</Groups>
+
+		<!--This section defines the elements the user can interact with, like a menu command or a button
         or combo box in a toolbar. -->
-    <Buttons>
+		<Buttons>
 
 
-      <Button guid="guidShieldVSExtensionPackageCmdSet" id="ConfigurationId" priority="0x0100" type="Button">
-        <Parent guid="guidShieldVSExtensionPackageCmdSet" id="MyMenuGroup" />
-        <CommandFlag>DefaultInvisible</CommandFlag>
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <Strings>
-          <ButtonText>Dotnetsafer Shield Enable</ButtonText>
-        </Strings>
-      </Button>
+			<Button guid="guidShieldVSExtensionPackageCmdSet" id="ConfigurationId" priority="0x0100" type="Button">
+				<Parent guid="guidShieldVSExtensionPackageCmdSet" id="MyMenuGroup" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ByteHide Shield Enable</ButtonText>
+				</Strings>
+			</Button>
 
-      <Button guid="guidShieldVSExtensionPackageCmdSet" id="EnableId" priority="0x0200" type="Button">
-        <Parent guid="guidShieldVSExtensionPackageCmdSet" id="MyMenuGroup" />
-        <Icon guid="ImageCatalogGuid" id="StatusSecurityOK" />
-        <CommandFlag>IconIsMoniker</CommandFlag>
-        <CommandFlag>DefaultInvisible</CommandFlag>
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <Strings>
-          <ButtonText>Dotnetsafer Shield Configuration</ButtonText>
-        </Strings>
-      </Button>
-      
-    </Buttons>
-  </Commands>
+			<Button guid="guidShieldVSExtensionPackageCmdSet" id="EnableId" priority="0x0200" type="Button">
+				<Parent guid="guidShieldVSExtensionPackageCmdSet" id="MyMenuGroup" />
+				<Icon guid="ImageCatalogGuid" id="StatusSecurityOK" />
+				<CommandFlag>IconIsMoniker</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>ByteHide Shield Configuration</ButtonText>
+				</Strings>
+			</Button>
 
-  <Symbols>
-    <GuidSymbol name="guidPackage" value="{311f3401-ccf0-489a-b402-97528dc6b439}" />
+		</Buttons>
+	</Commands>
 
-    <GuidSymbol name="guidShieldVSExtensionPackageCmdSet" value="{ebf96a3a-1e33-42f6-b931-bd933ad6baba}">
-      <IDSymbol name="MyMenuGroup" value="0x1020" />
-      <IDSymbol name="EnableId" value="0x0200" />
-      <IDSymbol name="ConfigurationId" value="0x0100" />
-    </GuidSymbol>
-  </Symbols>
+	<Symbols>
+		<GuidSymbol name="guidPackage" value="{311f3401-ccf0-489a-b402-97528dc6b439}" />
+
+		<GuidSymbol name="guidShieldVSExtensionPackageCmdSet" value="{ebf96a3a-1e33-42f6-b931-bd933ad6baba}">
+			<IDSymbol name="MyMenuGroup" value="0x1020" />
+			<IDSymbol name="EnableId" value="0x0200" />
+			<IDSymbol name="ConfigurationId" value="0x0100" />
+		</GuidSymbol>
+	</Symbols>
 </CommandTable>
